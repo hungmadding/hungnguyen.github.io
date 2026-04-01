@@ -3,103 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Nguyễn | @kolomoo</title>
+    <title>Hùng Madding | Bio Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --primary: #ff79c6;
-            --bg-dark: #050505;
+            --pink: #ff79c6; /* Màu hồng điểm nhấn */
+            --bg-dark: #080808;
             --card-glass: rgba(20, 20, 20, 0.85);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-
-        body {
+        body, html {
+            margin: 0; padding: 0; height: 100%;
             background-color: var(--bg-dark);
-            /* Tạo nền khói mờ ảo bằng CSS thuần - Không lo lỗi link ảnh */
-            background-image: 
-                radial-gradient(circle at 20% 30%, #1a0b1a 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, #0b1a1a 0%, transparent 40%);
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
             display: flex; justify-content: center; align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
+            color: white;
         }
 
+        /* NỀN ĐỘNG (Dùng GIF hoặc Video tối) */
+        .background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            /* Thay link này bằng link GIF/Video của bạn nếu muốn */
+            background-image: 
+                radial-gradient(circle at center, #111 0%, #000 100%);
+            background-size: cover;
+            filter: blur(2px);
+        }
+
+        /* CARD BIO */
         .card {
             background: var(--card-glass);
             backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 380px;
-            padding: 50px 30px;
             border-radius: 25px;
+            padding: 50px 35px;
+            width: 380px;
             text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
-            animation: floating 4s ease-in-out infinite;
+            box-shadow: 0 10px 60px rgba(0,0,0,1);
+            animation: floating 4s ease-in-out infinite; /* Hiệu ứng lơ lửng */
         }
 
         @keyframes floating {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.02); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
+        /* AVATAR CÓ VIỀN PHÁT SÁNG */
         .avatar {
-            width: 110px; height: 110px;
+            width: 100px; height: 100px;
             border-radius: 50%;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px var(--primary);
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 20px var(--pink);
+            object-fit: cover;
             margin-bottom: 20px;
             background: #222; /* Màu nền tạm nếu ảnh lỗi */
         }
 
-        h1 { color: #fff; font-size: 28px; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-        
-        /* Hiệu ứng gõ chữ */
-        .typing {
-            color: var(--primary);
-            font-family: monospace;
-            font-size: 14px;
-            margin: 10px 0 25px;
-            min-height: 20px;
-        }
+        h1 { font-size: 26px; margin: 0; letter-spacing: 1px; font-weight: 700; }
+        .bio-text { color: var(--pink); font-size: 14px; margin: 8px 0 30px; font-weight: 500; }
 
-        .links { display: flex; flex-direction: column; gap: 15px; }
+        .links-list { display: flex; flex-direction: column; gap: 12px; }
 
         .link-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 14px; border-radius: 15px;
-            color: #eee; text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px; border-radius: 12px;
+            color: white; text-decoration: none;
             font-weight: 600; font-size: 15px;
-            transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: 0.3s all;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
         .link-btn:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 30px var(--primary);
-            transform: scale(1.05);
+            background: #fff; color: #000;
+            transform: scale(1.04);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
 
-        /* Lớp hạt bụi bay bay */
-        .particles {
-            position: absolute; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-        }
+        .link-btn i { font-size: 18px; }
     </style>
 </head>
 <body>
 
-    <div class="particles" id="particles"></div>
+    <div class="background"></div>
 
     <div class="card">
-        <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar">
+        <img src="LINK_ẢNH_THẬT_CỦA_BẠN_Ở_ĐÂY" class="avatar" alt="Hùng Madding">
         
-        <h1>Hùng Nguyễn</h1>
-        <div class="typing" id="typing-text"></div>
+        <h1>Hùng Madding</h1>
+        <div class="bio-text">hungmadding ngu lol | Siêu tuất</div>
 
-        <div class="links">
+        <div class="links-list">
             <a href="https://facebook.com/hung.madding" class="link-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
             <a href="https://tiktok.com/@hung_md3" class="link-btn"><i class="fab fa-tiktok"></i> TikTok</a>
             <a href="https://github.com/hungmadding" class="link-btn"><i class="fab fa-github"></i> GitHub</a>
@@ -107,32 +105,5 @@
         </div>
     </div>
 
-    <script>
-        // Hiệu ứng gõ chữ mượt mà
-        const text = "kolomoo pink vibe | Student Developer";
-        let index = 0;
-        function type() {
-            if (index < text.length) {
-                document.getElementById("typing-text").innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, 100);
-            }
-        }
-        window.onload = type;
-
-        // Tạo hạt bụi bay (không dùng ảnh ngoài để tránh lỗi)
-        const container = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const dot = document.createElement('div');
-            dot.style.position = 'absolute';
-            dot.style.width = '2px';
-            dot.style.height = '2px';
-            dot.style.background = '#fff';
-            dot.style.top = Math.random() * 100 + '%';
-            dot.style.left = Math.random() * 100 + '%';
-            dot.style.opacity = Math.random();
-            container.appendChild(dot);
-        }
-    </script>
 </body>
 </html>
