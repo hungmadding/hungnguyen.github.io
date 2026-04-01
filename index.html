@@ -7,164 +7,104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --card-bg: rgba(15, 15, 15, 0.6);
-            --accent-color: #ffffff;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --primary-accent: #ff79c6; /* Màu hồng đặc trưng của bạn */
+            --glass-bg: rgba(0, 0, 0, 0.6);
+            --border-white: rgba(255, 255, 255, 0.1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: crosshair; /* Kiểu con trỏ đặc trưng của guns.lol */
+            cursor: url('https://cur.cursors-4u.net/others/oth-9/oth822.cur'), auto;
         }
 
-        body {
-            background-color: var(--bg-color);
-            /* Bạn có thể thay bằng link ảnh/gif tối ở đây */
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
-            color: var(--text-main);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        body, html {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             overflow: hidden;
         }
 
-        .profile-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            width: 90%;
-            max-width: 450px;
-            padding: 50px 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            position: relative;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .avatar {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 2px solid var(--border-color);
+        /* --- BACKGROUND SECTION --- */
+        .video-bg {
+            position: fixed;
+            right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            z-index: -2;
+            filter: brightness(0.4) blur(2px); /* Làm tối nền để nổi bật card */
             object-fit: cover;
         }
 
-        .name {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        /* --- MAIN CARD --- */
+        .profile-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-white);
+            border-radius: 15px;
+            padding: 50px 40px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            animation: float 4s ease-in-out infinite; /* Hiệu ứng lơ lửng */
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- AVATAR & INFO --- */
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-accent);
+            padding: 3px;
+            margin-bottom: 15px;
+            transition: 0.5s;
+        }
+
+        .avatar:hover {
+            transform: rotate(360deg);
+            border-color: #fff;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary-accent);
             margin-bottom: 5px;
         }
 
-        .username {
-            color: var(--text-dim);
+        .typewriter {
+            color: var(--primary-accent);
             font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .badges {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+            letter-spacing: 2px;
+            height: 20px;
             margin-bottom: 25px;
         }
 
-        .badge {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
+        /* --- LINKS ARRANGEMENT --- */
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 12px;
         }
 
-        .link-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 14px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 500;
-            font-size: 15px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.02);
-            border-color: var(--accent-color);
-        }
-
-        /* Hiệu ứng mờ ảo phía sau */
-        .glow {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: var(--accent-color);
-            filter: blur(120px);
-            opacity: 0.1;
-            z-index: -1;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    </style>
-</head>
-<body>
-
-    <div class="glow"></div>
-
-    <div class="profile-card">
-        <img src="https://i.imgur.com/youravatar.jpg" alt="Avatar" class="avatar">
-        
-        <div class="name">Hùng Nguyễn</div>
-        <div class="username">@kolomoo</div>
-
-        <div class="badges">
-            <span class="badge"><i class="fas fa-code"></i> Python</span>
-            <span class="badge"><i class="fas fa-bolt"></i> Automation</span>
-            <span class="badge"><i class="fas fa-music"></i> Phonk</span>
-        </div>
-
-        <div class="links">
-            <a href="https://www.facebook.com/hung.madding" class="link-item" target="_blank">
-                <i class="fab fa-facebook-f"></i> Facebook
-            </a>
-            <a href="https://www.tiktok.com/@hung_md3" class="link-item" target="_blank">
-                <i class="fab fa-tiktok"></i> TikTok
-            </a>
-            <a href="https://github.com/hungmadding" class="link-item" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a href="#" class="link-item">
-                <i class="fab fa-discord"></i> Discord
-            </a>
-        </div>
-    </div>
-
-</body>
-</html>
+        .link-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-white);
+            padding: 12px;
