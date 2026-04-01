@@ -5,46 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hùng Nguyễn</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
 <style>
 body {
-    background: black;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(-45deg, #000000, #0f0f0f, #001f1f, #000);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
     color: white;
     text-align: center;
-    font-family: Arial;
+    overflow: hidden;
 }
 
-.avatar {
-    width: 120px;
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* chuột glow */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: #00ffe1;
     border-radius: 50%;
-    margin-top: 50px;
+    pointer-events: none;
+    box-shadow: 0 0 20px #00ffe1;
+    transform: translate(-50%, -50%);
 }
 
-a {
-    display: block;
-    margin: 10px;
-    padding: 10px;
-    background: #111;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
+/* avatar */
+.avatar {
+    width: 130px;
+    border-radius: 50%;
+    margin-top: 80px;
+    border: 3px solid #00ffe1;
+    box-shadow: 0 0 25px #00ffe1;
+    transition: 0.4s;
 }
-a:hover {
-    background: white;
+
+.avatar:hover {
+    transform: scale(1.1);
+}
+
+/* tên */
+h1 {
+    text-shadow: 0 0 15px #00ffe1;
+}
+
+/* link */
+.links a {
+    display: block;
+    margin: 15px auto;
+    padding: 14px;
+    width: 230px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: white;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #00ffe1;
+    transition: 0.3s;
+    backdrop-filter: blur(8px);
+}
+
+.links a:hover {
+    background: #00ffe1;
     color: black;
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #00ffe1;
 }
 </style>
 </head>
 
 <body>
 
+<div class="cursor" id="cursor"></div>
+
 <img class="avatar" src="https://i.imgur.com/youravatar.jpg">
-
 <h1>Hùng Nguyễn</h1>
-<p>Bio của bạn 😎</p>
+<p>🔥 Welcome to my bio</p>
 
-<a href="#">Facebook</a>
-<a href="#">TikTok</a>
-<a href="#">Discord</a>
+<div class="links">
+    <a href="https://facebook.com/">Facebook</a>
+    <a href="https://tiktok.com/">TikTok</a>
+    <a href="#">Discord</a>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+
+document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+});
+</script>
 
 </body>
 </html>
