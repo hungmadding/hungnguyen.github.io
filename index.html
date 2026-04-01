@@ -11,10 +11,10 @@
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background: #0a0a0a;
     color: white;
     text-align: center;
     overflow: hidden;
+    background: black;
 }
 
 /* intro */
@@ -26,18 +26,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 18px;
     z-index: 999;
     cursor: pointer;
 }
 
-/* nền blur */
+/* nền hồng glow */
 .bg {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, #111, #000);
+    background: radial-gradient(circle at center, rgba(255,0,150,0.4), transparent 60%);
+    animation: pulse 4s infinite alternate;
     z-index: -1;
+}
+
+@keyframes pulse {
+    from {opacity: 0.4;}
+    to {opacity: 0.9;}
 }
 
 /* avatar */
@@ -45,14 +51,14 @@ body {
     width: 110px;
     border-radius: 50%;
     margin-top: 100px;
-    box-shadow: 0 0 25px rgba(0,255,200,0.3);
+    box-shadow: 0 0 40px rgba(255,0,150,0.7);
 }
 
 /* tên */
 h1 {
     margin-top: 15px;
     font-weight: 600;
-    letter-spacing: 1px;
+    text-shadow: 0 0 15px #ff0099;
 }
 
 /* bio */
@@ -60,25 +66,25 @@ p {
     color: #aaa;
 }
 
-/* button */
+/* button glass */
 .links a {
     display: block;
     margin: 12px auto;
     padding: 14px;
     width: 220px;
-    border-radius: 14px;
+    border-radius: 16px;
     text-decoration: none;
     color: white;
     background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: 0.3s;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,0,150,0.4);
+    transition: all 0.25s ease;
 }
 
+/* hover glow mạnh */
 .links a:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.1);
-    box-shadow: 0 0 20px rgba(0,255,200,0.3);
+    transform: scale(1.07);
+    box-shadow: 0 0 30px #ff0099, 0 0 60px #ff66cc;
 }
 
 /* particles */
@@ -87,13 +93,24 @@ p {
     width: 2px;
     height: 2px;
     background: white;
-    opacity: 0.5;
-    animation: move 10s linear infinite;
+    opacity: 0.4;
+    animation: move linear infinite;
 }
 
 @keyframes move {
     from {transform: translateY(100vh);}
     to {transform: translateY(-10vh);}
+}
+
+/* cursor trail */
+.trail {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: #ff0099;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px #ff0099;
 }
 </style>
 </head>
@@ -106,27 +123,44 @@ p {
 <img class="avatar" src="https://i.imgur.com/youravatar.jpg">
 
 <h1>Hùng Nguyễn</h1>
-<p>Welcome to my bio</p>
+<p>💗 kolomoo pink vibe</p>
 
 <div class="links">
     <a href="https://www.facebook.com/hung.madding" target="_blank">Facebook</a>
-    <a href="https://www.tiktok.com/@hung_md3" target="_blank">🎵 TikTok</a>
+    <a href="https://www.tiktok.com/@hung_md3" target="_blank">TikTok</a>
     <a href="#">Discord</a>
 </div>
+
+<!-- nhạc -->
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 document.getElementById("intro").onclick = function() {
     this.style.display = "none";
+    document.getElementById("music").play();
 };
 
 /* particles */
-for(let i=0;i<30;i++){
+for(let i=0;i<40;i++){
     let p = document.createElement("div");
     p.className="particle";
     p.style.left=Math.random()*100+"%";
-    p.style.animationDuration=(5+Math.random()*5)+"s";
+    p.style.animationDuration=(6+Math.random()*6)+"s";
     document.body.appendChild(p);
 }
+
+/* cursor trail */
+document.addEventListener("mousemove", e=>{
+    let dot=document.createElement("div");
+    dot.className="trail";
+    dot.style.left=e.clientX+"px";
+    dot.style.top=e.clientY+"px";
+    document.body.appendChild(dot);
+
+    setTimeout(()=>{dot.remove();},300);
+});
 </script>
 
 </body>
