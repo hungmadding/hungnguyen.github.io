@@ -1,167 +1,151 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hùng Nguyễn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hùng Nguyễn | Bio Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #ffafbd;
+            --secondary-color: #ffc3a0;
+            --text-color: #2d3436;
+            --glass-bg: rgba(255, 255, 255, 0.2);
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    color: white;
-    text-align: center;
-    overflow: hidden;
-    background: black;
-}
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-/* intro */
-#intro {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    z-index: 999;
-    cursor: pointer;
-}
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
 
-/* nền hồng glow */
-.bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(255,0,150,0.4), transparent 60%);
-    animation: pulse 4s infinite alternate;
-    z-index: -1;
-}
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
 
-@keyframes pulse {
-    from {opacity: 0.4;}
-    to {opacity: 0.9;}
-}
+        h1 {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
 
-/* avatar */
-.avatar {
-    width: 110px;
-    border-radius: 50%;
-    margin-top: 100px;
-    box-shadow: 0 0 40px rgba(255,0,150,0.7);
-}
+        p {
+            color: #636e72;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
 
-/* tên */
-h1 {
-    margin-top: 15px;
-    font-weight: 600;
-    text-shadow: 0 0 15px #ff0099;
-}
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-/* bio */
-p {
-    color: #aaa;
-}
+        .link-card {
+            background: white;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
 
-/* button glass */
-.links a {
-    display: block;
-    margin: 12px auto;
-    padding: 14px;
-    width: 220px;
-    border-radius: 16px;
-    text-decoration: none;
-    color: white;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,0,150,0.4);
-    transition: all 0.25s ease;
-}
+        .link-card:hover {
+            transform: translateY(-3px);
+            background: var(--text-color);
+            color: white;
+        }
 
-/* hover glow mạnh */
-.links a:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0 30px #ff0099, 0 0 60px #ff66cc;
-}
+        .social-icons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
 
-/* particles */
-.particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    opacity: 0.4;
-    animation: move linear infinite;
-}
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
 
-@keyframes move {
-    from {transform: translateY(100vh);}
-    to {transform: translateY(-10vh);}
-}
+        .social-icons a:hover {
+            color: white;
+        }
 
-/* cursor trail */
-.trail {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    background: #ff0099;
-    border-radius: 50%;
-    pointer-events: none;
-    box-shadow: 0 0 10px #ff0099;
-}
-</style>
+        /* Hiệu ứng hạt bụi bay cho sinh động */
+        .bg-dots {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="intro">click to enter</div>
-<div class="bg"></div>
+    <div class="container">
+        <img src="https://i.imgur.com/youravatar.jpg" alt="Hùng Nguyễn" class="profile-img">
+        
+        <h1>Hùng Nguyễn</h1>
+        <p>✨ kolomoo pink vibe | Student & Tech Enthusiast</p>
 
-<img class="avatar" src="https://i.imgur.com/youravatar.jpg">
+        <div class="links-container">
+            <a href="https://www.facebook.com/hung.madding" class="link-card" target="_blank">
+                <i class="fab fa-facebook"></i> Facebook
+            </a>
+            <a href="https://www.tiktok.com/@hung_md3" class="link-card" target="_blank">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="#" class="link-card" target="_blank">
+                <i class="fab fa-discord"></i> Discord Server
+            </a>
+            <a href="https://github.com/hungmadding" class="link-card" target="_blank">
+                <i class="fab fa-github"></i> GitHub Project
+            </a>
+        </div>
 
-<h1>Hùng Nguyễn</h1>
-<p>💗 kolomoo pink vibe</p>
-
-<div class="links">
-    <a href="https://www.facebook.com/hung.madding" target="_blank">Facebook</a>
-    <a href="https://www.tiktok.com/@hung_md3" target="_blank">TikTok</a>
-    <a href="#">Discord</a>
-</div>
-
-<!-- nhạc -->
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-document.getElementById("intro").onclick = function() {
-    this.style.display = "none";
-    document.getElementById("music").play();
-};
-
-/* particles */
-for(let i=0;i<40;i++){
-    let p = document.createElement("div");
-    p.className="particle";
-    p.style.left=Math.random()*100+"%";
-    p.style.animationDuration=(6+Math.random()*6)+"s";
-    document.body.appendChild(p);
-}
-
-/* cursor trail */
-document.addEventListener("mousemove", e=>{
-    let dot=document.createElement("div");
-    dot.className="trail";
-    dot.style.left=e.clientX+"px";
-    dot.style.top=e.clientY+"px";
-    document.body.appendChild(dot);
-
-    setTimeout(()=>{dot.remove();},300);
-});
-</script>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
 
 </body>
 </html>
