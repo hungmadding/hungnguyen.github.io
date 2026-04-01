@@ -8,152 +8,172 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --accent-pink: #ff8fa3;
+            --glass-white: rgba(255, 255, 255, 0.25);
+            --text-color: #ffffff;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
             height: 100%;
             font-family: 'Quicksand', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #fce4ec;
             overflow: hidden;
+            color: white;
+            perspective: 1000px; /* Cần thiết cho hiệu ứng Parallax 3D */
         }
 
-        /* NỀN LẤY VIBE TỪ PINTEREST CỦA BẠN */
+        /* NỀN: Làm tối overlay một chút để nổi bật card */
         .background {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: url('https://i.pinimg.com/originals/9e/7b/4b/9e7b4b3b3b3b3b3b3b3b3b3b3b3b3b3b.jpg'); /* Thay link ảnh từ Pinterest vào đây */
-            background-color: #fce4ec; /* Màu dự phòng nếu ảnh lỗi */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; /* Đẩy xuống dưới cùng */
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
+                        url('https://i.pinimg.com/originals/9e/7b/4b/9e7b4b3b3b3b3b3b3b3b3b3b3b3b3b3b.jpg');
             background-size: cover;
             background-position: center;
-            filter: blur(8px) brightness(0.9); /* Làm mờ nền đúng chất guns.lol */
+            filter: blur(10px);
             transform: scale(1.1);
         }
 
-        /* CARD TRONG SUỐT (GLASSMORPHISM) */
+        /* --- CẤU TRÚC CARD PARALLAX --- */
+        .card-perspective {
+            perspective: 1000px;
+        }
+
         .main-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 40px;
-            padding: 60px 40px;
-            width: 420px;
+            padding: 50px 35px;
+            width: 400px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* AVATAR DECORATION */
-        .avatar-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease; /* Làm mượt chuyển động Parallax */
+            will-change: transform; /* Tối ưu hóa hiệu năng */
         }
 
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 110px; height: 110px;
             border-radius: 50%;
-            border: 4px solid white;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            margin-bottom: 20px;
             object-fit: cover;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* Tên font tròn giống Kolomo */
-        h1 {
-            color: #fff;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        h1 { color: #fff; font-size: 28px; text-shadow: 0 2px 15px rgba(0,0,0,0.3); }
+        .subtitle { color: rgba(255,255,255,0.8); margin-bottom: 30px; font-weight: 500; }
 
-        .subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-
-        /* SOCIAL LINKS */
-        .links-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        /* TAB NÚT */
+        .links-grid { display: flex; flex-direction: column; gap: 15px; }
 
         .link-card {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 16px;
-            border-radius: 20px;
+            background: var(--glass-white);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            padding: 15px;
+            border-radius: 18px;
             color: white;
             text-decoration: none;
             font-weight: 700;
-            font-size: 16px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
             transition: 0.3s all;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .link-card:hover {
-            background: white;
-            color: #ff8fa3;
-            transform: scale(1.03);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            background: #ffffff;
+            color: var(--accent-pink);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 143, 163, 0.4);
         }
 
-        /* Nút nhạc góc trái giống ảnh mẫu */
-        .music-toggle {
-            position: fixed;
-            top: 20px; left: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            width: 45px; height: 45px;
-            border-radius: 12px;
+        .link-card i { font-size: 18px; }
+
+        .music-btn {
+            position: fixed; top: 25px; left: 25px;
+            background: rgba(255,255,255,0.3);
+            width: 40px; height: 40px; border-radius: 10px;
             display: flex; justify-content: center; align-items: center;
-            color: white; backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+            color: white; border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100;
         }
+
+        /* --- HIỆU ỨNG CHUỘT (GLOW) --- */
+        .mouse-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 143, 163, 0.3); /* Màu hồng mờ */
+            filter: blur(20px);
+            pointer-events: none; /* Không cản trở chuột bấm */
+            z-index: -1; /* Đẩy xuống trên nền, dưới card */
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="background"></div>
-    <div class="music-toggle"><i class="fas fa-volume-up"></i></div>
+    <div class="mouse-glow" id="mouseGlow"></div>
+    <div class="music-btn"><i class="fas fa-volume-up"></i></div>
 
-    <div class="main-container">
-        <div class="avatar-wrapper">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
-        </div>
-        
-        <h1>Hùng Madding</h1>
-        <div class="subtitle">hihihi | @hungmadding</div>
+    <div class="card-perspective">
+        <div class="main-container" id="cardContainer">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar">
+            
+            <h1>Hùng Madding</h1>
+            <div class="subtitle">hihihi | @hungmadding</div>
 
-        <div class="links-grid">
-            <a href="https://facebook.com/hung.madding" class="link-card">
-                <i class="fab fa-facebook"></i> Facebook
-            </a>
-            <a href="https://tiktok.com/@hung_md3" class="link-card">
-                <i class="fab fa-tiktok"></i> TikTok
-            </a>
-            <a href="https://github.com/hungmadding" class="link-card">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a href="#" class="link-card">
-                <i class="fab fa-discord"></i> Discord
-            </a>
+            <div class="links-grid">
+                <a href="https://facebook.com/hung.madding" class="link-card">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+                <a href="https://tiktok.com/@hung_md3" class="link-card">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://github.com/hungmadding" class="link-card">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="#" class="link-card">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+            </div>
         </div>
     </div>
 
+    <script>
+        // --- 1. HIỆU ỨNG CHUỘT (MOUSE GLOW) ---
+        const mouseGlow = document.getElementById('mouseGlow');
+        document.addEventListener('mousemove', (e) => {
+            // Cập nhật vị trí của lớp phát sáng theo chuột
+            mouseGlow.style.left = e.clientX + 'px';
+            mouseGlow.style.top = e.clientY + 'px';
+        });
+
+        // --- 2. HIỆU ỨNG CHUYỂN ĐỘNG CARD (PARALLAX) ---
+        const card = document.getElementById('cardContainer');
+        const range = 25; // Độ mạnh của Parallax
+
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / range;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / range;
+            
+            // Áp dụng xoay 3D cho card
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // Reset lại vị trí card khi chuột rời khỏi màn hình
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+    </script>
 </body>
 </html>
