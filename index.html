@@ -3,81 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Ultimate Visual</title>
+    <title>Hùng Madding | Profile VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.95); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; } /* Ẩn chuột mặc định */
+        :root { --pink: #ff4d94; --glass: rgba(20, 20, 25, 0.8); }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
         
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
 
-        /* --- CHUỘT CUSTOM ĐỔI MÀU NEON --- */
+        /* CHUỘT NEON MỚI */
         #cursor { 
-            position: fixed; width: 12px; height: 12px; border-radius: 50%; 
-            pointer-events: none; z-index: 10001; background: #fff;
-            animation: cursorColor 5s linear infinite;
-            transform: translate(-50%, -50%); /* Căn giữa con trỏ */
-            transition: width 0.2s, height 0.2s;
+            position: fixed; width: 20px; height: 20px; border: 2px solid var(--pink); border-radius: 50%; 
+            pointer-events: none; z-index: 10001; transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out; box-shadow: 0 0 15px var(--pink);
         }
 
-        @keyframes cursorColor {
-            0%   { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-            25%  { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
-            50%  { box-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; }
-            75%  { box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; }
-            100% { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-        }
-
-        /* --- MÀN HÌNH CHỜ --- */
-        #overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 1s; }
-        #overlay i { font-size: 80px; color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
-
-        /* NỀN VÀ TUYẾT */
-        .bg-overlay { position: fixed; inset: 0; z-index: -2; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
+        /* NỀN VÀ BÃO TUYẾT */
+        .bg-overlay { position: fixed; inset: 0; z-index: -2; background: #0a0a0a; }
         #particles { position: fixed; inset: 0; z-index: -1; }
 
-        /* --- CARD VIP - DỌC - KÍNH MỜ - VIỀN ĐÈN LED --- */
-        .container { perspective: 1000px; display: none; opacity: 0; transition: 1s; z-index: 10; }
+        /* CARD VIP 3D */
+        .container { perspective: 1000px; z-index: 10; }
         .card {
-            background: var(--glass); backdrop-filter: blur(20px); border-radius: 35px;
-            padding: 50px 40px; width: 380px; text-align: center; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d;
-            transition: transform 0.1s ease;
+            background: var(--glass); backdrop-filter: blur(15px); border-radius: 30px;
+            padding: 40px; width: 350px; text-align: center; position: relative;
+            transform-style: preserve-3d; border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* Hiệu ứng viền phát sáng chạy quanh (RGB Border) */
+        /* VIỀN LED RGB */
         .card::before {
             content: ''; position: absolute; inset: -2px;
-            background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94);
-            background-size: 400%; z-index: -1; border-radius: 38px;
-            animation: steam 15s linear infinite; opacity: 0.7;
+            background: linear-gradient(45deg, #ff4d94, #00ffff, #7000ff, #ff4d94);
+            background-size: 400%; z-index: -1; border-radius: 32px;
+            animation: steam 12s linear infinite;
         }
-        
-        /* Hiệu ứng bóng đổ phát sáng (Glow) */
-        .card::after { content: ''; position: absolute; inset: -2px; background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94); background-size: 400%; z-index: -1; border-radius: 38px; animation: steam 15s linear infinite; filter: blur(15px); opacity: 0.7; }
-
         @keyframes steam { 0% { background-position: 0 0; } 100% { background-position: 400% 0; } }
 
-        /* AVATAR DẬP DỀNH 3D */
-        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 30px var(--pink); margin-bottom: 20px; object-fit: cover; animation: floatAvatar 4s ease-in-out infinite; transform: translateZ(60px); }
-        @keyframes floatAvatar { 0%, 100% { transform: translateY(0) translateZ(60px); } 50% { transform: translateY(-10px) translateZ(60px); } }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 20px var(--pink); margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        h1 { font-size: 28px; color: #fff; text-shadow: 0 0 20px var(--pink); margin-bottom: 5px; transform: translateZ(50px); }
-        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 30px; font-size: 12px; letter-spacing: 3px; transform: translateZ(40px); }
+        h1 { color: #fff; font-size: 24px; text-shadow: 0 0 10px var(--pink); }
+        .tagline { color: var(--pink); font-size: 11px; letter-spacing: 2px; margin-bottom: 30px; }
 
-        /* LINK ITEMS */
-        .links { display: flex; flex-direction: column; gap: 12px; transform-style: preserve-3d; }
         .link-item {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 148, 0.2);
-            padding: 18px; border-radius: 20px; color: #fff; text-decoration: none; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between; 
-            transition: 0.3s; transform: translateZ(30px);
+            background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 15px; color: #fff;
+            text-decoration: none; display: flex; justify-content: space-between; margin-bottom: 10px;
+            transition: 0.3s; border: 1px solid rgba(255, 77, 148, 0.3);
         }
-        .link-item:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; transform: scale(1.05) translateZ(50px); }
-        .link-item i { font-size: 18px; }
+        .link-item:hover { background: #fff; color: #000; transform: scale(1.05); }
 
-        /* TRÌNH PHÁT NHẠC MINI */
-        .music-btn { position: fixed; bottom: 20px; right: 20px; width: 5
+        .music-toggle { position: fixed; bottom: 20px; right: 20px; color: #fff; font-size: 20px; cursor: pointer; z-index: 100; }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div class="bg-overlay"></div>
+    <canvas id="particles"></canvas>
+
+    <div class="music-toggle" id="mBtn"><i class="fas fa-music"></i></div>
+    <audio id="myAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
+
+    <div class="container">
+        <div class="card" id="card">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+            <h1>Hùng Madding</h1>
+            <p class="tagline">PYTHON DEVELOPER | PINK VIBE</p>
+            <div class="links">
+                <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
+                <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        const cursor = document.getElementById('cursor');
+        const card = document.getElementById('card');
+        
+        // Theo dõi chuột
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            let x = (window.innerWidth / 2 - e.pageX) / 20;
+            let y = (window.innerHeight / 2 - e.pageY) / 20;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+
+        // Tuyết bông to
+        let flakes = [];
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            flakes = [];
+            for(let i=0; i<50; i++) {
+                flakes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*15+10, v: Math.random()*1+0.5 });
+            }
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 77, 148, 0.6)";
+            ctx.font = "20px FontAwesome";
+            flakes.forEach(f => {
+                ctx.fillText("\uf2dc", f.x, f.y); // Mã icon snowflake
+                f.y += f.v; if(f.y > canvas.height) f.y = -20;
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', init);
+        init(); draw();
+
+        // Nhạc
+        const a = document.getElementById('myAudio');
+        document.getElementById('mBtn').onclick = () => {
+            if(a.paused) a.play(); else a.pause();
+        };
+    </script>
+</body>
+</html>
