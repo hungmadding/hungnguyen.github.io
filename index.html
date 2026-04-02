@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Profile</title>
+    <title>Hùng Madding | Bio-OS v3.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -16,60 +16,73 @@
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; }
         
         #cursor { 
-            position: fixed; width: 20px; height: 20px; background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
+            position: fixed; width: 25px; height: 25px; background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; z-index: 10002; transform: translate(-50%, -50%);
-            box-shadow: 0 0 25px var(--pink-glow); display: none;
+            box-shadow: 0 0 30px var(--pink-glow); display: none; transition: width 0.3s, height 0.3s;
         }
 
         #overlay {
             position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, #1a0a1a 100%);
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--pink); transition: all 0.8s ease-in-out;
+            color: var(--pink); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s infinite; font-family: 'Fira Code', monospace; text-shadow: 0 0 20px var(--pink); }
+        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s infinite; font-family: 'Fira Code', monospace; text-shadow: 0 0 25px var(--pink); }
         .loading-bar { width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 2rem; }
-        .loading-progress { height: 100%; background: var(--pink); width: 0%; animation: load 2.5s forwards; box-shadow: 0 0 15px var(--pink); }
-        .enter-btn { border: 2px solid var(--pink); padding: 15px 35px; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; font-weight: 600; transition: 0.3s; background: transparent; color: var(--pink); margin-top: 2rem; }
-        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 30px var(--pink); }
+        .loading-progress { height: 100%; background: var(--pink); width: 0%; animation: load 2.5s forwards; box-shadow: 0 0 20px var(--pink); }
+        .enter-btn { border: 2px solid var(--pink); padding: 18px 40px; letter-spacing: 6px; cursor: pointer; text-transform: uppercase; font-weight: 600; transition: 0.3s; background: transparent; color: var(--pink); margin-top: 2rem; }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 40px var(--pink); transform: scale(1.05); }
 
-        @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
+        @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
         @keyframes load { to { width: 100%; } }
 
-        #canvas-bg, #canvas-snow { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        /* CANVAS BACKGROUND NÂNG CẤP */
+        #canvas-particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.9); transition: all 1.2s; z-index: 10; position: relative; pointer-events: none; }
-        .main-wrapper.active { opacity: 1; transform: scale(1); pointer-events: all; }
+        .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.85) rotateX(10deg); transition: all 1.5s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10; position: relative; pointer-events: none; perspective: 1000px; }
+        .main-wrapper.active { opacity: 1; transform: scale(1) rotateX(0deg); pointer-events: all; }
 
         .card {
-            background: rgba(15, 15, 25, 0.85); backdrop-filter: blur(25px);
-            border-radius: 35px; padding: 50px; width: 420px; text-align: center;
-            border: 1px solid rgba(255, 77, 148, 0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+            background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 40px; padding: 60px; width: 420px; text-align: center;
+            border: 1px solid rgba(255, 77, 148, 0.3); box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+            transform-style: preserve-3d; transition: transform 0.1s;
         }
 
-        .avatar { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 25px; object-fit: cover; box-shadow: 0 0 30px var(--pink); }
+        .avatar { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 30px; object-fit: cover; box-shadow: 0 0 40px var(--pink); transform: translateZ(50px); }
         
-        /* HIỆU ỨNG THẮP SÁNG CHỮ */
         h1 { 
-            color: #fff; font-size: 28px; margin-bottom: 8px; 
-            text-shadow: 0 0 10px #fff, 0 0 20px var(--pink), 0 0 30px var(--pink-glow);
+            color: #fff; font-size: 30px; margin-bottom: 10px; 
+            text-shadow: 0 0 15px #fff, 0 0 30px var(--pink), 0 0 45px var(--pink-glow);
+            transform: translateZ(30px);
         }
         .subtitle { 
-            color: #fff; font-size: 15px; margin-bottom: 25px; font-family: 'Fira Code'; font-weight: 600;
-            text-shadow: 0 0 5px #fff, 0 0 15px var(--pink), 0 0 25px var(--pink-glow);
+            color: #fff; font-size: 16px; margin-bottom: 30px; font-family: 'Fira Code'; font-weight: 600;
+            text-shadow: 0 0 8px #fff, 0 0 20px var(--pink), 0 0 30px var(--pink-glow);
+            transform: translateZ(20px);
         }
         
-        .typewriter { height: 20px; color: #aaa; font-size: 13px; margin-bottom: 30px; font-family: 'Fira Code'; }
+        .typewriter { height: 20px; color: #aaa; font-size: 13px; margin-bottom: 40px; font-family: 'Fira Code'; transform: translateZ(10px); }
 
-        .links { display: flex; flex-direction: column; gap: 15px; }
+        .links { display: flex; flex-direction: column; gap: 18px; transform: translateZ(15px); }
         .link-item {
-            background: rgba(255,255,255,0.05); padding: 16px 25px; border-radius: 18px; color: #fff;
+            background: rgba(255,255,255,0.04); padding: 18px 30px; border-radius: 20px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.08); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(12px) scale(1.02); box-shadow: 0 0 20px rgba(255, 77, 148, 0.3); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(15px) scale(1.03); box-shadow: 0 0 25px rgba(255, 77, 148, 0.3); }
 
-        .stats { position: fixed; bottom: 20px; right: 20px; color: var(--pink); font-family: 'Fira Code'; font-size: 10px; z-index: 100; }
-        .toast { position: fixed; top: 20px; right: 20px; background: var(--pink); color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 10005; box-shadow: 0 0 20px var(--pink); }
+        .stats { position: fixed; bottom: 25px; right: 25px; color: var(--pink); font-family: 'Fira Code'; font-size: 11px; z-index: 100; opacity: 0.7; }
+        
+        .toast { 
+            position: fixed; top: 40px; left: 50%; transform: translateX(-50%) translateY(-150px);
+            background: rgba(255, 77, 148, 0.95); color: #fff; padding: 20px 40px; 
+            border-radius: 50px; z-index: 10005; box-shadow: 0 0 40px var(--pink);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0; font-weight: 700; font-size: 15px; text-align: center;
+            min-width: 350px; backdrop-filter: blur(15px); border: 1px solid #fff;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
@@ -81,12 +94,11 @@
     </div>
 
     <div id="cursor"></div>
-    <canvas id="canvas-bg"></canvas>
-    <canvas id="canvas-snow"></canvas>
+    <canvas id="canvas-particles"></canvas>
 
     <div class="main-wrapper" id="mainContent">
-        <div class="card">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar">
+        <div class="card" id="profileCard">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar Hùng">
             <h1>Hùng Madding</h1>
             <div class="subtitle">Nguyễn Mạnh Hùng</div>
             <div class="typewriter" id="typewriter"></div>
@@ -95,56 +107,101 @@
                 <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
                 <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <a href="#" class="link-item" onclick="copyEmail(event)"><span>Email</span><i class="fas fa-envelope"></i></a>
+                <div class="link-item" onclick="showAboutMe()">
+                    <span>Đôi nét về bản thân tôi</span><i class="fas fa-heart"></i>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="stats">BIO-OS v3.0 | SYSTEM SECURE</div>
-    <div class="toast" id="toast">Copied to clipboard!</div>
+    <div class="stats">BIO-OS v3.0 | SECURE SHELL ACTIVE</div>
+    <div id="toast" class="toast">Ôi bạn quan tâm đến tôi ư cảm ơn nhiều nhé ❤️</div>
 
     <script>
-        const canvasBg = document.getElementById('canvas-bg');
-        const canvasSnow = document.getElementById('canvas-snow');
-        const ctxBg = canvasBg.getContext('2d');
-        const ctxSnow = canvasSnow.getContext('2d');
-        let snowParticles = [], stars = [];
+        const canvas = document.getElementById('canvas-particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 100 }; // Bán kính tương tác chuột
 
+        // Khởi tạo hệ thống hạt sang trọng
         function init() {
-            canvasBg.width = canvasSnow.width = window.innerWidth;
-            canvasBg.height = canvasSnow.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<120; i++) {
-                stars.push({ x: Math.random()*canvasBg.width, y: Math.random()*canvasBg.height, s: Math.random()*1.8 });
-            }
-            snowParticles = [];
-            for(let i=0; i<60; i++) {
-                snowParticles.push({
-                    x: Math.random()*canvasSnow.width,
-                    y: Math.random()*canvasSnow.height,
-                    r: Math.random()*3+1,
-                    d: Math.random()*0.8+0.4
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            
+            // Tăng số lượng hạt lên 150 để tạo cảm giác không gian dày hơn
+            for(let i=0; i<150; i++) {
+                const size = Math.random()*2.5+0.5; // Kích thước hạt liti
+                particles.push({
+                    x: Math.random()*canvas.width,
+                    y: Math.random()*canvas.height,
+                    size: size,
+                    // Chia tốc độ theo kích thước (hạt to rơi nhanh, hạt nhỏ rơi chậm)
+                    speedY: size*0.4+0.2, 
+                    // Thêm tốc độ ngang nhẹ để tạo sự ngẫu nhiên
+                    speedX: Math.random()*0.2-0.1, 
+                    // Độ mờ ngẫu nhiên
+                    opacity: Math.random()*0.5+0.1,
+                    // Tốc độ nhấp nháy
+                    twinkleSpeed: Math.random()*0.02+0.005,
+                    twinklePhase: Math.random()*Math.PI*2,
+                    // Biến dùng cho tương tác chuột
+                    baseX: 0,
+                    baseY: 0
                 });
             }
         }
 
+        // Vòng lặp vẽ và cập nhật
         function draw() {
-            ctxBg.clearRect(0,0,canvasBg.width, canvasBg.height);
-            ctxSnow.clearRect(0,0,canvasSnow.width, canvasSnow.height);
-            ctxBg.fillStyle = "#FFF";
-            stars.forEach(s => {
-                ctxBg.beginPath();
-                ctxBg.arc(s.x, s.y, s.s, 0, Math.PI*2);
-                ctxBg.fill();
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                // 1. CẬP NHẬT VỊ TRÍ (Rơi xuống)
+                p.y += p.speedY;
+                p.x += p.speedX;
+
+                // Quay lại đỉnh khi rơi hết
+                if(p.y > canvas.height) p.y = -10;
+                if(p.x > canvas.width) p.x = 0;
+                if(p.x < 0) p.x = canvas.width;
+
+                // 2. TẠO HIỆU ỨNG NHẤP NHÁY (Sang trọng)
+                p.twinklePhase += p.twinkleSpeed;
+                const currentOpacity = p.opacity + Math.sin(p.twinklePhase)*0.1;
+                
+                // 3. TƯƠNG TÁC CHUỘT (Đẩy hạt nhẹ nhàng)
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        // Hạt to bị đẩy mạnh hơn, hạt nhỏ bị đẩy nhẹ hơn
+                        const directionX = (dx / distance) * force * p.size * 0.5;
+                        const directionY = (dy / distance) * force * p.size * 0.5;
+                        
+                        p.x -= directionX;
+                        p.y -= directionY;
+                    }
+                }
+
+                // 4. VẼ HẠT VỚI GLOw (Sang trọng)
+                ctx.save();
+                ctx.globalAlpha = Math.max(0.05, Math.min(0.7, currentOpacity));
+                
+                // Thêm hiệu ứng phát sáng mờ xung quanh mỗi hạt
+                ctx.shadowBlur = p.size * 3;
+                ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
+                ctx.fillStyle = "#FFF";
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
             });
-            ctxSnow.fillStyle = "rgba(255,255,255,0.5)";
-            snowParticles.forEach(p => {
-                ctxSnow.beginPath();
-                ctxSnow.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctxSnow.fill();
-                p.y += p.d;
-                if(p.y > canvasSnow.height) p.y = -10;
-            });
+
             requestAnimationFrame(draw);
         }
 
@@ -157,11 +214,11 @@
                 main.classList.add('active');
                 document.getElementById('cursor').style.display = 'block';
                 typeWriter();
-            }, 800);
+            }, 1000);
         }
 
         function typeWriter() {
-            const text = "> Initializing Python Terminal... OK!";
+            const text = "> Booting Bio-OS Terminal v3.0... Success!";
             let i = 0;
             const target = document.getElementById('typewriter');
             target.innerHTML = "";
@@ -169,24 +226,31 @@
                 if (i < text.length) {
                     target.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, 60);
+                    setTimeout(type, 70);
                 }
             }
             type();
         }
 
-        function copyEmail(e) {
-            e.preventDefault();
-            navigator.clipboard.writeText("contact@hungmadding.io");
+        function showAboutMe() {
             const toast = document.getElementById('toast');
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 2500);
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3800);
         }
 
+        // Theo dõi chuột cho hiệu ứng đẩy hạt
         window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
             const cursor = document.getElementById('cursor');
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
+        });
+        // Khi chuột ra khỏi màn hình
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
         });
 
         window.addEventListener('resize', init);
