@@ -1,123 +1,234 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hùng Madding</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hùng Madding | Cinematic Bio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --pink: #ff4d94; --pink-glow: #ff0077; --bg: #050505; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        
+        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        /* MÀN HÌNH CHỜ */
+        #overlay {
+            position: fixed; inset: 0; background: var(--bg); 
+            z-index: 9999; display: flex; justify-content: center; align-items: center; 
+            color: var(--pink); transition: opacity 0.8s ease;
+        }
+        .enter-btn { border: 1px solid var(--pink); padding: 15px 35px; letter-spacing: 5px; animation: pulse 2s infinite; text-transform: uppercase; font-weight: bold; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(255, 77, 148, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 148, 0); } }
 
-<style>
-:root { --pink:#ff4d94; }
+        /* HIỆU ỨNG RIPPLE KHI CLICK */
+        .ripple {
+            position: fixed; border: 2px solid var(--pink); border-radius: 50%;
+            pointer-events: none; transform: translate(-50%, -50%);
+            animation: ripple-out 0.6s linear forwards; z-index: 10002;
+        }
+        @keyframes ripple-out { from { width: 0; height: 0; opacity: 1; } to { width: 120px; height: 120px; opacity: 0; } }
 
-*{margin:0;padding:0;box-sizing:border-box;cursor:none}
+        /* CURSOR NEON */
+        #cursor { 
+            position: fixed; width: 15px; height: 15px; background: var(--pink); 
+            border-radius: 50%; pointer-events: none; z-index: 10001; 
+            transform: translate(-50%, -50%); box-shadow: 0 0 20px var(--pink-glow);
+            transition: transform 0.1s ease-out, width 0.3s, height 0.3s;
+        }
 
-body{
-height:100vh;
-overflow:hidden;
-font-family:sans-serif;
-}
+        /* CANVAS TUYẾT */
+        #canvas-snow { position: fixed; inset: 0; z-index: 0; filter: drop-shadow(0 0 3px var(--pink)); mix-blend-mode: screen; }
 
-/* 🎥 VIDEO (ĐÃ FIX CLICK) */
-#bg-video{
-position:fixed;
-top:0;left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-3;
+        /* CARD CHÍNH */
+        .main-wrapper { 
+            height: 100vh; display: flex; justify-content: center; align-items: center; 
+            perspective: 1200px; opacity: 0; transform: scale(0.9); transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-filter:brightness(0.45) contrast(1.2) saturate(1.4);
+        .card {
+            background: rgba(15, 15, 20, 0.75); backdrop-filter: blur(25px);
+            border-radius: 35px; padding: 55px 45px; width: 370px; text-align: center;
+            position: relative; border: 1px solid rgba(255, 77, 148, 0.25);
+            transform-style: preserve-3d;
+        }
 
-/* 🔥 QUAN TRỌNG NHẤT */
-pointer-events:none;
-}
+        /* AVATAR BREATHE EFFECT */
+.avatar-container { position: relative; width: 125px; height: 125px; margin: 0 auto 25px; }
+        .avatar { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            border: 3px solid var(--pink); position: relative; z-index: 2; object-fit: cover;
+        }
+        .avatar-glow {
+            position: absolute; inset: -8px; background: var(--pink);
+            filter: blur(20px); border-radius: 50%; opacity: 0.3; animation: breathe 4s infinite;
+        }
+        @keyframes breathe { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } }
 
-/* overlay */
-#overlay{
-position:fixed;
-inset:0;
-background:#000;
-z-index:999;
-display:flex;
-justify-content:center;
-align-items:center;
-color:var(--pink);
-}
+        h1 { color: #fff; font-size: 26px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-.enter{
-padding:15px 40px;
-border:1px solid var(--pink);
-}
+        /* TYPEWRITER TEXT */
+        .typewriter {
+            font-family: 'Fira Code', monospace; color: var(--pink);
+            font-size: 11px; letter-spacing: 2px; height: 15px; margin-bottom: 35px; font-weight: bold;
+        }
 
-/* card */
-.wrapper{
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-opacity:0;
-transition:1s;
-}
+        /* LINKS */
+        .link-item {
+            background: rgba(255, 255, 255, 0.04); padding: 16px 25px; border-radius: 15px;
+            color: rgba(255,255,255,0.85); text-decoration: none; display: flex; 
+            justify-content: space-between; align-items: center; margin-bottom: 14px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .link-item:hover { 
+            background: rgba(255, 77, 148, 0.2); color: #fff;
+            border-color: var(--pink); transform: translateX(8px) translateZ(40px);
+            box-shadow: -10px 10px 20px rgba(0,0,0,0.3);
+        }
 
-.card{
-background:rgba(0,0,0,0.6);
-padding:40px;
-border-radius:20px;
-text-align:center;
-}
-
-/* links */
-.link{
-display:block;
-padding:12px;
-margin:10px;
-background:#222;
-color:#fff;
-text-decoration:none;
-border-radius:10px;
-}
-
-.link:hover{
-background:var(--pink);
-}
-</style>
+        .music-status { position: fixed; bottom: 20px; left: 20px; color: var(--pink); font-size: 9px; opacity: 0.5; letter-spacing: 1px; }
+    </style>
 </head>
+<body onclick="createRipple(event)">
 
-<body>
+    <div id="overlay" onclick="start()">
+        <div class="enter-btn">Click or Enter</div>
+    </div>
 
-<!-- VIDEO -->
-<video autoplay muted loop id="bg-video">
-<source src="https://cdn.coverr.co/videos/coverr-sunset-sky-6942/1080p.mp4" type="video/mp4">
-</video>
+    <div id="cursor"></div>
+    <canvas id="canvas-snow"></canvas>
+    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
-<!-- OVERLAY -->
-<div id="overlay" onclick="start()">
-<div class="enter">ENTER</div>
-</div>
+    <div class="main-wrapper" id="content">
+        <div class="card" id="card">
+            <div class="avatar-container">
+                <div class="avatar-glow"></div>
+                <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+            </div>
+            <h1>Hùng Madding</h1>
+            <div class="typewriter" id="typewriter"></div>
+            
+            <div class="links">
+                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+                    <span>Facebook</span><i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+                    <span>TikTok</span><i class="fab fa-tiktok"></i>
+                </a>
+                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+<span>GitHub</span><i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
-<!-- CONTENT -->
-<div class="wrapper" id="content">
-<div class="card">
+    <div class="music-status">BIO-OS V2.0 // TERMINAL READY</div>
 
-<h2 style="color:white;">Hùng Madding</h2>
+    <script>
+        const canvas = document.getElementById('canvas-snow');
+        const ctx = canvas.getContext('2d');
+        const cursor = document.getElementById('cursor');
+        const card = document.getElementById('card');
+        const bgm = document.getElementById('bgm');
+        let snowParticles = [];
 
-<a href="https://www.facebook.com/hung.madding" target="_blank" class="link">
-Facebook
-</a>
+        // 1. KHỞI TẠO TUYẾT CINEMATIC (3 TẦNG)
+        class Snowflake {
+            constructor(layer) {
+                this.layer = layer;
+                this.init();
+            }
+            init() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                if (this.layer === 0) { // Xa
+                    this.size = Math.random() * 2 + 1; this.speedY = Math.random() * 0.5 + 0.2;
+                    this.opacity = Math.random() * 0.2 + 0.1; this.blur = 0;
+                } else if (this.layer === 1) { // Trung
+                    this.size = Math.random() * 3 + 2; this.speedY = Math.random() * 1 + 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.2; this.blur = 0;
+                } else { // Gần (Bokeh)
+                    this.size = Math.random() * 6 + 4; this.speedY = Math.random() * 2 + 1.2;
+                    this.opacity = Math.random() * 0.3 + 0.1; this.blur = 4;
+                }
+                this.step = 0; this.stepSpeed = Math.random() * 0.02 + 0.01;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.step) * 0.5;
+                this.step += this.stepSpeed;
+                if (this.y > canvas.height) { this.y = -10; this.x = Math.random() * canvas.width; }
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 77, 148, ${this.opacity})`;
+                if (this.blur > 0) { ctx.shadowBlur = this.blur; ctx.shadowColor = "var(--pink)"; }
+                ctx.fill(); ctx.shadowBlur = 0;
+            }
+        }
 
-<a href="#" class="link">TikTok</a>
-<a href="#" class="link">GitHub</a>
+        function initSnow() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            snowParticles = [];
+            for (let i = 0; i < 40; i++) snowParticles.push(new Snowflake(0));
+            for (let i = 0; i < 30; i++) snowParticles.push(new Snowflake(1));
+            for (let i = 0; i < 15; i++) snowParticles.push(new Snowflake(2));
+        }
 
-</div>
-</div>
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            snowParticles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
 
-<script>
-function start(){
-document.getElementById("overlay").style.display="none";
-document.getElementById("content").style.opacity=1;
-}
-</script>
+        // 2. TYPEWRITER EFFECT
+        const text = "PYTHON DEVELOPER | PINK VIBE";
+        let charIndex = 0;
+        function typeEffect() {
+if (charIndex < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(charIndex);
+                charIndex++; setTimeout(typeEffect, 100);
+            }
+        }
 
+        // 3. RIPPLE & START LOGIC
+        function createRipple(e) {
+            const ripple = document.createElement("div");
+            ripple.className = "ripple";
+            ripple.style.left = e.clientX + "px"; ripple.style.top = e.clientY + "px";
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        function start() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('content').style.opacity = '1';
+                document.getElementById('content').style.transform = 'scale(1)';
+                typeEffect();
+            }, 800);
+            bgm.play().catch(() => {});
+        }
+
+        // 4. MOUSE & INTERACTION
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            const x = (window.innerWidth / 2 - e.clientX) / 30;
+            const y = (window.innerHeight / 2 - e.clientY) / 30;
+            card.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
+        });
+
+        function focusIn() { cursor.style.transform = 'translate(-50%, -50%) scale(3.5)'; cursor.style.background = 'transparent'; cursor.style.border = '1px solid white'; }
+        function focusOut() { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; cursor.style.background = 'var(--pink)'; cursor.style.border = 'none'; }
+
+        window.addEventListener('keydown', (e) => { if(e.key === "Enter") start(); });
+        window.addEventListener('resize', initSnow);
+
+        initSnow(); animate();
+    </script>
 </body>
 </html>
