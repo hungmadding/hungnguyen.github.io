@@ -188,6 +188,11 @@ to{width:120px;height:120px;opacity:0}
 
 <canvas id="canvas-snow"></canvas>
 
+<!-- NHẠC -->
+<audio id="bgm" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <div class="main-wrapper" id="content">
 <div class="card" id="card">
 
@@ -223,6 +228,7 @@ const ctx=canvas.getContext('2d');
 const cursor=document.getElementById('cursor');
 const ring=document.getElementById('cursor-ring');
 const card=document.getElementById('card');
+const bgm=document.getElementById('bgm');
 
 canvas.width=innerWidth;
 canvas.height=innerHeight;
@@ -262,7 +268,7 @@ requestAnimationFrame(animate);
 }
 animate();
 
-/* cursor + tilt + light */
+/* cursor */
 document.addEventListener('mousemove',e=>{
 cursor.style.left=e.clientX+"px";
 cursor.style.top=e.clientY+"px";
@@ -298,6 +304,8 @@ content.style.opacity=1;
 content.style.transform="scale(1)";
 typeEffect();
 },600);
+
+bgm.play().catch(()=>{});
 }
 
 /* ripple */
