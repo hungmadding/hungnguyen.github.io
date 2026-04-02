@@ -3,79 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Ultimate Visual</title>
+    <title>Hùng Madding | Profile VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.95); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; } /* Ẩn chuột thật */
+        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.85); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
 
-        /* --- CHUỘT ĐỔI MÀU NEON (Đã sửa lỗi) --- */
-        #cursor { 
-            position: fixed; width: 12px; height: 12px; border-radius: 50%; 
-            pointer-events: none; z-index: 10001; background: #fff;
-            animation: cursorColor 5s linear infinite;
-            transform: translate(-50%, -50%); /* Căn giữa con trỏ */
-            transition: width 0.2s, height 0.2s;
-        }
+        /* MÀN HÌNH CHỜ (Tùy chọn) */
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.8s; }
+        #overlay i { font-size: 60px; color: var(--pink); animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
 
-        @keyframes cursorColor {
-            0%   { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-            25%  { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
-            50%  { box-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; }
-            75%  { box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; }
-            100% { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-        }
+        /* NỀN PINTEREST & TUYẾT */
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
+        #particles { position: fixed; top: 0; left: 0; z-index: -1; }
 
-        /* --- MÀN HÌNH CHỜ --- */
-        #overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1s; }
-        #overlay i { font-size: 80px; color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); animation: pulse 1s infinite; }
-        
-        /* NỀN VÀ TUYẾT */
-        .bg-overlay { position: fixed; inset: 0; z-index: -2; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
-        #particles { position: fixed; inset: 0; z-index: -1; }
-
-        /* CARD VIP */
-        .container { perspective: 1000px; display: none; opacity: 0; transition: 1s; z-index: 10; }
+        /* --- CARD BIO KÍNH MỜ - VIỀN ĐÈN LED --- */
+        .container { perspective: 1000px; display: none; opacity: 0; transition: 1.5s; }
         .card {
-            background: var(--glass); backdrop-filter: blur(20px); border-radius: 35px;
+            background: var(--glass); backdrop-filter: blur(25px); border-radius: 40px;
             padding: 50px 40px; width: 380px; text-align: center; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform-style: preserve-3d;
+            transition: transform 0.1s ease;
         }
-        .card::after {
-            content: ''; position: absolute; inset: -3px;
-            background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94);
-            background-size: 400%; z-index: -1; border-radius: 38px;
-            animation: rgbFlow 8s linear infinite;
-        }
-        @keyframes rgbFlow { 0% { background-position: 0 0; } 100% { background-position: 400% 0; } }
-
-        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 30px var(--pink); margin-bottom: 20px; object-fit: cover; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        h1 { font-size: 28px; color: #fff; text-shadow: 0 0 20px var(--pink); margin-bottom: 5px; }
-        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 30px; font-size: 12px; letter-spacing: 3px; }
-
-        .link-item {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 148, 0.2);
-            padding: 18px; border-radius: 20px; color: #fff; text-decoration: none; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; transition: 0.3s;
+        /* Hiệu ứng viền phát sáng chạy quanh (RGB Border) */
+        .card::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #ff4d94, #ff00ff, #00ffff, #ff4d94);
+            background-size: 400%; z-index: -1; border-radius: 42px;
+            animation: steam 20s linear infinite; opacity: 0.5;
         }
-        .link-item:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; transform: scale(1.05); }
+        .card::after { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, #ff4d94, #ff00ff, #00ffff, #ff4d94); background-size: 400%; z-index: -1; border-radius: 42px; animation: steam 20s linear infinite; filter: blur(15px); opacity: 0.5; }
+        @keyframes steam { 0% { background-position: 0 0; } 50% { background-position: 400% 0; } 100% { background-position: 0 0; } }
 
-        .music-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--glass); border-radius: 50%; display: none; justify-content: center; align-items: center; color: #fff; z-index: 1000; border: 1px solid var(--pink); }
+        /* AVATAR DẬP DỀNH 3D */
+        .avatar { width: 125px; height: 125px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 30px var(--pink); margin-bottom: 25px; object-fit: cover; transform: translateZ(60px); }
+        
+        h1 { font-size: 30px; color: white; text-shadow: 0 0 20px var(--pink); margin-bottom: 10px; transform: translateZ(50px); }
+        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; transform: translateZ(40px); }
+
+        /* LINK ITEMS */
+        .links { transform-style: preserve-3d; }
+        .link-item {
+            background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px; border-radius: 20px; color: white; text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; 
+            transition: 0.4s; transform: translateZ(30px);
+        }
+        .link-item:hover { background: white; color: black; transform: scale(1.05) translateZ(50px); box-shadow: 0 0 30px white; }
+        .link-item i { font-size: 18px; }
+
+        /* NÚT ĐIỀU KHIỂN NHẠC */
+        .music-btn { position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px; background: var(--glass); border-radius: 50%; display: none; justify-content: center; align-items: center; color: white; z-index: 1000; border: 1px solid var(--pink); }
+        .music-btn:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-
-    <div id="overlay" onclick="startApp()">
+    <div id="overlay">
         <i class="fas fa-play"></i>
-        <p style="color:white; margin-top:20px; letter-spacing:5px;">CLICK TO ENTER</p>
+        <p style="color:white; margin-top:20px; letter-spacing:5px;">HÙNG MADDING ENTER</p>
     </div>
 
     <div class="bg-overlay"></div>
@@ -85,13 +77,13 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
     
-    <div class="music-btn" id="musicToggle"><i class="fas fa-volume-up"></i></div>
+    <div class="music-btn" id="musicToggle"><i class="fas fa-music"></i></div>
 
     <div class="container" id="mainApp">
         <div class="card" id="card">
             <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
             <h1>Hùng Madding</h1>
-            <div class="tagline">PYTHON DEVELOPER | PINK VIBE</div>
+            <div class="tagline">Python Developer | Pink Vibe</div>
             
             <div class="links">
                 <a href="https://facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span> <i class="fab fa-facebook"></i></a>
@@ -107,32 +99,30 @@
         const app = document.getElementById('mainApp');
         const card = document.getElementById('card');
         const mBtn = document.getElementById('musicToggle');
-        const cursor = document.getElementById('cursor');
 
-        // ĐIỀU KHIỂN CHUỘT & 3D
+        // HIỆU ỨNG CARD 3D NGHIÊNG THEO CHUỘT
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
             let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
             let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        function startApp() {
-            audio.play().catch(() => {});
+        // XỬ LÝ SỰ KIỆN VÀO TRANG
+        overlay.addEventListener('click', () => {
+            audio.play().catch(() => console.log("Yêu cầu tương tác để phát nhạc"));
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
                 app.style.display = 'block';
                 setTimeout(() => app.style.opacity = '1', 50);
                 mBtn.style.display = 'flex';
+                // Khởi tạo tuyết sau khi vào
                 initParticles();
                 drawParticles();
-            }, 500);
-        }
+            }, 800);
+        });
 
-        // TUYẾT HỒNG VIP
+        // --- HIỆU ỨNG TUYẾT HỒNG VIP (Dày - Lấp lánh) ---
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let dots = [];
@@ -141,35 +131,41 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             dots = [];
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 80; i++) { // Tăng lên 80 hạt cho dày
                 dots.push({ 
-                    x: Math.random() * canvas.width, 
-                    y: Math.random() * canvas.height, 
-                    s: Math.random() * 4 + 2, 
-                    vY: Math.random() * 2 + 1.5,
-                    o: Math.random() * 0.8 + 0.2 
+                    x: Math.random()*canvas.width, 
+                    y: Math.random()*canvas.height, 
+                    s: Math.random()*2+1, // Kích thước ngẫu nhiên
+                    v: Math.random()*0.6+0.2 // Tốc độ bay lên
                 });
             }
         }
 
         function drawParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff4d94";
             dots.forEach(d => {
                 ctx.beginPath();
-                ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 77, 148, ${d.o})`;
+                ctx.arc(d.x, d.y, d.s, 0, Math.PI*2);
                 ctx.fill();
-                d.y += d.vY;
-                if(d.y > canvas.height) d.y = -10;
+                d.y -= d.v; // Tuyết bay lên
+                if(d.y < 0) d.y = canvas.height; // Vòng lặp
             });
             requestAnimationFrame(drawParticles);
         }
 
+        // XỬ LÝ NHẠC
         mBtn.addEventListener('click', () => {
-            if(audio.paused) { audio.play(); mBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-            else { audio.pause(); mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+            if(audio.paused) {
+                audio.play();
+                mBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            } else {
+                audio.pause();
+                mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
         });
 
+        // Tự động adjust canvas khi đổi kích thước màn hình
         window.addEventListener('resize', initParticles);
     </script>
 </body>
