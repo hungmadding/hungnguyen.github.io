@@ -16,14 +16,34 @@
 body,html{
 height:100%;
 font-family:'Quicksand',sans-serif;
-background:var(--bg);
 overflow:hidden;
 }
 
-/* overlay */
+/* 🎥 VIDEO BACKGROUND */
+#bg-video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+filter:brightness(0.5) blur(2px);
+}
+
+/* overlay ánh sáng */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+z-index:-1;
+}
+
+/* overlay start */
 #overlay{
 position:fixed;inset:0;
-background:var(--bg);
+background:#000;
 z-index:9999;
 display:flex;justify-content:center;align-items:center;
 color:var(--pink);
@@ -65,7 +85,7 @@ transform:translate(-50%,-50%);
 transition:.15s;
 }
 
-/* canvas */
+/* sakura canvas */
 #canvas-snow{
 position:fixed;
 inset:0;
@@ -179,6 +199,11 @@ to{width:120px;height:120px;opacity:0}
 
 <body onclick="createRipple(event)">
 
+<!-- 🎥 VIDEO -->
+<video autoplay muted loop id="bg-video">
+<source src="https://cdn.coverr.co/videos/coverr-anime-sky-5587/1080p.mp4" type="video/mp4">
+</video>
+
 <div id="overlay" onclick="start()">
 <div class="enter-btn">ENTER</div>
 </div>
@@ -188,7 +213,6 @@ to{width:120px;height:120px;opacity:0}
 
 <canvas id="canvas-snow"></canvas>
 
-<!-- NHẠC -->
 <audio id="bgm" loop>
 <source src="music.mp3" type="audio/mpeg">
 </audio>
@@ -205,20 +229,11 @@ to{width:120px;height:120px;opacity:0}
 <div class="typewriter" id="typewriter"></div>
 
 <div class="links">
-
-<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-<span>Facebook</span><i class="fab fa-facebook-f"></i>
-</a>
-
-<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-<span>TikTok</span><i class="fab fa-tiktok"></i>
-</a>
-
-<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-<span>GitHub</span><i class="fab fa-github"></i>
-</a>
-
+<a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
+<a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
+<a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
 </div>
+
 </div>
 </div>
 
@@ -247,23 +262,16 @@ angle:Math.random()*Math.PI*2
 
 function animate(){
 ctx.clearRect(0,0,canvas.width,canvas.height);
-
 petals.forEach(p=>{
 p.y+=p.speed;
 p.x+=Math.sin(p.angle)*0.5;
 p.angle+=0.01;
-
-if(p.y>canvas.height){
-p.y=0;
-p.x=Math.random()*canvas.width;
-}
-
+if(p.y>canvas.height){p.y=0;p.x=Math.random()*canvas.width;}
 ctx.beginPath();
 ctx.fillStyle="rgba(255,182,193,0.8)";
 ctx.ellipse(p.x,p.y,p.size,p.size/2,0,0,Math.PI*2);
 ctx.fill();
 });
-
 requestAnimationFrame(animate);
 }
 animate();
@@ -272,7 +280,6 @@ animate();
 document.addEventListener('mousemove',e=>{
 cursor.style.left=e.clientX+"px";
 cursor.style.top=e.clientY+"px";
-
 ring.style.left=e.clientX+"px";
 ring.style.top=e.clientY+"px";
 
@@ -316,15 +323,6 @@ r.style.left=e.clientX+"px";
 r.style.top=e.clientY+"px";
 document.body.appendChild(r);
 setTimeout(()=>r.remove(),600);
-}
-
-function focusIn(){
-cursor.style.transform="translate(-50%,-50%) scale(3)";
-ring.style.transform="translate(-50%,-50%) scale(1.5)";
-}
-function focusOut(){
-cursor.style.transform="translate(-50%,-50%) scale(1)";
-ring.style.transform="translate(-50%,-50%) scale(1)";
 }
 </script>
 
