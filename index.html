@@ -8,88 +8,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --pink: #ff4d94;
-            --glass: rgba(10, 10, 15, 0.8);
-        }
-
+        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: 'Quicksand', sans-serif; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #000; color: white; perspective: 1000px; }
 
-        body, html {
-            height: 100%;
-            font-family: 'Quicksand', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; background: #000; color: white;
+        /* MÀN HÌNH CHỜ */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.8s;
         }
+        #overlay i { font-size: 50px; color: var(--pink); margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        #overlay p { letter-spacing: 3px; font-weight: 700; color: white; }
 
         /* NỀN PINTEREST */
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg');
-            background-size: cover; background-position: center;
-        }
-
-        /* HIỆU ỨNG HẠT LẤP LÁNH */
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
         #particles { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px; padding: 50px 40px;
-            width: 380px; text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            animation: float 5s ease-in-out infinite;
+        /* CARD VỚI HIỆU ỨNG LẮC 3D */
+        .card-perspective { perspective: 1000px; z-index: 10; }
+        .card { 
+            background: var(--glass); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; 
+            padding: 50px 40px; width: 380px; text-align: center; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
+            visibility: hidden; opacity: 0; transition: transform 0.1s ease, opacity 1s;
+            transform-style: preserve-3d;
         }
+        .show-card { visibility: visible !important; opacity: 1 !important; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
 
-        .avatar {
-            width: 115px; height: 115px; border-radius: 50%;
-            border: 3px solid white; box-shadow: 0 0 25px var(--pink);
-            margin-bottom: 25px; object-fit: cover;
-        }
+        .avatar { width: 115px; height: 115px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 25px var(--pink); margin-bottom: 25px; object-fit: cover; transform: translateZ(30px); }
+        h1 { font-size: 30px; text-shadow: 0 0 15px var(--pink); margin-bottom: 8px; transform: translateZ(20px); }
+        .tagline { color: var(--pink); font-weight: 700; font-size: 14px; letter-spacing: 2px; margin-bottom: 35px; text-transform: uppercase; transform: translateZ(10px); }
 
-        h1 { font-size: 30px; text-shadow: 0 0 15px var(--pink); margin-bottom: 8px; }
-        .tagline { color: var(--pink); font-weight: 700; font-size: 14px; letter-spacing: 2px; margin-bottom: 35px; text-transform: uppercase; }
-
-        .links-list { display: flex; flex-direction: column; gap: 15px; }
-
-        /* TAB NÚT GIỮ NGUYÊN HIỆU ỨNG NỔI BẬT */
-        .link-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 16px; border-radius: 20px;
-            color: white; text-decoration: none; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .link-item:hover {
-            background: white; color: black;
-            transform: scale(1.05) translateX(5px);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-        }
-
+        .links-list { display: flex; flex-direction: column; gap: 15px; transform: translateZ(15px); }
+        .link-item { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 16px; border-radius: 20px; color: white; text-decoration: none; font-weight: 700; display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
+        .link-item:hover { background: white; color: black; transform: scale(1.05) translateZ(10px); box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
         .link-item i { font-size: 20px; color: var(--pink); }
-        .link-item:hover i { color: black; }
 
-        /* NÚT NHẠC */
-        .music-btn {
-            position: fixed; top: 25px; right: 25px;
-            width: 45px; height: 45px; background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; display: flex; justify-content: center; align-items: center;
-            color: white; cursor: pointer; z-index: 1000; transition: 0.3s;
-        }
+        .music-btn { position: fixed; top: 25px; right: 25px; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; display: flex; justify-content: center; align-items: center; color: white; cursor: pointer; z-index: 1000; }
     </style>
 </head>
 <body>
+
+    <div id="overlay" onclick="startApp()">
+        <i class="fas fa-play"></i>
+        <p>CLICK TO ENTER</p>
+    </div>
 
     <div class="bg-overlay"></div>
     <canvas id="particles"></canvas>
@@ -97,49 +65,72 @@
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
-    <div class="music-btn" id="musicToggle"><i class="fas fa-volume-mute"></i></div>
+    
+    <div class="music-btn" id="musicToggle"><i class="fas fa-music"></i></div>
 
-    <div class="card">
-        <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
-        <h1>Hùng Madding</h1>
-        <div class="tagline">Python Developer | Pink Vibe</div>
-
-        <div class="links-list">
-            <a href="https://facebook.com/hung.madding" class="link-item"><span>Facebook</span> <i class="fab fa-facebook"></i></a>
-            <a href="https://tiktok.com/@hung_md3" class="link-item"><span>TikTok</span> <i class="fab fa-tiktok"></i></a>
-            <a href="https://github.com/hungmadding" class="link-item"><span>GitHub</span> <i class="fab fa-github"></i></a>
-            <a href="#" class="link-item"><span>Discord</span> <i class="fab fa-discord"></i></a>
+    <div class="card-perspective">
+        <div class="card" id="mainCard">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
+            <h1>Hùng Madding</h1>
+            <div class="tagline">Python Developer | Pink Vibe</div>
+            <div class="links-list">
+                <a href="https://facebook.com/hung.madding" class="link-item"><span>Facebook</span> <i class="fab fa-facebook"></i></a>
+                <a href="https://tiktok.com/@hung_md3" class="link-item"><span>TikTok</span> <i class="fab fa-tiktok"></i></a>
+                <a href="https://github.com/hungmadding" class="link-item"><span>GitHub</span> <i class="fab fa-github"></i></a>
+                <a href="#" class="link-item"><span>Discord</span> <i class="fab fa-discord"></i></a>
+            </div>
         </div>
     </div>
 
     <script>
-        // GIỮ NGUYÊN HIỆU ỨNG HẠT LẤP LÁNH BẠN THÍCH
+        const audio = document.getElementById('bgMusic');
+        const overlay = document.getElementById('overlay');
+        const card = document.getElementById('mainCard');
+        const btn = document.getElementById('musicToggle');
+
+        function startApp() {
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 800);
+            card.classList.add('show-card');
+            audio.play();
+            btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+
+        // --- HIỆU ỨNG LẮC 3D (TILT) ---
+        const perspective = document.querySelector(".card-perspective");
+        perspective.addEventListener("mousemove", (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 20;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 20;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        perspective.addEventListener("mouseleave", () => {
+            card.style.transition = "all 0.5s ease";
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+
+        perspective.addEventListener("mouseenter", () => {
+            card.style.transition = "none";
+        });
+
+        // GIỮ HIỆU ỨNG HẠT BỤI
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let dots = [];
         function init() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             dots = [];
-            for(let i = 0; i < 70; i++) {
-                dots.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 0.5 + 0.2, size: Math.random() * 2 });
-            }
+            for(let i = 0; i < 70; i++) { dots.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, speed: Math.random() * 0.5 + 0.2, size: Math.random() * 2 }); }
         }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-            dots.forEach(d => {
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2); ctx.fill();
-                d.y -= d.speed; if(d.y < 0) d.y = canvas.height;
-            });
+            dots.forEach(d => { ctx.beginPath(); ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2); ctx.fill(); d.y -= d.speed; if(d.y < 0) d.y = canvas.height; });
             requestAnimationFrame(draw);
         }
         window.addEventListener('resize', init);
         init(); draw();
 
-        // XỬ LÝ NHẠC
-        const audio = document.getElementById('bgMusic');
-        const btn = document.getElementById('musicToggle');
-        document.addEventListener('click', () => { if (audio.paused) { audio.play(); btn.innerHTML = '<i class="fas fa-volume-up"></i>'; } }, { once: true });
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (audio.paused) { audio.play(); btn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
