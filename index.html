@@ -231,14 +231,16 @@
             requestAnimationFrame(animate);
         }
 
-        window.addEventListener('mousemove', (e) => {
+       window.addEventListener('mousemove', (e) => {
             const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
             const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
-            document.getElementById('profileCard').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            const card = document.getElementById('profileCard');
+            if(card) card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
         window.addEventListener('resize', init);
-        init(); animate();
+        init(); 
+        animate();
     </script>
 </body>
 </html>
