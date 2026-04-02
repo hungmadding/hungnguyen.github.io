@@ -5,146 +5,117 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>hungmadding</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-:root { --pink:#ff4d94; }
-
-*{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
     background:black;
-    font-family:'Quicksand',sans-serif;
+    font-family:'Inter',sans-serif;
     overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
     color:white;
 }
 
-/* cursor */
-#cursor{
+/* nền galaxy */
+canvas{
     position:fixed;
-    width:12px;height:12px;
-    border-radius:50%;
-    pointer-events:none;
-    z-index:9999;
-    transform:translate(-50%,-50%);
-    animation:cursorGlow 5s linear infinite;
-}
-@keyframes cursorGlow{
-    0%{box-shadow:0 0 15px #ff4d94}
-    50%{box-shadow:0 0 15px cyan}
-    100%{box-shadow:0 0 15px #ff4d94}
+    inset:0;
+    z-index:-2;
 }
 
 /* intro */
 #overlay{
-    position:fixed;inset:0;
+    position:fixed;
+    inset:0;
     background:black;
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
-    z-index:999;
     cursor:pointer;
+    z-index:10;
 }
-#overlay i{
-    font-size:70px;
-    color:var(--pink);
-    animation:pulse 1s infinite;
-}
-@keyframes pulse{
-    50%{transform:scale(1.1)}
-}
-
-/* background */
-canvas{position:fixed;inset:0;z-index:-1}
 
 /* card */
-.container{display:none;opacity:0;transition:1s;}
-.card{
-    width:350px;
-    padding:40px;
-    border-radius:30px;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(20px);
-    text-align:center;
-    position:relative;
-    transform-style:preserve-3d;
-    will-change:transform;
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
 }
 
-/* border neon */
+.card{
+    width:320px;
+    padding:30px;
+    border-radius:25px;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(30px);
+    text-align:center;
+    transition:0.2s;
+    position:relative;
+}
+
+/* viền neon */
 .card::before{
     content:'';
     position:absolute;
-    inset:-3px;
-    border-radius:35px;
-    background:linear-gradient(45deg,#ff4d94,#ff00ff,#00ffff,#ff4d94);
-    background-size:400%;
-    animation:borderMove 10s linear infinite;
+    inset:-2px;
+    border-radius:25px;
+    background:linear-gradient(45deg,#ff00cc,#00ffff,#ff00cc);
+    background-size:300%;
+    animation:border 8s linear infinite;
     z-index:-1;
 }
-.card::after{
-    content:'';
-    position:absolute;
-    inset:-3px;
-    border-radius:35px;
-    background:inherit;
-    filter:blur(25px);
-    z-index:-1;
-}
-@keyframes borderMove{
+@keyframes border{
     0%{background-position:0%}
-    100%{background-position:400%}
+    100%{background-position:300%}
 }
 
 /* avatar */
 .avatar{
-    width:110px;
+    width:90px;
     border-radius:50%;
-    box-shadow:0 0 20px var(--pink);
-    margin-bottom:15px;
+    margin-bottom:10px;
+    box-shadow:0 0 25px #ff00cc;
 }
 
 /* text */
-h1{text-shadow:0 0 15px var(--pink);}
-.tag{color:var(--pink);margin-bottom:25px;}
+h1{
+    text-shadow:0 0 20px #ff00cc;
+}
 
-/* links */
+/* 👇 ĐÃ SỬA Ở ĐÂY */
+.tag{
+    color:#ff66cc;
+    margin-bottom:20px;
+    text-shadow:0 0 15px #ff00cc;
+}
+
+/* link */
 .link{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    display:block;
     margin:10px 0;
-    padding:14px;
-    border-radius:15px;
+    padding:12px;
+    border-radius:12px;
     text-decoration:none;
     color:white;
     background:rgba(255,255,255,0.05);
-    transition:.3s;
+    transition:0.3s;
 }
 .link:hover{
-    transform:scale(1.07);
-    background:white;
-    color:black;
-    box-shadow:0 0 20px white;
+    transform:scale(1.05);
+    box-shadow:0 0 20px #ff00cc;
 }
 
-/* music btn */
+/* music */
 .music{
     position:fixed;
     bottom:20px;
     right:20px;
-    width:50px;height:50px;
+    padding:10px;
     border-radius:50%;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    border:1px solid var(--pink);
+    border:1px solid #ff00cc;
+    cursor:pointer;
 }
 
 /* click effect */
@@ -156,96 +127,109 @@ h1{text-shadow:0 0 15px var(--pink);}
 
 <body>
 
-<div id="cursor"></div>
+<canvas id="bg"></canvas>
 
 <div id="overlay" onclick="start()">
-<i class="fas fa-play"></i>
-<p>CLICK TO ENTER</p>
+<h2>CLICK TO ENTER</h2>
 </div>
-
-<canvas id="bg"></canvas>
 
 <audio id="music" loop>
 <source src="music.mp3">
 </audio>
 
-<div class="music" id="mBtn">🎵</div>
+<div class="music" onclick="toggleMusic()">🎵</div>
 
-<div class="container" id="app">
+<div class="container">
 <div class="card" id="card">
 
 <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
 
 <h1>Hùng Madding</h1>
-<div class="tag">Python Dev | Pink Vibe</div>
 
-<a class="link" href="https://facebook.com/hung.madding" target="_blank">
-Facebook <i class="fab fa-facebook"></i>
-</a>
+<!-- 💀 TEXT MỚI -->
+<div class="tag">💀 vừa ngu vừa tuất</div>
 
-<a class="link" href="https://tiktok.com/@hung_md3" target="_blank">
-TikTok <i class="fab fa-tiktok"></i>
-</a>
-
-<a class="link" href="https://github.com/hungmadding" target="_blank">
-GitHub <i class="fab fa-github"></i>
-</a>
+<a class="link" href="https://facebook.com/hung.madding">Facebook</a>
+<a class="link" href="https://tiktok.com/@hung_md3">TikTok</a>
+<a class="link" href="#">GitHub</a>
 
 </div>
 </div>
 
 <script>
-const cursor=document.getElementById("cursor");
-const card=document.getElementById("card");
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-
-let x=(window.innerWidth/2-e.pageX)/25;
-let y=(window.innerHeight/2-e.pageY)/25;
-card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
-});
-
-/* start */
+/* music */
+let music=document.getElementById("music");
 function start(){
-document.getElementById("overlay").style.display="none";
-document.getElementById("app").style.display="block";
-setTimeout(()=>app.style.opacity=1,50);
+overlay.style.display="none";
+music.volume=0;
 music.play();
-mBtn.style.display="flex";
+let fade=setInterval(()=>{
+if(music.volume<1) music.volume+=0.05;
+else clearInterval(fade);
+},100);
+}
+function toggleMusic(){
+music.paused?music.play():music.pause();
 }
 
-/* music toggle */
-let music=document.getElementById("music");
-let mBtn=document.getElementById("mBtn");
-mBtn.onclick=()=>music.paused?music.play():music.pause();
+/* 3D tilt */
+let card=document.getElementById("card");
+let mx=0,my=0,tx=0,ty=0;
 
-/* particles */
+document.addEventListener("mousemove",e=>{
+mx=(e.clientX-window.innerWidth/2)/30;
+my=(e.clientY-window.innerHeight/2)/30;
+});
+
+function animate(){
+tx+=(mx-tx)*0.1;
+ty+=(my-ty)*0.1;
+card.style.transform=`rotateY(${tx}deg) rotateX(${-ty}deg)`;
+requestAnimationFrame(animate);
+}
+animate();
+
+/* galaxy */
 const c=document.getElementById("bg");
 const ctx=c.getContext("2d");
-let dots=[];
+let stars=[];
+
 function init(){
-c.width=innerWidth;c.height=innerHeight;
-dots=[];
-for(let i=0;i<80;i++){
-dots.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,v:Math.random()*0.5+0.2});
-}}
-function draw(){
-ctx.clearRect(0,0,c.width,c.height);
-dots.forEach(d=>{
-let g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.s*4);
-g.addColorStop(0,"#ff4d94");
-g.addColorStop(1,"transparent");
-ctx.fillStyle=g;
-ctx.beginPath();
-ctx.arc(d.x,d.y,d.s,0,Math.PI*2);
-ctx.fill();
-d.y-=d.v;
-if(d.y<0)d.y=c.height;
+c.width=innerWidth;
+c.height=innerHeight;
+stars=[];
+for(let i=0;i<120;i++){
+stars.push({
+x:Math.random()*c.width,
+y:Math.random()*c.height,
+z:Math.random()*c.width
 });
+}
+}
+
+function draw(){
+ctx.fillStyle="black";
+ctx.fillRect(0,0,c.width,c.height);
+
+stars.forEach(s=>{
+s.z-=1;
+if(s.z<=0) s.z=c.width;
+
+let k=128/s.z;
+let px=s.x*k+c.width/2;
+let py=s.y*k+c.height/2;
+
+let size=(1-s.z/c.width)*3;
+
+ctx.fillStyle="#ff4d94";
+ctx.fillRect(px,py,size,size);
+});
+
 requestAnimationFrame(draw);
 }
-init();draw();
+
+init();
+draw();
 
 /* click effect */
 document.addEventListener("click",e=>{
