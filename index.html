@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hùng Madding | Bio-OS v3.20</title>
+    <title>Hùng Madding | Bio-OS v3.21</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -15,91 +15,108 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; touch-action: none; }
         
-        /* CANVAS 3 LỚP */
-        #canvas-bg, #canvas-mid, #canvas-foreground { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-        #canvas-foreground { z-index: 10001; } 
+        /* CANVAS PHÔNG NỀN */
+        canvas { position: fixed; inset: 0; pointer-events: none; }
+        #canvas-bg { z-index: 1; }
+        #canvas-mid { z-index: 2; }
+        #canvas-foreground { z-index: 10001; }
 
-        /* NÚT NHẠC XOAY TRÒN */
-        #music-btn {
-            position: fixed; top: 25px; right: 25px; z-index: 10005;
-            width: 45px; height: 45px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05); border: 2px solid var(--pink);
-            color: var(--pink); display: none; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.5s; box-shadow: 0 0 20px var(--pink-glow);
-        }
-        #music-btn.playing i { animation: rotate 3s linear infinite; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
+        /* MÀN HÌNH CHỜ & THANH LOAD */
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--pink); transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--pink); transition: opacity 1s ease;
         }
-        .logo-enter { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; font-family: 'Fira Code'; text-shadow: 0 0 25px var(--pink); }
-        .enter-btn { border: 2px solid var(--pink); padding: 15px 40px; cursor: pointer; text-transform: uppercase; font-weight: 600; background: transparent; color: var(--pink); transition: 0.3s; letter-spacing: 5px; }
+        .logo-enter { 
+            font-size: 3rem; font-weight: 700; margin-bottom: 2rem; 
+            font-family: 'Fira Code'; text-shadow: 0 0 25px var(--pink);
+            letter-spacing: 5px;
+        }
 
+        /* THANH LOADING THEO ẢNH */
+        .loader-container { width: 300px; text-align: center; margin-top: 20px; }
+        .progress-bar {
+            width: 100%; height: 12px; background: rgba(255, 77, 148, 0.1);
+            border: 1px solid var(--pink); border-radius: 6px; overflow: hidden;
+            position: relative; box-shadow: 0 0 15px rgba(255, 77, 148, 0.3);
+        }
+        .progress-fill {
+            height: 100%; width: 0%; background: var(--pink);
+            box-shadow: 0 0 20px var(--pink); transition: width 0.1s linear;
+        }
+        .load-text { font-family: 'Fira Code'; font-size: 12px; margin-top: 10px; letter-spacing: 1px; }
+
+        .enter-btn { 
+            display: none; border: 2px solid var(--pink); padding: 15px 45px; 
+            cursor: pointer; text-transform: uppercase; font-weight: 600; 
+            background: transparent; color: var(--pink); transition: 0.3s; 
+            letter-spacing: 5px; animation: fadeIn 0.8s forwards;
+        }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 40px var(--pink); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* GIAO DIỆN CHÍNH */
         .main-wrapper { 
             height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1200px;
-            transform: scale(0.85) translateY(30px); 
-            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1); 
-            z-index: 10; position: relative; padding: 20px;
+            opacity: 0; perspective: 1200px; transform: scale(0.9) translateY(30px); 
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10;
         }
         .main-wrapper.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
 
         .card {
-            background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px) saturate(180%);
-            border-radius: 40px; padding: 40px; width: 420px; 
-            min-height: 550px; 
+            background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px);
+            border-radius: 40px; padding: 40px; width: 420px; min-height: 550px;
             text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
             box-shadow: 0 30px 70px rgba(0,0,0,0.9); transform-style: preserve-3d;
-            transition: transform 0.2s ease-out; will-change: transform;
-            display: flex; flex-direction: column; align-items: center;
+            transition: transform 0.2s ease-out; display: flex; flex-direction: column; align-items: center;
         }
 
         .avatar-container {
             width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); 
             margin-bottom: 20px; box-shadow: 0 0 35px var(--pink); overflow: hidden;
-            transform: translateZ(80px); background: #111;
+            transform: translateZ(80px);
         }
         .avatar { width: 100%; height: 100%; object-fit: cover; }
 
-        h1 { color: #fff; font-size: 28px; margin-bottom: 2px; text-shadow: 0 0 20px var(--pink); transform: translateZ(60px); }
-        .subtitle { color: #fff; font-size: 15px; margin-bottom: 20px; transform: translateZ(50px); }
-        .typewriter { height: 20px; color: #bbb; font-size: 13px; margin-bottom: 25px; font-family: 'Fira Code'; transform: translateZ(40px); }
+        h1 { color: #fff; font-size: 28px; text-shadow: 0 0 20px var(--pink); transform: translateZ(60px); }
+        .subtitle { color: #fff; font-size: 15px; margin: 5px 0 20px; transform: translateZ(50px); }
+        .typewriter { height: 20px; color: #bbb; font-size: 13px; margin-bottom: 25px; font-family: 'Fira Code'; }
 
         .links { width: 100%; display: flex; flex-direction: column; gap: 12px; transform: translateZ(50px); }
         .link-item {
             background: rgba(255,255,255,0.05); padding: 14px 22px; border-radius: 18px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease;
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(10px) translateZ(20px); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.25); transform: translateX(10px) translateZ(20px); }
 
-        .footer-info {
-            position: fixed; bottom: 15px; right: 20px; font-size: 10px;
-            color: rgba(255, 77, 148, 0.6); font-family: 'Fira Code'; letter-spacing: 1px;
+        /* NÚT NHẠC */
+        #music-btn {
+            position: fixed; top: 25px; right: 25px; z-index: 10005;
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--pink);
+            color: var(--pink); display: none; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 0 20px var(--pink-glow);
         }
+        #music-btn.playing i { animation: rotate 3s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        @media (max-width: 480px) {
-            .card { width: 95%; padding: 30px 20px; min-height: auto; }
-            h1 { font-size: 22px; }
-        }
+        .footer-info { position: fixed; bottom: 15px; right: 20px; font-size: 10px; color: rgba(255, 77, 148, 0.6); font-family: 'Fira Code'; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
         <div class="logo-enter">HUNG MADDING</div>
-        <button class="enter-btn" onclick="startExperience()">ENTER</button>
+        <div class="loader-container" id="loader">
+            <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+            <div class="load-text" id="status">INITIALIZING SYSTEM... 0%</div>
+        </div>
+        <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER</button>
     </div>
 
-    <div id="music-btn" onclick="toggleMusic()">
-        <i class="fas fa-music"></i>
-    </div>
-    <audio id="bg-audio" loop>
-        <source src="https://www.mboxdrive.com/lofi-chill.mp3" type="audio/mpeg">
-    </audio>
+    <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
+    <audio id="bg-audio" loop><source src="https://www.mboxdrive.com/lofi-chill.mp3" type="audio/mpeg"></audio>
 
     <canvas id="canvas-bg"></canvas>
     <canvas id="canvas-mid"></canvas>
@@ -108,86 +125,56 @@
     <div class="main-wrapper" id="mainContent">
         <div class="card" id="profileCard">
             <div class="avatar-container">
-                <img src="https://ui-avatars.com/api/?name=Hung+Madding&background=0a0a1a&color=fff&rounded=true&size=128" class="avatar">
+                <img src="https://ui-avatars.com/api/?name=H&background=0a0a1a&color=ff4d94" class="avatar">
             </div>
-
             <h1>Hùng Madding</h1>
             <div class="subtitle">Nguyễn Mạnh Hùng</div>
             <div class="typewriter" id="typewriter"></div>
-            
             <div class="links">
                 <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
                 <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <div class="link-item" onclick="alert('Cảm ơn bạn đã quan tâm tớ! ❤️')">
-                    <span>Đôi nét về bản thân</span><i class="fas fa-heart"></i>
-                </div>
+                <div class="link-item" onclick="alert('Chào bạn nhé! ❤️')"><span>Đôi nét về bản thân</span><i class="fas fa-heart"></i></div>
             </div>
         </div>
     </div>
 
-    <div class="footer-info">BIO-OS v3.20 | SECURE SHELL ACTIVE</div>
+    <div class="footer-info">BIO-OS v3.21 | SECURE SHELL ACTIVE</div>
 
     <script>
         const audio = document.getElementById('bg-audio');
         const btn = document.getElementById('music-btn');
-        const canvasB = document.getElementById('canvas-bg'), canvasM = document.getElementById('canvas-mid'), canvasF = document.getElementById('canvas-foreground');
-        const ctxB = canvasB.getContext('2d'), ctxM = canvasM.getContext('2d'), ctxF = canvasF.getContext('2d');
-        let stars = [], midParticles = [], frontSnow = [];
+        const fill = document.getElementById('fill');
+        const status = document.getElementById('status');
+        const loader = document.getElementById('loader');
+        const enterBtn = document.getElementById('enterBtn');
+
+        // HIỆU ỨNG THANH LOAD
+        let width = 0;
+        const loading = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(loading);
+                status.innerText = "SYSTEM READY TO BOOT";
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    enterBtn.style.display = 'block';
+                }, 500);
+            } else {
+                width++;
+                fill.style.width = width + '%';
+                status.innerText = `INITIALIZING NEURAL CONNECTION... ${width}%`;
+            }
+        }, 30);
 
         function toggleMusic() {
-            if (audio.paused) { 
-                audio.play(); 
-                btn.classList.add('playing'); 
-            } else { 
-                audio.pause(); 
-                btn.classList.remove('playing'); 
-            }
-        }
-
-        class Snowflake {
-            constructor(canvas, depth) {
-                this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.depth = depth;
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * this.canvas.width;
-                this.y = Math.random() * this.canvas.height;
-                this.size = [Math.random()*1, Math.random()*2+1, Math.random()*5+3][this.depth];
-                this.speed = [Math.random()*0.2+0.1, Math.random()*0.6+0.3, Math.random()*1.5+0.8][this.depth];
-                this.opacity = [0.2, 0.4, 0.7][this.depth];
-            }
-            update() {
-                this.y += this.speed; if (this.y > this.canvas.height) this.y = -10;
-            }
-            draw() {
-                this.ctx.globalAlpha = this.opacity;
-                this.ctx.fillStyle = "#FFF";
-                this.ctx.beginPath(); this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); this.ctx.fill();
-            }
-        }
-
-        function init() {
-            canvasB.width = canvasM.width = canvasF.width = window.innerWidth;
-            canvasB.height = canvasM.height = canvasF.height = window.innerHeight;
-            stars = Array.from({length: 80}, () => new Snowflake(canvasB, 0));
-            midParticles = Array.from({length: 50}, () => new Snowflake(canvasM, 1));
-            frontSnow = Array.from({length: 25}, () => new Snowflake(canvasF, 2));
-        }
-
-        function draw() {
-            ctxB.clearRect(0,0,canvasB.width, canvasB.height); ctxM.clearRect(0,0,canvasM.width, canvasM.height); ctxF.clearRect(0,0,canvasF.width, canvasF.height);
-            [stars, midParticles, frontSnow].forEach(g => g.forEach(p => { p.update(); p.draw(); }));
-            requestAnimationFrame(draw);
+            if (audio.paused) { audio.play(); btn.classList.add('playing'); }
+            else { audio.pause(); btn.classList.remove('playing'); }
         }
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
-            // Tự động phát nhạc khi nhấn Enter
-            audio.play().then(() => {
-                btn.classList.add('playing');
-            }).catch(e => console.log("Yêu cầu tương tác để phát nhạc"));
-            
+            audio.play().catch(() => {});
+            btn.classList.add('playing');
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
@@ -197,10 +184,55 @@
         }
 
         function typeWriter() {
-            const text = "> Booting Bio-OS Terminal v3.20... Success!";
+            const text = "> Booting Bio-OS Terminal v3.21... Success!";
             let i = 0; const target = document.getElementById('typewriter');
             function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 50); } }
             type();
+        }
+
+        // TUYẾT RƠI 3 LỚP
+        const canvases = [document.getElementById('canvas-bg'), document.getElementById('canvas-mid'), document.getElementById('canvas-foreground')];
+        const ctxs = canvases.map(c => c.getContext('2d'));
+        let particles = [[], [], []];
+
+        class Particle {
+            constructor(idx) {
+                this.idx = idx; this.reset();
+            }
+            reset() {
+                const c = canvases[this.idx];
+                this.x = Math.random() * c.width;
+                this.y = Math.random() * c.height;
+                this.size = [1, 2.5, 5][this.idx];
+                this.speed = [0.2, 0.6, 1.5][this.idx];
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvases[this.idx].height) this.y = -10;
+            }
+            draw() {
+                const ctx = ctxs[this.idx];
+                ctx.globalAlpha = [0.2, 0.4, 0.7][this.idx];
+                ctx.fillStyle = "#FFF";
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function init() {
+            canvases.forEach(c => { c.width = window.innerWidth; c.height = window.innerHeight; });
+            particles = [
+                Array.from({length: 70}, () => new Particle(0)),
+                Array.from({length: 40}, () => new Particle(1)),
+                Array.from({length: 20}, () => new Particle(2))
+            ];
+        }
+
+        function animate() {
+            ctxs.forEach((ctx, i) => {
+                ctx.clearRect(0, 0, canvases[i].width, canvases[i].height);
+                particles[i].forEach(p => { p.update(); p.draw(); });
+            });
+            requestAnimationFrame(animate);
         }
 
         window.addEventListener('mousemove', (e) => {
@@ -210,7 +242,7 @@
         });
 
         window.addEventListener('resize', init);
-        init(); draw();
+        init(); animate();
     </script>
 </body>
 </html>
