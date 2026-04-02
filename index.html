@@ -1,189 +1,268 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Ultimate Bio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.9); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; } /* Ẩn chuột mặc định */
-        
-        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hungmadding</title>
 
-        /* --- CHUỘT CUSTOM ĐỔI MÀU NEON --- */
-        #cursor { 
-            position: fixed; width: 12px; height: 12px; border-radius: 50%; 
-            pointer-events: none; z-index: 10001; background: #fff;
-            animation: cursorColor 5s linear infinite;
-            transform: translate(-50%, -50%); /* Căn giữa con trỏ */
-            transition: width 0.2s, height 0.2s;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        @keyframes cursorColor {
-            0%   { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-            25%  { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
-            50%  { box-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; }
-            75%  { box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; }
-            100% { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
-        }
+<style>
+:root { --pink:#ff4d94; }
 
-        /* --- MÀN HÌNH CHỜ --- */
-        #overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 1s; }
-        #overlay i { font-size: 80px; color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+*{margin:0;padding:0;box-sizing:border-box;cursor:none;}
+body{
+    background:black;
+    font-family:'Quicksand',sans-serif;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
 
-        /* NỀN VÀ TUYẾT */
-        .bg-overlay { position: fixed; inset: 0; z-index: -2; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
-        #particles { position: fixed; inset: 0; z-index: -1; }
+/* cursor */
+#cursor{
+    position:fixed;
+    width:12px;height:12px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    animation:cursorGlow 5s linear infinite;
+}
+@keyframes cursorGlow{
+    0%{box-shadow:0 0 15px #ff4d94}
+    50%{box-shadow:0 0 15px cyan}
+    100%{box-shadow:0 0 15px #ff4d94}
+}
 
-        /* --- CARD VIP - DỌC - KÍNH MỜ - VIỀN ĐÈN LED --- */
-        .container { perspective: 1000px; display: none; opacity: 0; transition: 1s; z-index: 10; }
-        .card {
-            background: var(--glass); backdrop-filter: blur(20px); border-radius: 35px;
-            padding: 50px 40px; width: 380px; text-align: center; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d;
-            transition: transform 0.1s ease;
-        }
-        
-        /* Hiệu ứng viền phát sáng chạy quanh (RGB Border) */
-        .card::before {
-            content: ''; position: absolute; inset: -2px;
-            background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94);
-            background-size: 400%; z-index: -1; border-radius: 38px;
-            animation: steam 15s linear infinite; opacity: 0.7;
-        }
-        
-        /* Hiệu ứng bóng đổ phát sáng (Glow) */
-        .card::after { content: ''; position: absolute; inset: -2px; background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94); background-size: 400%; z-index: -1; border-radius: 38px; animation: steam 15s linear infinite; filter: blur(15px); opacity: 0.7; }
+/* intro */
+#overlay{
+    position:fixed;inset:0;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+    cursor:pointer;
+}
+#overlay i{
+    font-size:70px;
+    color:var(--pink);
+    animation:pulse 1s infinite;
+}
+@keyframes pulse{
+    50%{transform:scale(1.1)}
+}
 
-        @keyframes steam { 0% { background-position: 0 0; } 100% { background-position: 400% 0; } }
+/* background */
+canvas{position:fixed;inset:0;z-index:-1}
 
-        /* AVATAR DẬP DỀNH 3D */
-        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 30px var(--pink); margin-bottom: 20px; object-fit: cover; animation: floatAvatar 4s ease-in-out infinite; transform: translateZ(60px); }
-        @keyframes floatAvatar { 0%, 100% { transform: translateY(0) translateZ(60px); } 50% { transform: translateY(-10px) translateZ(60px); } }
-        
-        h1 { font-size: 28px; color: #fff; text-shadow: 0 0 20px var(--pink); margin-bottom: 5px; transform: translateZ(50px); }
-        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 30px; font-size: 12px; letter-spacing: 3px; transform: translateZ(40px); }
+/* card */
+.container{display:none;opacity:0;transition:1s;}
+.card{
+    width:350px;
+    padding:40px;
+    border-radius:30px;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(20px);
+    text-align:center;
+    position:relative;
+    transform-style:preserve-3d;
+    will-change:transform;
+}
 
-        /* LINK ITEMS */
-        .links { display: flex; flex-direction: column; gap: 12px; transform-style: preserve-3d; }
-        .link-item {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 148, 0.2);
-            padding: 18px; border-radius: 20px; color: #fff; text-decoration: none; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between; 
-            transition: 0.3s; transform: translateZ(30px);
-        }
-        .link-item:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; transform: scale(1.05) translateZ(50px); }
-        .link-item i { font-size: 18px; }
+/* border neon */
+.card::before{
+    content:'';
+    position:absolute;
+    inset:-3px;
+    border-radius:35px;
+    background:linear-gradient(45deg,#ff4d94,#ff00ff,#00ffff,#ff4d94);
+    background-size:400%;
+    animation:borderMove 10s linear infinite;
+    z-index:-1;
+}
+.card::after{
+    content:'';
+    position:absolute;
+    inset:-3px;
+    border-radius:35px;
+    background:inherit;
+    filter:blur(25px);
+    z-index:-1;
+}
+@keyframes borderMove{
+    0%{background-position:0%}
+    100%{background-position:400%}
+}
 
-        /* TRÌNH PHÁT NHẠC MINI */
-        .music-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--glass); border-radius: 50%; display: none; justify-content: center; align-items: center; color: #fff; z-index: 1000; border: 1px solid var(--pink); }
-    </style>
+/* avatar */
+.avatar{
+    width:110px;
+    border-radius:50%;
+    box-shadow:0 0 20px var(--pink);
+    margin-bottom:15px;
+}
+
+/* text */
+h1{text-shadow:0 0 15px var(--pink);}
+.tag{color:var(--pink);margin-bottom:25px;}
+
+/* links */
+.link{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:10px 0;
+    padding:14px;
+    border-radius:15px;
+    text-decoration:none;
+    color:white;
+    background:rgba(255,255,255,0.05);
+    transition:.3s;
+}
+.link:hover{
+    transform:scale(1.07);
+    background:white;
+    color:black;
+    box-shadow:0 0 20px white;
+}
+
+/* music btn */
+.music{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:50px;height:50px;
+    border-radius:50%;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:black;
+    border:1px solid var(--pink);
+}
+
+/* click effect */
+@keyframes boom{
+    to{transform:scale(6);opacity:0}
+}
+</style>
 </head>
+
 <body>
 
-    <div id="cursor"></div>
+<div id="cursor"></div>
 
-    <div id="overlay" onclick="startApp()">
-        <i class="fas fa-play"></i>
-        <p style="color:white; margin-top:20px; letter-spacing:5px;">HÙNG MADDING ENTER</p>
-    </div>
+<div id="overlay" onclick="start()">
+<i class="fas fa-play"></i>
+<p>CLICK TO ENTER</p>
+</div>
 
-    <div class="bg-overlay"></div>
-    <canvas id="particles"></canvas>
+<canvas id="bg"></canvas>
 
-    <audio id="bgMusic" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-    
-    <div class="music-btn" id="musicToggle"><i class="fas fa-volume-up"></i></div>
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
 
-    <div class="container" id="mainApp">
-        <div class="card" id="card">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
-            <h1>Hùng Madding</h1>
-            <div class="tagline">Python Developer | Pink Vibe</div>
-            
-            <div class="links">
-                <a href="https://facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span> <i class="fab fa-facebook"></i></a>
-                <a href="https://tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TikTok</span> <i class="fab fa-tiktok"></i></a>
-                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>GitHub</span> <i class="fab fa-github"></i></a>
-            </div>
-        </div>
-    </div>
+<div class="music" id="mBtn">🎵</div>
 
-    <script>
-        const audio = document.getElementById('bgMusic');
-        const overlay = document.getElementById('overlay');
-        const app = document.getElementById('mainApp');
-        const card = document.getElementById('card');
-        const mBtn = document.getElementById('musicToggle');
-        const cursor = document.getElementById('cursor');
+<div class="container" id="app">
+<div class="card" id="card">
 
-        // ĐIỀU KHIỂN CHUỘT CUSTOM & 3D NGHIÊNG CARD
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
+<img src="https://i.imgur.com/uIKY94v.png" class="avatar">
 
-        function startApp() {
-            audio.play().catch(() => console.log("Yêu cầu tương tác để phát nhạc"));
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                app.style.display = 'block';
-                setTimeout(() => app.style.opacity = '1', 50);
-                mBtn.style.display = 'flex';
-                initParticles();
-                drawParticles();
-            }, 800);
-        }
+<h1>Hùng Madding</h1>
+<div class="tag">Python Dev | Pink Vibe</div>
 
-        // --- HỆ THỐNG TUYẾT HỒNG NÂNG CẤP (Dày - Lấp lánh) ---
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let dots = [];
+<a class="link" href="https://facebook.com/hung.madding" target="_blank">
+Facebook <i class="fab fa-facebook"></i>
+</a>
 
-        function initParticles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            dots = [];
-            for(let i = 0; i < 80; i++) {
-                dots.push({ 
-                    x: Math.random()*canvas.width, 
-                    y: Math.random()*canvas.height, 
-                    s: Math.random()*2+1, 
-                    v: Math.random()*0.6+0.2 
-                });
-            }
-        }
+<a class="link" href="https://tiktok.com/@hung_md3" target="_blank">
+TikTok <i class="fab fa-tiktok"></i>
+</a>
 
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff4d94";
-            dots.forEach(d => {
-                ctx.beginPath();
-                ctx.arc(d.x, d.y, d.s, 0, Math.PI*2);
-                ctx.fill();
-                d.y -= d.v;
-                if(d.y < 0) d.y = canvas.height;
-            });
-            requestAnimationFrame(drawParticles);
-        }
+<a class="link" href="https://github.com/hungmadding" target="_blank">
+GitHub <i class="fab fa-github"></i>
+</a>
 
-        mBtn.addEventListener('click', () => {
-            if(audio.paused) { audio.play(); mBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-            else { audio.pause(); mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
-        });
+</div>
+</div>
 
-        window.addEventListener('resize', initParticles);
-    </script>
+<script>
+const cursor=document.getElementById("cursor");
+const card=document.getElementById("card");
+document.addEventListener("mousemove",e=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+
+let x=(window.innerWidth/2-e.pageX)/25;
+let y=(window.innerHeight/2-e.pageY)/25;
+card.style.transform=`rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+/* start */
+function start(){
+document.getElementById("overlay").style.display="none";
+document.getElementById("app").style.display="block";
+setTimeout(()=>app.style.opacity=1,50);
+music.play();
+mBtn.style.display="flex";
+}
+
+/* music toggle */
+let music=document.getElementById("music");
+let mBtn=document.getElementById("mBtn");
+mBtn.onclick=()=>music.paused?music.play():music.pause();
+
+/* particles */
+const c=document.getElementById("bg");
+const ctx=c.getContext("2d");
+let dots=[];
+function init(){
+c.width=innerWidth;c.height=innerHeight;
+dots=[];
+for(let i=0;i<80;i++){
+dots.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2+1,v:Math.random()*0.5+0.2});
+}}
+function draw(){
+ctx.clearRect(0,0,c.width,c.height);
+dots.forEach(d=>{
+let g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.s*4);
+g.addColorStop(0,"#ff4d94");
+g.addColorStop(1,"transparent");
+ctx.fillStyle=g;
+ctx.beginPath();
+ctx.arc(d.x,d.y,d.s,0,Math.PI*2);
+ctx.fill();
+d.y-=d.v;
+if(d.y<0)d.y=c.height;
+});
+requestAnimationFrame(draw);
+}
+init();draw();
+
+/* click effect */
+document.addEventListener("click",e=>{
+let c=document.createElement("div");
+c.style.position="fixed";
+c.style.left=e.clientX+"px";
+c.style.top=e.clientY+"px";
+c.style.width="10px";
+c.style.height="10px";
+c.style.borderRadius="50%";
+c.style.background="#ff4d94";
+c.style.boxShadow="0 0 20px #ff4d94";
+c.style.animation="boom 0.6s forwards";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),600);
+});
+</script>
+
 </body>
 </html>
