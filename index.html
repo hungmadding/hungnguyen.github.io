@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio-OS v3.13</title>
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.14</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -15,9 +15,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; touch-action: none; }
         
-        /* CANVAS 3 LỚP XỊN */
+        /* CANVAS 3 LỚP */
         #canvas-bg, #canvas-mid, #canvas-foreground { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         #canvas-foreground { z-index: 10001; } 
+
+        /* NÚT ĐIỀU KHIỂN NHẠC */
+        #music-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 10005;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--pink);
+            color: var(--pink); display: none; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px var(--pink-glow);
+        }
+        #music-btn.playing i { animation: rotate 4s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
@@ -35,8 +46,7 @@
 
         .card {
             background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(25px);
-            border-radius: 40px; padding: 45px 40px; 
-            width: 100%; max-width: 380px;
+            border-radius: 40px; padding: 45px 40px; width: 100%; max-width: 380px;
             text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
             box-shadow: 0 25px 65px rgba(0,0,0,0.85); transform-style: preserve-3d;
             transition: transform 0.1s ease-out;
@@ -74,6 +84,13 @@
         <button class="enter-btn" onclick="startExperience()">ENTER</button>
     </div>
 
+    <div id="music-btn" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+    <audio id="bg-audio" loop>
+        <source src="https://www.mboxdrive.com/lofi-chill.mp3" type="audio/mpeg">
+    </audio>
+
     <canvas id="canvas-bg"></canvas>
     <canvas id="canvas-mid"></canvas>
     <canvas id="canvas-foreground"></canvas>
@@ -96,9 +113,16 @@
     </div>
 
     <script>
+        const audio = document.getElementById('bg-audio');
+        const btn = document.getElementById('music-btn');
         const canvasB = document.getElementById('canvas-bg'), canvasM = document.getElementById('canvas-mid'), canvasF = document.getElementById('canvas-foreground');
         const ctxB = canvasB.getContext('2d'), ctxM = canvasM.getContext('2d'), ctxF = canvasF.getContext('2d');
         let stars = [], midParticles = [], frontSnow = [];
+
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); btn.classList.add('playing'); }
+            else { audio.pause(); btn.classList.remove('playing'); }
+        }
 
         class Snowflake {
             constructor(canvas, depth) {
@@ -138,9 +162,12 @@
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
+            audio.play().catch(() => console.log("Cần tương tác để phát nhạc"));
+            btn.classList.add('playing');
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
+                btn.style.display = 'flex';
             }, 800);
         }
 
