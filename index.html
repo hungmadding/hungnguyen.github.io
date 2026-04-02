@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Bio Link</title>
+    <title>Hùng Madding | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    
     <style>
         :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.8); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,10 +15,10 @@
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; cursor: pointer; transition: 0.8s ease;
+            justify-content: center; align-items: center; cursor: pointer;
         }
         #overlay i { font-size: 60px; color: var(--pink); margin-bottom: 20px; animation: pulse 1.5s infinite; }
-        #overlay p { color: white; letter-spacing: 5px; font-weight: 700; font-size: 14px; }
+        #overlay p { color: white; letter-spacing: 5px; font-weight: 700; text-transform: uppercase; font-size: 14px; }
 
         @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
 
@@ -48,20 +47,20 @@
         .link-item:hover { background: white; color: black; transform: scale(1.05) translateZ(30px); }
         .link-item i { font-size: 18px; color: var(--pink); }
 
-        .music-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; display: none; justify-content: center; align-items: center; color: white; cursor: pointer; z-index: 1000; }
+        .music-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; display: none; justify-content: center; align-items: center; color: white; cursor: pointer; z-index: 1000; border: 1px solid rgba(255, 255, 255, 0.2); }
     </style>
 </head>
 <body>
 
     <div id="overlay">
         <i class="fas fa-play"></i>
-        <p>CLICK TO ENTER</p>
+        <p>Click to Enter</p>
     </div>
 
     <div class="bg-overlay"></div>
     <canvas id="particles"></canvas>
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
     
@@ -86,8 +85,19 @@
         const card = document.getElementById('card');
         const mBtn = document.getElementById('musicToggle');
 
-        // Bắt đầu ứng dụng khi click vào overlay
+        // Xử lý vào trang và phát nhạc
         overlay.addEventListener('click', () => {
+            // Cố gắng phát nhạc ngay khi click
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    mBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }).catch(error => {
+                    console.log("Autoplay bị chặn, cần tương tác thêm");
+                });
+            }
+
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -96,42 +106,58 @@
                 mBtn.style.display = 'flex';
                 initParticles();
                 drawParticles();
-                audio.play().catch(() => { console.log("Cần click để phát nhạc"); });
             }, 800);
         });
 
-        // Tuyết hồng lấp lánh
+        // Tuyết hồng lấp lánh (Pink Snow)
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let dots = [];
         function initParticles() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dots = [];
             for(let i = 0; i < 70; i++) {
-                dots.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2+1, v: Math.random()*0.5+0.2 });
+                dots.push({ 
+                    x: Math.random() * canvas.width, 
+                    y: Math.random() * canvas.height, 
+                    s: Math.random() * 2 + 1, 
+                    v: Math.random() * 0.5 + 0.2,
+                    o: Math.random()
+                });
             }
         }
         function drawParticles() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "#ff4d94";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             dots.forEach(d => {
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = `rgba(255, 77, 148, ${d.o})`;
+                ctx.beginPath(); ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2); ctx.fill();
                 d.y -= d.v; if(d.y < 0) d.y = canvas.height;
             });
             requestAnimationFrame(drawParticles);
         }
 
-        // Hiệu ứng lắc 3D
+        // Hiệu ứng lắc 3D mượt mà
         document.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            if(app.style.display === 'block') {
+                let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
         });
 
-        // Nút nhạc
-        mBtn.addEventListener('click', () => {
-            if(audio.paused) { audio.play(); mBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-            else { audio.pause(); mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+        // Nút loa góc màn hình
+        mBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(audio.paused) {
+                audio.play();
+                mBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            } else {
+                audio.pause();
+                mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
         });
+
+        window.addEventListener('resize', initParticles);
     </script>
 </body>
 </html>
