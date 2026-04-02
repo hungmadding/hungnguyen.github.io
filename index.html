@@ -3,65 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bio tui nè</title>
+<title>Anime Cinematic</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
---pink:#ff7ac6;
---blue:#8be9fd;
+--pink:#ff4fa3;
+--blue:#6ee7ff;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-cursor:none;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
 height:100vh;
 overflow:hidden;
-font-family:'Poppins',sans-serif;
+font-family:'Inter',sans-serif;
+
+/* NỀN ANIME THẬT */
+background:
+radial-gradient(circle at 20% 30%, rgba(255,79,163,0.4), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(110,231,255,0.3), transparent 40%),
+linear-gradient(120deg,#0f0f1a,#1a1a2e,#0f0f1a);
 }
 
-/* VIDEO BACKGROUND */
-video{
-position:fixed;
-inset:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-2;
-filter:brightness(0.5) saturate(1.2);
-}
-
-/* OVERLAY GLOW */
-body::after{
+/* ánh sáng mờ */
+body::before{
 content:"";
 position:fixed;
 inset:0;
-background:radial-gradient(circle at 50% 50%, rgba(255,122,198,0.2), transparent 60%);
-z-index:-1;
-}
-
-/* CURSOR */
-#cursor{
-position:fixed;
-width:14px;height:14px;
-border-radius:50%;
-background:var(--pink);
-box-shadow:0 0 20px var(--pink),0 0 40px var(--blue);
-pointer-events:none;
-z-index:9999;
-}
-
-/* SAKURA CANVAS */
-canvas{
-position:fixed;
-inset:0;
-z-index:0;
+background:linear-gradient(120deg,#ff4fa3,#6ee7ff);
+opacity:0.08;
+filter:blur(120px);
 }
 
 /* CARD */
@@ -70,205 +43,133 @@ height:100%;
 display:flex;
 justify-content:center;
 align-items:center;
-perspective:1200px;
 }
 
 .card{
 width:360px;
-padding:45px;
-border-radius:25px;
-background:rgba(0,0,0,0.4);
-backdrop-filter:blur(20px);
+padding:50px;
+border-radius:30px;
+
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(30px);
+
 border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 60px rgba(255,79,163,0.15);
+
 text-align:center;
-transform-style:preserve-3d;
-transition:.3s;
+transition:0.3s;
 }
 
-.card::before{
-content:"";
-position:absolute;
-inset:0;
-border-radius:inherit;
-background:radial-gradient(circle at var(--x) var(--y),
-rgba(255,255,255,0.2),
-transparent 40%);
-}
-
+/* AVATAR */
 .avatar{
-width:110px;height:110px;
+width:100px;height:100px;
 border-radius:50%;
-border:3px solid var(--pink);
+border:2px solid var(--pink);
 margin-bottom:20px;
-box-shadow:0 0 30px var(--pink);
+
+box-shadow:
+0 0 20px var(--pink),
+0 0 40px rgba(255,79,163,0.5);
 }
 
-h1{color:white;margin-bottom:10px}
-.type{color:var(--pink);margin-bottom:25px}
+/* TEXT */
+h1{
+color:#fff;
+font-weight:600;
+margin-bottom:10px;
+}
 
+.type{
+color:var(--pink);
+font-size:13px;
+letter-spacing:2px;
+margin-bottom:30px;
+}
+
+/* LINKS */
 .link{
 display:block;
-padding:14px;
+padding:15px;
 margin-bottom:12px;
-border-radius:12px;
-background:rgba(255,255,255,0.05);
-text-decoration:none;
+border-radius:14px;
+
+background:rgba(255,255,255,0.06);
 color:#ddd;
-transition:.3s;
+text-decoration:none;
+
+transition:0.25s;
 }
+
 .link:hover{
 background:linear-gradient(90deg,var(--pink),var(--blue));
 color:#000;
-transform:translateX(10px) scale(1.05);
+transform:translateY(-3px) scale(1.03);
 }
 
-/* OVERLAY */
-#overlay{
+/* SAKURA */
+canvas{
 position:fixed;
 inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#000;
-z-index:100;
-}
-.enter{
-padding:15px 40px;
-border:1px solid var(--pink);
-color:white;
-letter-spacing:4px;
-animation:pulse 2s infinite;
-}
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(255,122,198,0.4)}
-70%{box-shadow:0 0 0 25px rgba(255,122,198,0)}
+pointer-events:none;
 }
 </style>
 </head>
 
-<body onclick="ripple(event)">
+<body>
 
-<!-- VIDEO -->
-<video autoplay muted loop>
-<source src="https://cdn.coverr.co/videos/coverr-anime-sky-5587/1080p.mp4" type="video/mp4">
-</video>
-
-<div id="overlay" onclick="start()">
-<div class="enter">ENTER</div>
-</div>
-
-<div id="cursor"></div>
 <canvas id="sakura"></canvas>
 
 <div class="wrapper">
-<div class="card" id="card">
+<div class="card">
 <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+
 <h1>Hùng Madding</h1>
-<div class="type" id="type"></div>
+<div class="type">ANIME CINEMATIC</div>
 
 <a href="#" class="link">Facebook</a>
 <a href="#" class="link">TikTok</a>
 <a href="#" class="link">GitHub</a>
+
 </div>
 </div>
 
 <script>
-const cursor=document.getElementById("cursor");
-const card=document.getElementById("card");
-const overlay=document.getElementById("overlay");
-const typeEl=document.getElementById("type");
-
-/* CURSOR + TILT */
-document.addEventListener("mousemove",e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-
-let x=(innerWidth/2-e.clientX)/25;
-let y=(innerHeight/2-e.clientY)/25;
-
-card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
-card.style.setProperty("--x",e.clientX+"px");
-card.style.setProperty("--y",e.clientY+"px");
-});
-
-/* TYPE */
-let txt="ANIME ULTRA | WIND SYSTEM";
-let i=0;
-function type(){
-if(i<txt.length){
-typeEl.innerHTML+=txt[i];
-i++;
-setTimeout(type,50);
-}
-}
-
-/* START */
-function start(){
-overlay.style.display="none";
-type();
-}
-
-/* RIPPLE */
-function ripple(e){
-let r=document.createElement("div");
-r.style.position="fixed";
-r.style.border="2px solid pink";
-r.style.borderRadius="50%";
-r.style.left=e.clientX+"px";
-r.style.top=e.clientY+"px";
-r.style.transform="translate(-50%,-50%)";
-r.style.animation="r 0.6s forwards";
-document.body.appendChild(r);
-setTimeout(()=>r.remove(),600);
-}
-
-/* 🌸 SAKURA XOÁY THEO GIÓ */
 let c=document.getElementById("sakura");
 let ctx=c.getContext("2d");
+
 c.width=innerWidth;
 c.height=innerHeight;
 
 let petals=[];
-let wind=0;
 
-for(let i=0;i<50;i++){
+/* ít nhưng đẹp */
+for(let i=0;i<25;i++){
 petals.push({
 x:Math.random()*c.width,
 y:Math.random()*c.height,
-size:Math.random()*6+4,
-speed:Math.random()*1+0.5,
-angle:Math.random()*Math.PI*2,
-rotate:Math.random()*0.1
+size:Math.random()*5+3,
+speed:Math.random()*0.7+0.3,
+angle:Math.random()*Math.PI*2
 });
 }
 
 function draw(){
 ctx.clearRect(0,0,c.width,c.height);
 
-/* wind oscillation */
-wind=Math.sin(Date.now()*0.001)*1.5;
-
 petals.forEach(p=>{
 p.y+=p.speed;
-p.x+=Math.sin(p.angle)*0.5 + wind;
-p.angle+=p.rotate;
+p.x+=Math.sin(p.angle)*0.3;
+p.angle+=0.01;
 
 if(p.y>c.height){
 p.y=0;
 p.x=Math.random()*c.width;
 }
 
-ctx.save();
-ctx.translate(p.x,p.y);
-ctx.rotate(p.angle);
-
-/* petal shape */
 ctx.beginPath();
-ctx.fillStyle="rgba(255,182,193,0.9)";
-ctx.ellipse(0,0,p.size,p.size/2,0,0,Math.PI*2);
+ctx.fillStyle="rgba(255,182,193,0.7)";
+ctx.ellipse(p.x,p.y,p.size,p.size/2,0,0,Math.PI*2);
 ctx.fill();
-
-ctx.restore();
 });
 
 requestAnimationFrame(draw);
