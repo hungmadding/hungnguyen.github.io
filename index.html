@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lấc quá lấc quá</title>
+    <title>Hùng Madding | Bio-OS v3.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -35,53 +35,58 @@
         @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
         @keyframes load { to { width: 100%; } }
 
-        /* CANVAS BACKGROUND NÂNG CẤP */
         #canvas-particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.85) rotateX(10deg); transition: all 1.5s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10; position: relative; pointer-events: none; perspective: 1000px; }
-        .main-wrapper.active { opacity: 1; transform: scale(1) rotateX(0deg); pointer-events: all; }
+        .main-wrapper { 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            perspective: 1200px; 
+            perspective-origin: center center;
+            transform: scale(0.9);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1); 
+            z-index: 10; 
+            position: relative; 
+            pointer-events: none;
+            padding: 20px; /* Thêm padding để card không chạm mép màn hình */
+        }
+        .main-wrapper.active { opacity: 1; transform: scale(1); pointer-events: all; }
 
         .card {
             background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px) saturate(180%);
-            border-radius: 40px; padding: 60px; width: 420px; text-align: center;
+            border-radius: 40px; 
+            padding: 35px 50px; /* Giảm padding trên dưới để card ngắn lại */
+            width: 400px; /* Thu hẹp chiều ngang một chút */
+            max-height: 90vh; /* Đảm bảo card không bao giờ vượt quá chiều cao màn hình */
+            text-align: center;
             border: 1px solid rgba(255, 77, 148, 0.3); box-shadow: 0 30px 70px rgba(0,0,0,0.9);
-            transform-style: preserve-3d; transition: transform 0.1s;
+            transform-style: preserve-3d; 
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .avatar { width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--pink); margin-bottom: 30px; object-fit: cover; box-shadow: 0 0 40px var(--pink); transform: translateZ(50px); }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--pink); margin: 0 auto 20px; object-fit: cover; box-shadow: 0 0 40px var(--pink); transform: translateZ(60px); }
         
-        h1 { 
-            color: #fff; font-size: 30px; margin-bottom: 10px; 
-            text-shadow: 0 0 15px #fff, 0 0 30px var(--pink), 0 0 45px var(--pink-glow);
-            transform: translateZ(30px);
-        }
-        .subtitle { 
-            color: #fff; font-size: 16px; margin-bottom: 30px; font-family: 'Fira Code'; font-weight: 600;
-            text-shadow: 0 0 8px #fff, 0 0 20px var(--pink), 0 0 30px var(--pink-glow);
-            transform: translateZ(20px);
-        }
-        
-        .typewriter { height: 20px; color: #aaa; font-size: 13px; margin-bottom: 40px; font-family: 'Fira Code'; transform: translateZ(10px); }
+        h1 { color: #fff; font-size: 26px; margin-bottom: 8px; text-shadow: 0 0 15px #fff, 0 0 30px var(--pink); transform: translateZ(40px); }
+        .subtitle { color: #fff; font-size: 15px; margin-bottom: 20px; font-family: 'Fira Code'; font-weight: 600; text-shadow: 0 0 8px #fff, 0 0 20px var(--pink); transform: translateZ(30px); }
+        .typewriter { height: 18px; color: #aaa; font-size: 12px; margin-bottom: 25px; font-family: 'Fira Code'; transform: translateZ(20px); }
 
-        .links { display: flex; flex-direction: column; gap: 18px; transform: translateZ(15px); }
+        .links { display: flex; flex-direction: column; gap: 12px; transform: translateZ(25px); }
         .link-item {
-            background: rgba(255,255,255,0.04); padding: 18px 30px; border-radius: 20px; color: #fff;
+            background: rgba(255,255,255,0.04); padding: 14px 25px; border-radius: 18px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.08); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.08); transition: all 0.4s ease;
+            cursor: pointer; font-size: 14px;
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(15px) scale(1.03); box-shadow: 0 0 25px rgba(255, 77, 148, 0.3); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(10px); box-shadow: 0 0 20px rgba(255, 77, 148, 0.2); }
 
-        .stats { position: fixed; bottom: 25px; right: 25px; color: var(--pink); font-family: 'Fira Code'; font-size: 11px; z-index: 100; opacity: 0.7; }
-        
-        .toast { 
-            position: fixed; top: 40px; left: 50%; transform: translateX(-50%) translateY(-150px);
-            background: rgba(255, 77, 148, 0.95); color: #fff; padding: 20px 40px; 
-            border-radius: 50px; z-index: 10005; box-shadow: 0 0 40px var(--pink);
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0; font-weight: 700; font-size: 15px; text-align: center;
-            min-width: 350px; backdrop-filter: blur(15px); border: 1px solid #fff;
-        }
+        .stats { position: fixed; bottom: 15px; right: 20px; color: var(--pink); font-family: 'Fira Code'; font-size: 10px; z-index: 100; opacity: 0.6; }
+        .toast { position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-150px); background: rgba(255, 77, 148, 0.95); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 10005; opacity: 0; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-weight: 600; min-width: 320px; text-align: center; border: 1px solid #fff; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
@@ -121,112 +126,64 @@
         const canvas = document.getElementById('canvas-particles');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let mouse = { x: null, y: null, radius: 100 }; // Bán kính tương tác chuột
+        const card = document.getElementById('profileCard');
 
-        // Khởi tạo hệ thống hạt sang trọng
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            
-            // Tăng số lượng hạt lên 150 để tạo cảm giác không gian dày hơn
-            for(let i=0; i<150; i++) {
-                const size = Math.random()*2.5+0.5; // Kích thước hạt liti
+            for(let i=0; i<120; i++) {
+                const size = Math.random()*2+0.5;
                 particles.push({
                     x: Math.random()*canvas.width,
                     y: Math.random()*canvas.height,
                     size: size,
-                    // Chia tốc độ theo kích thước (hạt to rơi nhanh, hạt nhỏ rơi chậm)
-                    speedY: size*0.4+0.2, 
-                    // Thêm tốc độ ngang nhẹ để tạo sự ngẫu nhiên
+                    speedY: size*0.3+0.2, 
                     speedX: Math.random()*0.2-0.1, 
-                    // Độ mờ ngẫu nhiên
                     opacity: Math.random()*0.5+0.1,
-                    // Tốc độ nhấp nháy
                     twinkleSpeed: Math.random()*0.02+0.005,
                     twinklePhase: Math.random()*Math.PI*2,
-                    // Biến dùng cho tương tác chuột
-                    baseX: 0,
-                    baseY: 0
                 });
             }
         }
 
-        // Vòng lặp vẽ và cập nhật
         function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            
             particles.forEach(p => {
-                // 1. CẬP NHẬT VỊ TRÍ (Rơi xuống)
                 p.y += p.speedY;
                 p.x += p.speedX;
-
-                // Quay lại đỉnh khi rơi hết
                 if(p.y > canvas.height) p.y = -10;
-                if(p.x > canvas.width) p.x = 0;
-                if(p.x < 0) p.x = canvas.width;
-
-                // 2. TẠO HIỆU ỨNG NHẤP NHÁY (Sang trọng)
                 p.twinklePhase += p.twinkleSpeed;
                 const currentOpacity = p.opacity + Math.sin(p.twinklePhase)*0.1;
-                
-                // 3. TƯƠNG TÁC CHUỘT (Đẩy hạt nhẹ nhàng)
-                if (mouse.x && mouse.y) {
-                    let dx = mouse.x - p.x;
-                    let dy = mouse.y - p.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if (distance < mouse.radius) {
-                        const force = (mouse.radius - distance) / mouse.radius;
-                        // Hạt to bị đẩy mạnh hơn, hạt nhỏ bị đẩy nhẹ hơn
-                        const directionX = (dx / distance) * force * p.size * 0.5;
-                        const directionY = (dy / distance) * force * p.size * 0.5;
-                        
-                        p.x -= directionX;
-                        p.y -= directionY;
-                    }
-                }
-
-                // 4. VẼ HẠT VỚI GLOw (Sang trọng)
                 ctx.save();
                 ctx.globalAlpha = Math.max(0.05, Math.min(0.7, currentOpacity));
-                
-                // Thêm hiệu ứng phát sáng mờ xung quanh mỗi hạt
-                ctx.shadowBlur = p.size * 3;
-                ctx.shadowColor = "rgba(255, 255, 255, 0.8)";
                 ctx.fillStyle = "#FFF";
-                
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
                 ctx.fill();
                 ctx.restore();
             });
-
             requestAnimationFrame(draw);
         }
 
         function startExperience() {
-            const overlay = document.getElementById('overlay');
-            const main = document.getElementById('mainContent');
-            overlay.style.opacity = '0';
+            document.getElementById('overlay').style.opacity = '0';
             setTimeout(() => {
-                overlay.style.display = 'none';
-                main.classList.add('active');
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('mainContent').classList.add('active');
                 document.getElementById('cursor').style.display = 'block';
                 typeWriter();
-            }, 1000);
+            }, 800);
         }
 
         function typeWriter() {
             const text = "> Booting Bio-OS Terminal v3.0... Success!";
             let i = 0;
             const target = document.getElementById('typewriter');
-            target.innerHTML = "";
             function type() {
                 if (i < text.length) {
-                    target.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, 70);
+                    target.innerHTML += text.charAt(i++);
+                    setTimeout(type, 50);
                 }
             }
             type();
@@ -235,27 +192,22 @@
         function showAboutMe() {
             const toast = document.getElementById('toast');
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3800);
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // Theo dõi chuột cho hiệu ứng đẩy hạt
         window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            
             const cursor = document.getElementById('cursor');
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-        });
-        // Khi chuột ra khỏi màn hình
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
+
+            // Hiệu ứng nghiêng nhẹ khi di chuột
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
         window.addEventListener('resize', init);
-        init();
-        draw();
+        init(); draw();
     </script>
 </body>
 </html>
