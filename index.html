@@ -19,6 +19,7 @@
         #canvas-bg, #canvas-mid, #canvas-foreground { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         #canvas-foreground { z-index: 10001; } 
 
+        /* NÚT NHẠC XOAY TRÒN */
         #music-btn {
             position: fixed; top: 25px; right: 25px; z-index: 10005;
             width: 45px; height: 45px; border-radius: 50%;
@@ -49,7 +50,6 @@
         .card {
             background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px) saturate(180%);
             border-radius: 40px; padding: 40px; width: 420px; 
-            /* Sửa lỗi tràn khung bằng cách để chiều cao tự động co giãn nhẹ */
             min-height: 550px; 
             text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
             box-shadow: 0 30px 70px rgba(0,0,0,0.9); transform-style: preserve-3d;
@@ -136,8 +136,13 @@
         let stars = [], midParticles = [], frontSnow = [];
 
         function toggleMusic() {
-            if (audio.paused) { audio.play(); btn.classList.add('playing'); }
-            else { audio.pause(); btn.classList.remove('playing'); }
+            if (audio.paused) { 
+                audio.play(); 
+                btn.classList.add('playing'); 
+            } else { 
+                audio.pause(); 
+                btn.classList.remove('playing'); 
+            }
         }
 
         class Snowflake {
@@ -178,8 +183,11 @@
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
-            audio.play().catch(() => {});
-            btn.classList.add('playing');
+            // Tự động phát nhạc khi nhấn Enter
+            audio.play().then(() => {
+                btn.classList.add('playing');
+            }).catch(e => console.log("Yêu cầu tương tác để phát nhạc"));
+            
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
