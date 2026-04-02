@@ -10,33 +10,44 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-    background:black;
     font-family:'Inter',sans-serif;
-    overflow:hidden;
     color:white;
+    overflow:hidden;
+    height:100vh;
+    background:black;
 }
 
-/* nền galaxy */
-canvas{
+/* nền glow */
+.bg-glow{
     position:fixed;
-    inset:0;
+    width:600px;
+    height:600px;
+    background:#ff00cc;
+    filter:blur(150px);
+    opacity:0.25;
+    border-radius:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     z-index:-2;
 }
 
-/* intro */
-#overlay{
+/* particles */
+.particle{
     position:fixed;
-    inset:0;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    cursor:pointer;
-    z-index:10;
+    width:3px;
+    height:3px;
+    background:#ff4d94;
+    border-radius:50%;
+    opacity:0.5;
+    animation:float linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(0)}
+    to{transform:translateY(-100vh)}
 }
 
-/* card */
+/* container */
 .container{
     position:absolute;
     top:50%;
@@ -44,31 +55,15 @@ canvas{
     transform:translate(-50%,-50%);
 }
 
+/* card sạch */
 .card{
     width:320px;
     padding:30px;
     border-radius:25px;
-    background:rgba(0,0,0,0.5);
-    backdrop-filter:blur(30px);
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(25px);
     text-align:center;
-    transition:0.2s;
-    position:relative;
-}
-
-/* viền neon */
-.card::before{
-    content:'';
-    position:absolute;
-    inset:-2px;
-    border-radius:25px;
-    background:linear-gradient(45deg,#ff00cc,#00ffff,#ff00cc);
-    background-size:300%;
-    animation:border 8s linear infinite;
-    z-index:-1;
-}
-@keyframes border{
-    0%{background-position:0%}
-    100%{background-position:300%}
+    border:1px solid rgba(255,255,255,0.08);
 }
 
 /* avatar */
@@ -76,22 +71,19 @@ canvas{
     width:90px;
     border-radius:50%;
     margin-bottom:10px;
-    box-shadow:0 0 25px #ff00cc;
 }
 
 /* text */
 h1{
-    text-shadow:0 0 20px #ff00cc;
+    margin-bottom:5px;
 }
 
-/* 👇 ĐÃ SỬA Ở ĐÂY */
 .tag{
-    color:#ff66cc;
+    color:#ff4d94;
     margin-bottom:20px;
-    text-shadow:0 0 15px #ff00cc;
 }
 
-/* link */
+/* links */
 .link{
     display:block;
     margin:10px 0;
@@ -104,7 +96,7 @@ h1{
 }
 .link:hover{
     transform:scale(1.05);
-    box-shadow:0 0 20px #ff00cc;
+    box-shadow:0 0 20px #ff4d94;
 }
 
 /* music */
@@ -114,24 +106,15 @@ h1{
     right:20px;
     padding:10px;
     border-radius:50%;
-    border:1px solid #ff00cc;
+    border:1px solid #ff4d94;
     cursor:pointer;
-}
-
-/* click effect */
-@keyframes boom{
-    to{transform:scale(6);opacity:0}
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
-
-<div id="overlay" onclick="start()">
-<h2>CLICK TO ENTER</h2>
-</div>
+<div class="bg-glow"></div>
 
 <audio id="music" loop>
 <source src="music.mp3">
@@ -140,112 +123,37 @@ h1{
 <div class="music" onclick="toggleMusic()">🎵</div>
 
 <div class="container">
-<div class="card" id="card">
+<div class="card">
 
 <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
 
 <h1>Hùng Madding</h1>
 
-<!-- 💀 TEXT MỚI -->
 <div class="tag">💀 vừa ngu vừa tuất</div>
 
-<a class="link" href="https://facebook.com/hung.madding">Facebook</a>
-<a class="link" href="https://tiktok.com/@hung_md3">TikTok</a>
+<a class="link" href="https://facebook.com/hung.madding" target="_blank">Facebook</a>
+<a class="link" href="https://tiktok.com/@hung_md3" target="_blank">TikTok</a>
 <a class="link" href="#">GitHub</a>
 
 </div>
 </div>
 
 <script>
+/* particles */
+for(let i=0;i<50;i++){
+    let p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"%";
+    p.style.top=Math.random()*100+"%";
+    p.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(p);
+}
+
 /* music */
 let music=document.getElementById("music");
-function start(){
-overlay.style.display="none";
-music.volume=0;
-music.play();
-let fade=setInterval(()=>{
-if(music.volume<1) music.volume+=0.05;
-else clearInterval(fade);
-},100);
-}
 function toggleMusic(){
-music.paused?music.play():music.pause();
+    music.paused?music.play():music.pause();
 }
-
-/* 3D tilt */
-let card=document.getElementById("card");
-let mx=0,my=0,tx=0,ty=0;
-
-document.addEventListener("mousemove",e=>{
-mx=(e.clientX-window.innerWidth/2)/30;
-my=(e.clientY-window.innerHeight/2)/30;
-});
-
-function animate(){
-tx+=(mx-tx)*0.1;
-ty+=(my-ty)*0.1;
-card.style.transform=`rotateY(${tx}deg) rotateX(${-ty}deg)`;
-requestAnimationFrame(animate);
-}
-animate();
-
-/* galaxy */
-const c=document.getElementById("bg");
-const ctx=c.getContext("2d");
-let stars=[];
-
-function init(){
-c.width=innerWidth;
-c.height=innerHeight;
-stars=[];
-for(let i=0;i<120;i++){
-stars.push({
-x:Math.random()*c.width,
-y:Math.random()*c.height,
-z:Math.random()*c.width
-});
-}
-}
-
-function draw(){
-ctx.fillStyle="black";
-ctx.fillRect(0,0,c.width,c.height);
-
-stars.forEach(s=>{
-s.z-=1;
-if(s.z<=0) s.z=c.width;
-
-let k=128/s.z;
-let px=s.x*k+c.width/2;
-let py=s.y*k+c.height/2;
-
-let size=(1-s.z/c.width)*3;
-
-ctx.fillStyle="#ff4d94";
-ctx.fillRect(px,py,size,size);
-});
-
-requestAnimationFrame(draw);
-}
-
-init();
-draw();
-
-/* click effect */
-document.addEventListener("click",e=>{
-let c=document.createElement("div");
-c.style.position="fixed";
-c.style.left=e.clientX+"px";
-c.style.top=e.clientY+"px";
-c.style.width="10px";
-c.style.height="10px";
-c.style.borderRadius="50%";
-c.style.background="#ff4d94";
-c.style.boxShadow="0 0 20px #ff4d94";
-c.style.animation="boom 0.6s forwards";
-document.body.appendChild(c);
-setTimeout(()=>c.remove(),600);
-});
 </script>
 
 </body>
