@@ -3,165 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hùng Madding | GOD MODE</title>
+<title>Anime MAX</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-    --pink:#ff4d94;
-    --bg:#040404;
+--pink:#ff7ac6;
+--blue:#8be9fd;
+--bg:#0a0a14;
 }
 
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    cursor:none;
-}
+*{margin:0;padding:0;box-sizing:border-box;cursor:none}
 
 body{
-    height:100vh;
-    font-family:'Quicksand',sans-serif;
-    background:
-        radial-gradient(circle at 20% 30%, rgba(255,77,148,0.15), transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255,77,148,0.1), transparent 40%),
-        #040404;
-    overflow:hidden;
+height:100vh;
+overflow:hidden;
+font-family:'Poppins',sans-serif;
+background:
+radial-gradient(circle at 20% 30%, rgba(255,122,198,0.3), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(139,233,253,0.25), transparent 40%),
+#0a0a14;
 }
 
-/* NOISE OVERLAY */
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:url('https://grainy-gradients.vercel.app/noise.svg');
-    opacity:0.05;
-    pointer-events:none;
+/* glow layer */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:linear-gradient(120deg,#ff7ac6,#8be9fd,#a78bfa);
+filter:blur(120px);
+opacity:.15;
 }
 
-/* CURSOR */
+/* cursor */
 #cursor{
-    position:fixed;
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    background:var(--pink);
-    pointer-events:none;
-    z-index:9999;
-    transition:0.15s;
-    box-shadow:0 0 20px var(--pink);
+position:fixed;
+width:14px;height:14px;
+border-radius:50%;
+background:var(--pink);
+box-shadow:0 0 20px var(--pink),0 0 40px var(--blue);
+pointer-events:none;
+z-index:9999;
 }
 
-/* OVERLAY */
-#overlay{
-    position:fixed;
-    inset:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#000;
-    z-index:999;
-    transition:1s;
-}
+/* canvas layers */
+canvas{position:fixed;inset:0}
 
-.enter{
-    padding:15px 40px;
-    border:1px solid var(--pink);
-    letter-spacing:4px;
-    animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,77,148,0.4)}
-    70%{box-shadow:0 0 0 25px rgba(255,77,148,0)}
-}
-
-/* MAIN */
+/* card */
 .wrapper{
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    perspective:1200px;
-    opacity:0;
-    transform:scale(.9);
-    transition:1.2s;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+perspective:1200px;
 }
 
-/* CARD */
 .card{
-    width:360px;
-    padding:50px;
-    border-radius:30px;
-    backdrop-filter:blur(25px);
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,77,148,0.2);
-    text-align:center;
-    transform-style:preserve-3d;
-    transition:.3s;
+width:360px;
+padding:45px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(30px);
+border:1px solid rgba(255,255,255,0.1);
+text-align:center;
+transform-style:preserve-3d;
+box-shadow:0 0 50px rgba(255,122,198,0.2);
+transition:.3s;
 }
 
-/* LIGHT FOLLOW */
+/* light follow */
 .card::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at var(--x) var(--y),
-        rgba(255,77,148,0.25),
-        transparent 40%);
-    border-radius:inherit;
-    pointer-events:none;
+content:"";
+position:absolute;
+inset:0;
+border-radius:inherit;
+background:radial-gradient(circle at var(--x) var(--y),
+rgba(255,255,255,0.25),
+transparent 40%);
 }
 
-/* AVATAR */
+/* avatar */
 .avatar{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    border:3px solid var(--pink);
-    margin-bottom:20px;
-    box-shadow:0 0 25px var(--pink);
+width:110px;height:110px;
+border-radius:50%;
+border:3px solid var(--pink);
+margin-bottom:20px;
+box-shadow:0 0 30px var(--pink),0 0 60px var(--blue);
 }
 
-/* NAME */
-h1{
-    color:#fff;
-    margin-bottom:10px;
-}
+/* text */
+h1{color:white;margin-bottom:10px}
+.type{color:var(--pink);font-size:12px;margin-bottom:25px}
 
-/* TYPE */
-.type{
-    color:var(--pink);
-    font-size:12px;
-    letter-spacing:2px;
-    margin-bottom:30px;
-}
-
-/* LINKS */
+/* links */
 .link{
-    display:block;
-    padding:14px;
-    border-radius:12px;
-    margin-bottom:12px;
-    text-decoration:none;
-    color:#ccc;
-    background:rgba(255,255,255,0.04);
-    transition:.25s;
+display:block;
+padding:14px;
+margin-bottom:12px;
+border-radius:14px;
+background:rgba(255,255,255,0.05);
+text-decoration:none;
+color:#ddd;
+transition:.3s;
 }
-
 .link:hover{
-    color:#fff;
-    background:rgba(255,77,148,0.25);
-    transform:translateX(8px) scale(1.03);
+background:linear-gradient(90deg,var(--pink),var(--blue));
+color:#000;
+transform:translateX(10px) scale(1.05);
 }
 
-/* SNOW */
-canvas{
-    position:fixed;
-    inset:0;
-    z-index:-1;
+/* overlay */
+#overlay{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#000;
+z-index:100;
+}
+.enter{
+padding:15px 40px;
+border:1px solid var(--pink);
+color:white;
+letter-spacing:4px;
+animation:pulse 2s infinite;
+}
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(255,122,198,0.4)}
+70%{box-shadow:0 0 0 25px rgba(255,122,198,0)}
+}
+
+/* visualizer */
+#bars{
+position:fixed;
+bottom:0;
+width:100%;
+height:60px;
+display:flex;
+justify-content:center;
+gap:4px;
+}
+.bar{
+width:4px;
+background:linear-gradient(var(--pink),var(--blue));
+animation:beat 1s infinite;
+}
+@keyframes beat{
+0%,100%{height:10px}
+50%{height:50px}
 }
 </style>
 </head>
@@ -169,102 +160,147 @@ canvas{
 <body onclick="ripple(event)">
 
 <div id="overlay" onclick="start()">
-    <div class="enter">ENTER</div>
+<div class="enter">ENTER ANIME</div>
 </div>
 
 <div id="cursor"></div>
-<canvas id="snow"></canvas>
+<canvas id="sakura"></canvas>
+<canvas id="stars"></canvas>
 
-<div class="wrapper" id="main">
-    <div class="card" id="card">
-        <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
-        <h1>Hùng Madding</h1>
-        <div class="type" id="type"></div>
+<div class="wrapper">
+<div class="card" id="card">
+<img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+<h1>Hùng Madding</h1>
+<div class="type" id="type"></div>
 
-        <a href="#" class="link">Facebook</a>
-        <a href="#" class="link">TikTok</a>
-        <a href="#" class="link">GitHub</a>
-    </div>
+<a href="#" class="link">Facebook</a>
+<a href="#" class="link">TikTok</a>
+<a href="#" class="link">GitHub</a>
 </div>
+</div>
+
+<!-- visualizer -->
+<div id="bars"></div>
+
+<audio id="music" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const cursor=document.getElementById("cursor");
 const card=document.getElementById("card");
 
-/* CURSOR SMOOTH */
+/* cursor + tilt */
 document.addEventListener("mousemove",e=>{
-    cursor.style.left=e.clientX+"px";
-    cursor.style.top=e.clientY+"px";
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
 
-    let x=(window.innerWidth/2-e.clientX)/20;
-    let y=(window.innerHeight/2-e.clientY)/20;
+let x=(innerWidth/2-e.clientX)/25;
+let y=(innerHeight/2-e.clientY)/25;
 
-    card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
-
-    card.style.setProperty("--x",e.clientX+"px");
-    card.style.setProperty("--y",e.clientY+"px");
+card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
+card.style.setProperty("--x",e.clientX+"px");
+card.style.setProperty("--y",e.clientY+"px");
 });
 
-/* TYPEWRITER SMOOTH */
-let txt="FULLSTACK DEV | CINEMATIC UI";
+/* type */
+let txt="ANIME MAX | DREAM WORLD";
 let i=0;
 function type(){
-    if(i<txt.length){
-        document.getElementById("type").innerHTML+=txt[i];
-        i++;
-        setTimeout(type,50);
-    }
+if(i<txt.length){
+typeEl.innerHTML+=txt[i];
+i++;
+setTimeout(type,50);
+}
 }
 
-/* START */
+/* start */
 function start(){
-    overlay.style.opacity=0;
-    setTimeout(()=>{
-        overlay.style.display="none";
-        main.style.opacity=1;
-        main.style.transform="scale(1)";
-        type();
-    },800);
+overlay.style.display="none";
+music.play().catch(()=>{});
+type();
 }
 
-/* RIPPLE */
+/* ripple */
 function ripple(e){
-    let r=document.createElement("div");
-    r.style.position="fixed";
-    r.style.border="2px solid pink";
-    r.style.borderRadius="50%";
-    r.style.left=e.clientX+"px";
-    r.style.top=e.clientY+"px";
-    r.style.transform="translate(-50%,-50%)";
-    r.style.animation="r 0.6s forwards";
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),600);
+let r=document.createElement("div");
+r.style.position="fixed";
+r.style.border="2px solid pink";
+r.style.borderRadius="50%";
+r.style.left=e.clientX+"px";
+r.style.top=e.clientY+"px";
+r.style.transform="translate(-50%,-50%)";
+r.style.animation="r 0.6s forwards";
+document.body.appendChild(r);
+setTimeout(()=>r.remove(),600);
 }
 
-/* SNOW ULTRA SMOOTH */
-let c=document.getElementById("snow");
+/* sakura */
+let c=document.getElementById("sakura");
 let ctx=c.getContext("2d");
 c.width=innerWidth;
 c.height=innerHeight;
 
-let arr=[];
-for(let i=0;i<100;i++){
-    arr.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2});
+let petals=[];
+for(let i=0;i<40;i++){
+petals.push({
+x:Math.random()*c.width,
+y:Math.random()*c.height,
+r:Math.random()*6+4,
+speed:Math.random()*1+0.5,
+angle:Math.random()*Math.PI
+});
 }
 
-function snow(){
-    ctx.clearRect(0,0,c.width,c.height);
-    arr.forEach(p=>{
-        p.y+=0.3;
-        if(p.y>c.height)p.y=0;
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle="rgba(255,77,148,0.6)";
-        ctx.fill();
-    });
-    requestAnimationFrame(snow);
+function drawSakura(){
+ctx.clearRect(0,0,c.width,c.height);
+petals.forEach(p=>{
+p.y+=p.speed;
+p.x+=Math.sin(p.angle)*0.5;
+p.angle+=0.01;
+
+if(p.y>c.height){p.y=0;p.x=Math.random()*c.width}
+
+ctx.beginPath();
+ctx.fillStyle="rgba(255,182,193,0.8)";
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(drawSakura);
 }
-snow();
+drawSakura();
+
+/* stars */
+let s=document.getElementById("stars");
+let stx=s.getContext("2d");
+s.width=innerWidth;
+s.height=innerHeight;
+
+let stars=[];
+for(let i=0;i<60;i++){
+stars.push({x:Math.random()*s.width,y:Math.random()*s.height,r:Math.random()*2});
+}
+
+function drawStars(){
+stx.clearRect(0,0,s.width,s.height);
+stars.forEach(st=>{
+stx.beginPath();
+stx.arc(st.x,st.y,st.r,0,Math.PI*2);
+stx.fillStyle="white";
+stx.fill();
+});
+requestAnimationFrame(drawStars);
+}
+drawStars();
+
+/* visualizer bars */
+let bars=document.getElementById("bars");
+for(let i=0;i<40;i++){
+let b=document.createElement("div");
+b.className="bar";
+b.style.animationDelay=(Math.random())+"s";
+bars.appendChild(b);
+}
 </script>
 
 </body>
