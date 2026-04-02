@@ -3,186 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Ultra Bio</title>
+    <title>Hùng Madding | Pink Vibe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { 
-            --pink: #ff4d94; 
-            --pink-glow: #ff0077;
-            --bg-dark: #050505;
-        }
-
+        :root { --pink: #ff4d94; --bg-dark: #050505; }
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
         
-        body, html { 
-            height: 100%; 
-            font-family: 'Quicksand', sans-serif; 
-            background: var(--bg-dark); 
-            overflow: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
+        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; }
 
-        /* CURSOR CẢI TIẾN */
+        /* MÀN HÌNH CHỜ (ENTER TO START) */
+        #overlay {
+            position: fixed; inset: 0; background: var(--bg-dark); 
+            z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; color: var(--pink);
+            transition: opacity 0.8s ease;
+        }
+        .enter-text { font-size: 14px; letter-spacing: 5px; animation: blink 1.5s infinite; text-transform: uppercase; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* CURSOR FIX */
         #cursor { 
             position: fixed; width: 20px; height: 20px; border: 2px solid var(--pink); 
             border-radius: 50%; pointer-events: none; z-index: 10001; 
-            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s;
-            box-shadow: 0 0 15px var(--pink), inset 0 0 5px var(--pink);
+            transform: translate(-50%, -50%); 
+            box-shadow: 0 0 15px var(--pink); transition: width 0.2s, height 0.2s;
         }
 
         #canvas-snow { position: fixed; inset: 0; z-index: 0; }
 
-        /* CONTAINER 3D */
-        .container { perspective: 1500px; z-index: 10; }
+        /* CONTAINER CHÍNH */
+        .main-wrapper { 
+            height: 100vh; display: flex; justify-content: center; align-items: center; 
+            perspective: 1000px; opacity: 0; transform: scale(0.9); transition: 1s;
+        }
 
         .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 50px 40px;
-            width: 360px;
-            text-align: center;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
-            overflow: hidden; /* Để hiệu ứng quét sáng không tràn ra ngoài */
-        }
-
-        /* HIỆU ỨNG QUÉT SÁNG (SHINE) */
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 77, 148, 0.2), transparent);
-            transform: skewX(-25deg);
-            transition: 0.75s;
-            animation: shine 5s infinite;
-        }
-        @keyframes shine {
-            10% { left: 150%; }
-            100% { left: 150%; }
+            background: rgba(20, 20, 25, 0.8); backdrop-filter: blur(20px);
+            border-radius: 30px; padding: 50px 40px; width: 360px; text-align: center;
+            position: relative; border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d; box-shadow: 0 25px 45px rgba(0,0,0,0.5);
         }
 
         /* VIỀN LED CHẠY */
-        .card-border {
-            position: absolute; inset: 0; border-radius: 30px;
-            padding: 2px;
-            background: linear-gradient(45deg, transparent, var(--pink), transparent, #7000ff, transparent);
-            background-size: 200% 200%;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+        .card::before {
+            content: ''; position: absolute; inset: -2px; border-radius: 32px;
+            background: linear-gradient(45deg, var(--pink), #7000ff, var(--pink));
+            background-size: 200%; z-index: -1; filter: blur(5px); opacity: 0.5;
             animation: moveGradient 4s linear infinite;
         }
         @keyframes moveGradient { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        .avatar { 
-            width: 110px; height: 110px; border-radius: 50%; 
-            border: 3px solid var(--pink); 
-            box-shadow: 0 0 25px var(--pink); 
-            margin-bottom: 20px; 
-            object-fit: cover;
-            animation: float 4s ease-in-out infinite; 
-        }
-        @keyframes float { 0%, 100% { transform: translateZ(20px) translateY(0); } 50% { transform: translateZ(50px) translateY(-10px); } }
-
-        h1 { color: #fff; font-size: 24px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--pink); margin-bottom: 20px; }
+        
+        h1 { color: #fff; font-size: 24px; margin-bottom: 5px; }
         .tagline { color: var(--pink); font-size: 10px; letter-spacing: 3px; margin-bottom: 30px; font-weight: bold; }
 
-        .links { position: relative; z-index: 2; }
         .link-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 14px 20px;
-            border-radius: 15px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.05); padding: 14px 20px; border-radius: 15px;
+            color: #fff; text-decoration: none; display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 12px; transition: 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        .link-item:hover {
-            background: var(--pink);
-            color: #fff;
-            transform: scale(1.05) translateZ(30px);
-            box-shadow: 0 10px 20px rgba(255, 77, 148, 0.3);
-        }
+        .link-item:hover { background: var(--pink); transform: translateZ(30px); }
 
-        .music-btn { 
-            position: fixed; bottom: 30px; right: 30px; 
-            width: 45px; height: 45px;
-            background: rgba(255, 77, 148, 0.1);
-            border: 1px solid var(--pink);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; transition: 0.3s; z-index: 100;
-        }
-        .music-btn:hover { background: var(--pink); transform: rotate(360deg); }
+        .music-btn { position: fixed; bottom: 30px; right: 30px; color: #fff; opacity: 0.5; z-index: 100; }
     </style>
 </head>
 <body>
 
+    <div id="overlay" onclick="startWeb()">
+        <p class="enter-text">CLICK OR PRESS ENTER TO START</p>
+    </div>
+
     <div id="cursor"></div>
     <canvas id="canvas-snow"></canvas>
     
-    <audio id="bgm" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
-    <div class="music-btn" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
+    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
-    <div class="container">
+    <div class="main-wrapper" id="content">
         <div class="card" id="card">
-            <div class="card-border"></div>
             <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
             <h1>Hùng Madding</h1>
             <p class="tagline">PYTHON DEVELOPER | PINK VIBE</p>
             <div class="links">
-                <a href="#" class="link-item" onmouseover="expandCursor()" onmouseout="shrinkCursor()">
-                    <span>Facebook</span><i class="fab fa-facebook"></i>
-                </a>
-                <a href="#" class="link-item" onmouseover="expandCursor()" onmouseout="shrinkCursor()">
-                    <span>TikTok</span><i class="fab fa-tiktok"></i>
-                </a>
-                <a href="#" class="link-item" onmouseover="expandCursor()" onmouseout="shrinkCursor()">
-                    <span>GitHub</span><i class="fab fa-github"></i>
-                </a>
+                <a href="#" class="link-item" onmouseover="grow()" onmouseout="shrink()"><span>Facebook</span><i class="fab fa-facebook"></i></a>
+                <a href="#" class="link-item" onmouseover="grow()" onmouseout="shrink()"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="link-item" onmouseover="grow()" onmouseout="shrink()"><span>GitHub</span><i class="fab fa-github"></i></a>
             </div>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas-snow');
-        const ctx = canvas.getContext('2d');
+        const overlay = document.getElementById('overlay');
+        const content = document.getElementById('content');
+        const bgm = document.getElementById('bgm');
         const cursor = document.getElementById('cursor');
         const card = document.getElementById('card');
-        
-        // Theo dõi chuột và Tilt card
+
+        // KHỞI TẠO WEB
+        function startWeb() {
+            overlay.style.opacity = '0';
+            setTimeout(() => { 
+                overlay.style.display = 'none';
+                content.style.opacity = '1';
+                content.style.transform = 'scale(1)';
+            }, 800);
+            bgm.play().catch(() => console.log("Cần click để phát nhạc"));
+        }
+
+        window.addEventListener('keydown', (e) => { if(e.key === "Enter") startWeb(); });
+
+        // FIX LỖI CHUỘT VÀ TILT
         document.addEventListener('mousemove', (e) => {
+            // Cập nhật vị trí cursor mượt hơn
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
             
-            let x = (window.innerWidth / 2 - e.pageX) / 25;
-            let y = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
+            // Tính toán góc quay dựa trên tâm màn hình
+            const xVal = (window.innerWidth / 2 - e.clientX) / 20;
+            const yVal = (window.innerHeight / 2 - e.clientY) / 20;
+            
+            card.style.transform = `rotateX(${yVal}deg) rotateY(${-xVal}deg)`;
         });
 
-        // Hiệu ứng Cursor khi hover
-        function expandCursor() {
-            cursor.style.width = '50px';
-            cursor.style.height = '50px';
-            cursor.style.background = 'rgba(255, 77, 148, 0.1)';
+        function grow() { cursor.style.width = '40px'; cursor.style.height = '40px'; }
+        function shrink() { cursor.style.width = '20px'; cursor.style.height = '20px'; }
+
+        // TUYẾT RƠI
+        const canvas = document.getElementById('canvas-snow');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initSnow() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 50}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 3 + 1,
+                s: Math.random() * 1 + 0.5,
+                o: Math.random() * 0.5
+            }));
         }
-        function shrinkCursor() {
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.background = 'transparent';
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(255, 77, 148, ${p.o})`; ctx.fill();
+                p.y += p.s; if(p.y > canvas.height) p.y = -10;
+            });
+            requestAnimationFrame(animate);
         }
+
+        window.addEventListener('resize', initSnow);
+        initSnow(); animate();
+    </script>
+</body>
+</html>
