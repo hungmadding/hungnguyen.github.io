@@ -3,185 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hùng Madding | Cinematic Bio</title>
+<title>Hùng Madding</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 
 <style>
-:root { --pink:#ff4d94; --bg:#050505; }
-*{margin:0;padding:0;box-sizing:border-box;cursor:none!important}
-body,html{height:100%;font-family:'Quicksand',sans-serif;overflow:hidden}
+:root { --pink:#ff4d94; }
 
-/* nền anime */
+*{margin:0;padding:0;box-sizing:border-box;cursor:none}
+
+body{
+height:100vh;
+overflow:hidden;
+font-family:sans-serif;
+}
+
+/* 🎥 VIDEO (ĐÃ FIX CLICK) */
 #bg-video{
 position:fixed;
-top:0;left:0;width:100%;height:100%;
+top:0;left:0;
+width:100%;
+height:100%;
 object-fit:cover;
 z-index:-3;
-filter:brightness(0.45) contrast(1.25) saturate(1.6) hue-rotate(260deg);
-}
 
-body::before{
-content:"";
-position:fixed;inset:0;z-index:-2;
-background:
-radial-gradient(circle at 20% 30%, rgba(255,80,180,0.25), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(0,200,255,0.25), transparent 40%),
-linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-}
+filter:brightness(0.45) contrast(1.2) saturate(1.4);
 
-body::after{
-content:"";
-position:fixed;inset:0;z-index:-1;
-background:linear-gradient(120deg, rgba(120,0,255,0.15), rgba(0,200,255,0.15));
-mix-blend-mode:screen;
+/* 🔥 QUAN TRỌNG NHẤT */
+pointer-events:none;
 }
 
 /* overlay */
-#overlay{position:fixed;inset:0;background:#000;z-index:9999;display:flex;justify-content:center;align-items:center;color:var(--pink);transition:.8s;}
-.enter-btn{border:1px solid var(--pink);padding:15px 35px;letter-spacing:5px;animation:pulse 2s infinite;}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,77,148,0.4)}70%{box-shadow:0 0 0 20px rgba(255,77,148,0)}}
+#overlay{
+position:fixed;
+inset:0;
+background:#000;
+z-index:999;
+display:flex;
+justify-content:center;
+align-items:center;
+color:var(--pink);
+}
 
-/* cursor */
-#cursor{position:fixed;width:15px;height:15px;background:var(--pink);border-radius:50%;pointer-events:none;z-index:1000;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--pink);}
-#cursor-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(255,77,148,0.5);border-radius:50%;pointer-events:none;z-index:999;transform:translate(-50%,-50%);}
-
-/* sakura */
-#canvas-snow{position:fixed;inset:0;z-index:0;}
+.enter{
+padding:15px 40px;
+border:1px solid var(--pink);
+}
 
 /* card */
-.main-wrapper{height:100vh;display:flex;justify-content:center;align-items:center;opacity:0;transform:scale(.9);transition:1.2s;}
-.card{background:rgba(15,15,20,0.75);backdrop-filter:blur(25px);border-radius:35px;padding:55px 45px;width:370px;text-align:center;border:1px solid rgba(255,77,148,0.25);position:relative;}
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--x) var(--y),rgba(255,77,148,0.25),transparent 40%);}
+.wrapper{
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+transition:1s;
+}
 
-/* avatar */
-.avatar-container{position:relative;width:125px;height:125px;margin:0 auto 25px;}
-.avatar{width:100%;height:100%;border-radius:50%;border:3px solid var(--pink);}
-.avatar-glow{position:absolute;inset:-8px;background:var(--pink);filter:blur(20px);border-radius:50%;opacity:.3;animation:breathe 4s infinite;}
-@keyframes breathe{50%{opacity:.5;transform:scale(1.15)}}
+.card{
+background:rgba(0,0,0,0.6);
+padding:40px;
+border-radius:20px;
+text-align:center;
+}
 
-h1{color:#fff;margin-bottom:10px}
-.typewriter{font-family:'Fira Code';color:var(--pink);font-size:11px;letter-spacing:2px;margin-bottom:30px}
+/* links */
+.link{
+display:block;
+padding:12px;
+margin:10px;
+background:#222;
+color:#fff;
+text-decoration:none;
+border-radius:10px;
+}
 
-.link-item{background:rgba(255,255,255,0.05);padding:16px;border-radius:15px;color:#fff;text-decoration:none;display:flex;justify-content:space-between;margin-bottom:12px;transition:.3s;}
-.link-item:hover{background:rgba(255,77,148,0.2);transform:translateX(6px);}
+.link:hover{
+background:var(--pink);
+}
 </style>
 </head>
 
 <body>
 
-<!-- nền anime -->
+<!-- VIDEO -->
 <video autoplay muted loop id="bg-video">
 <source src="https://cdn.coverr.co/videos/coverr-sunset-sky-6942/1080p.mp4" type="video/mp4">
 </video>
 
+<!-- OVERLAY -->
 <div id="overlay" onclick="start()">
-<div class="enter-btn">ENTER</div>
+<div class="enter">ENTER</div>
 </div>
 
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+<!-- CONTENT -->
+<div class="wrapper" id="content">
+<div class="card">
 
-<canvas id="canvas-snow"></canvas>
+<h2 style="color:white;">Hùng Madding</h2>
 
-<audio id="bgm" loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<div class="main-wrapper" id="content">
-<div class="card" id="card">
-
-<div class="avatar-container">
-<div class="avatar-glow"></div>
-<img src="https://i.imgur.com/uIKY94v.png" class="avatar">
-</div>
-
-<h1>Hùng Madding</h1>
-<div class="typewriter" id="typewriter"></div>
-
-<div class="links">
-
-<!-- ✅ FB CỦA BẠN -->
-<a href="https://www.facebook.com/hung.madding" target="_blank" class="link-item">
-<span>Facebook</span><i class="fab fa-facebook-f"></i>
+<a href="https://www.facebook.com/hung.madding" target="_blank" class="link">
+Facebook
 </a>
 
-<a href="#" class="link-item">
-<span>TikTok</span><i class="fab fa-tiktok"></i>
-</a>
+<a href="#" class="link">TikTok</a>
+<a href="#" class="link">GitHub</a>
 
-<a href="#" class="link-item">
-<span>GitHub</span><i class="fab fa-github"></i>
-</a>
-
-</div>
 </div>
 </div>
 
 <script>
-const canvas=document.getElementById('canvas-snow');
-const ctx=canvas.getContext('2d');
-const cursor=document.getElementById('cursor');
-const ring=document.getElementById('cursor-ring');
-const card=document.getElementById('card');
-const bgm=document.getElementById('bgm');
-
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-
-let petals=[];
-for(let i=0;i<35;i++){
-petals.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*6+4,speed:Math.random()*0.7+0.3,angle:Math.random()*Math.PI*2});
-}
-
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-petals.forEach(p=>{
-p.y+=p.speed;
-p.x+=Math.sin(p.angle)*0.5;
-p.angle+=0.01;
-if(p.y>canvas.height){p.y=0;p.x=Math.random()*canvas.width;}
-ctx.beginPath();
-ctx.fillStyle="rgba(255,200,220,0.7)";
-ctx.ellipse(p.x,p.y,p.size,p.size/2,0,0,Math.PI*2);
-ctx.fill();
-});
-requestAnimationFrame(animate);
-}
-animate();
-
-document.addEventListener('mousemove',e=>{
-cursor.style.left=e.clientX+"px";
-cursor.style.top=e.clientY+"px";
-ring.style.left=e.clientX+"px";
-ring.style.top=e.clientY+"px";
-let x=(innerWidth/2-e.clientX)/30;
-let y=(innerHeight/2-e.clientY)/30;
-card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
-card.style.setProperty("--x", e.clientX + "px");
-card.style.setProperty("--y", e.clientY + "px");
-});
-
-let text="PYTHON DEV | PINK VIBE";
-let i=0;
-function typeEffect(){
-if(i<text.length){
-document.getElementById("typewriter").innerHTML+=text[i];
-i++;
-setTimeout(typeEffect,80);
-}
-}
-
 function start(){
-overlay.style.opacity=0;
-setTimeout(()=>{
-overlay.style.display="none";
-content.style.opacity=1;
-content.style.transform="scale(1)";
-typeEffect();
-},600);
-bgm.play().catch(()=>{});
+document.getElementById("overlay").style.display="none";
+document.getElementById("content").style.opacity=1;
 }
 </script>
 
