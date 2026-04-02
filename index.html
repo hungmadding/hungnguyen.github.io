@@ -1,234 +1,271 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Cinematic Bio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
-    
-    <style>
-        :root { --pink: #ff4d94; --pink-glow: #ff0077; --bg: #050505; }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-        
-        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hùng Madding | GOD MODE</title>
 
-        /* MÀN HÌNH CHỜ */
-        #overlay {
-            position: fixed; inset: 0; background: var(--bg); 
-            z-index: 9999; display: flex; justify-content: center; align-items: center; 
-            color: var(--pink); transition: opacity 0.8s ease;
-        }
-        .enter-btn { border: 1px solid var(--pink); padding: 15px 35px; letter-spacing: 5px; animation: pulse 2s infinite; text-transform: uppercase; font-weight: bold; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 77, 148, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(255, 77, 148, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 77, 148, 0); } }
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
 
-        /* HIỆU ỨNG RIPPLE KHI CLICK */
-        .ripple {
-            position: fixed; border: 2px solid var(--pink); border-radius: 50%;
-            pointer-events: none; transform: translate(-50%, -50%);
-            animation: ripple-out 0.6s linear forwards; z-index: 10002;
-        }
-        @keyframes ripple-out { from { width: 0; height: 0; opacity: 1; } to { width: 120px; height: 120px; opacity: 0; } }
+<style>
+:root{
+    --pink:#ff4d94;
+    --bg:#040404;
+}
 
-        /* CURSOR NEON */
-        #cursor { 
-            position: fixed; width: 15px; height: 15px; background: var(--pink); 
-            border-radius: 50%; pointer-events: none; z-index: 10001; 
-            transform: translate(-50%, -50%); box-shadow: 0 0 20px var(--pink-glow);
-            transition: transform 0.1s ease-out, width 0.3s, height 0.3s;
-        }
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    cursor:none;
+}
 
-        /* CANVAS TUYẾT */
-        #canvas-snow { position: fixed; inset: 0; z-index: 0; filter: drop-shadow(0 0 3px var(--pink)); mix-blend-mode: screen; }
+body{
+    height:100vh;
+    font-family:'Quicksand',sans-serif;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255,77,148,0.15), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255,77,148,0.1), transparent 40%),
+        #040404;
+    overflow:hidden;
+}
 
-        /* CARD CHÍNH */
-        .main-wrapper { 
-            height: 100vh; display: flex; justify-content: center; align-items: center; 
-            perspective: 1200px; opacity: 0; transform: scale(0.9); transition: 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+/* NOISE OVERLAY */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity:0.05;
+    pointer-events:none;
+}
 
-        .card {
-            background: rgba(15, 15, 20, 0.75); backdrop-filter: blur(25px);
-            border-radius: 35px; padding: 55px 45px; width: 370px; text-align: center;
-            position: relative; border: 1px solid rgba(255, 77, 148, 0.25);
-            transform-style: preserve-3d;
-        }
+/* CURSOR */
+#cursor{
+    position:fixed;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--pink);
+    pointer-events:none;
+    z-index:9999;
+    transition:0.15s;
+    box-shadow:0 0 20px var(--pink);
+}
 
-        /* AVATAR BREATHE EFFECT */
-        .avatar-container { position: relative; width: 125px; height: 125px; margin: 0 auto 25px; }
-        .avatar { 
-            width: 100%; height: 100%; border-radius: 50%; 
-            border: 3px solid var(--pink); position: relative; z-index: 2; object-fit: cover;
-        }
-        .avatar-glow {
-            position: absolute; inset: -8px; background: var(--pink);
-            filter: blur(20px); border-radius: 50%; opacity: 0.3; animation: breathe 4s infinite;
-        }
-        @keyframes breathe { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } }
+/* OVERLAY */
+#overlay{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#000;
+    z-index:999;
+    transition:1s;
+}
 
-        h1 { color: #fff; font-size: 26px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+.enter{
+    padding:15px 40px;
+    border:1px solid var(--pink);
+    letter-spacing:4px;
+    animation:pulse 2s infinite;
+}
 
-        /* TYPEWRITER TEXT */
-        .typewriter {
-            font-family: 'Fira Code', monospace; color: var(--pink);
-            font-size: 11px; letter-spacing: 2px; height: 15px; margin-bottom: 35px; font-weight: bold;
-        }
+@keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,77,148,0.4)}
+    70%{box-shadow:0 0 0 25px rgba(255,77,148,0)}
+}
 
-        /* LINKS */
-        .link-item {
-            background: rgba(255, 255, 255, 0.04); padding: 16px 25px; border-radius: 15px;
-            color: rgba(255,255,255,0.85); text-decoration: none; display: flex; 
-            justify-content: space-between; align-items: center; margin-bottom: 14px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .link-item:hover { 
-            background: rgba(255, 77, 148, 0.2); color: #fff;
-            border-color: var(--pink); transform: translateX(8px) translateZ(40px);
-            box-shadow: -10px 10px 20px rgba(0,0,0,0.3);
-        }
+/* MAIN */
+.wrapper{
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    perspective:1200px;
+    opacity:0;
+    transform:scale(.9);
+    transition:1.2s;
+}
 
-        .music-status { position: fixed; bottom: 20px; left: 20px; color: var(--pink); font-size: 9px; opacity: 0.5; letter-spacing: 1px; }
-    </style>
+/* CARD */
+.card{
+    width:360px;
+    padding:50px;
+    border-radius:30px;
+    backdrop-filter:blur(25px);
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,77,148,0.2);
+    text-align:center;
+    transform-style:preserve-3d;
+    transition:.3s;
+}
+
+/* LIGHT FOLLOW */
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at var(--x) var(--y),
+        rgba(255,77,148,0.25),
+        transparent 40%);
+    border-radius:inherit;
+    pointer-events:none;
+}
+
+/* AVATAR */
+.avatar{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    border:3px solid var(--pink);
+    margin-bottom:20px;
+    box-shadow:0 0 25px var(--pink);
+}
+
+/* NAME */
+h1{
+    color:#fff;
+    margin-bottom:10px;
+}
+
+/* TYPE */
+.type{
+    color:var(--pink);
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:30px;
+}
+
+/* LINKS */
+.link{
+    display:block;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:12px;
+    text-decoration:none;
+    color:#ccc;
+    background:rgba(255,255,255,0.04);
+    transition:.25s;
+}
+
+.link:hover{
+    color:#fff;
+    background:rgba(255,77,148,0.25);
+    transform:translateX(8px) scale(1.03);
+}
+
+/* SNOW */
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+}
+</style>
 </head>
-<body onclick="createRipple(event)">
 
-    <div id="overlay" onclick="start()">
-        <div class="enter-btn">Click or Enter</div>
+<body onclick="ripple(event)">
+
+<div id="overlay" onclick="start()">
+    <div class="enter">ENTER</div>
+</div>
+
+<div id="cursor"></div>
+<canvas id="snow"></canvas>
+
+<div class="wrapper" id="main">
+    <div class="card" id="card">
+        <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+        <h1>Hùng Madding</h1>
+        <div class="type" id="type"></div>
+
+        <a href="#" class="link">Facebook</a>
+        <a href="#" class="link">TikTok</a>
+        <a href="#" class="link">GitHub</a>
     </div>
+</div>
 
-    <div id="cursor"></div>
-    <canvas id="canvas-snow"></canvas>
-    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
+<script>
+const cursor=document.getElementById("cursor");
+const card=document.getElementById("card");
 
-    <div class="main-wrapper" id="content">
-        <div class="card" id="card">
-            <div class="avatar-container">
-                <div class="avatar-glow"></div>
-                <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
-            </div>
-            <h1>Hùng Madding</h1>
-            <div class="typewriter" id="typewriter"></div>
-            
-            <div class="links">
-                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-                    <span>Facebook</span><i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-                    <span>TikTok</span><i class="fab fa-tiktok"></i>
-                </a>
-                <a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
-                    <span>GitHub</span><i class="fab fa-github"></i>
-                </a>
-            </div>
-        </div>
-    </div>
+/* CURSOR SMOOTH */
+document.addEventListener("mousemove",e=>{
+    cursor.style.left=e.clientX+"px";
+    cursor.style.top=e.clientY+"px";
 
-    <div class="music-status">BIO-OS V2.0 // TERMINAL READY</div>
+    let x=(window.innerWidth/2-e.clientX)/20;
+    let y=(window.innerHeight/2-e.clientY)/20;
 
-    <script>
-        const canvas = document.getElementById('canvas-snow');
-        const ctx = canvas.getContext('2d');
-        const cursor = document.getElementById('cursor');
-        const card = document.getElementById('card');
-        const bgm = document.getElementById('bgm');
-        let snowParticles = [];
+    card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
 
-        // 1. KHỞI TẠO TUYẾT CINEMATIC (3 TẦNG)
-        class Snowflake {
-            constructor(layer) {
-                this.layer = layer;
-                this.init();
-            }
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                if (this.layer === 0) { // Xa
-                    this.size = Math.random() * 2 + 1; this.speedY = Math.random() * 0.5 + 0.2;
-                    this.opacity = Math.random() * 0.2 + 0.1; this.blur = 0;
-                } else if (this.layer === 1) { // Trung
-                    this.size = Math.random() * 3 + 2; this.speedY = Math.random() * 1 + 0.5;
-                    this.opacity = Math.random() * 0.5 + 0.2; this.blur = 0;
-                } else { // Gần (Bokeh)
-                    this.size = Math.random() * 6 + 4; this.speedY = Math.random() * 2 + 1.2;
-                    this.opacity = Math.random() * 0.3 + 0.1; this.blur = 4;
-                }
-                this.step = 0; this.stepSpeed = Math.random() * 0.02 + 0.01;
-            }
-            update() {
-                this.y += this.speedY;
-                this.x += Math.sin(this.step) * 0.5;
-                this.step += this.stepSpeed;
-                if (this.y > canvas.height) { this.y = -10; this.x = Math.random() * canvas.width; }
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 77, 148, ${this.opacity})`;
-                if (this.blur > 0) { ctx.shadowBlur = this.blur; ctx.shadowColor = "var(--pink)"; }
-                ctx.fill(); ctx.shadowBlur = 0;
-            }
-        }
+    card.style.setProperty("--x",e.clientX+"px");
+    card.style.setProperty("--y",e.clientY+"px");
+});
 
-        function initSnow() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            snowParticles = [];
-            for (let i = 0; i < 40; i++) snowParticles.push(new Snowflake(0));
-            for (let i = 0; i < 30; i++) snowParticles.push(new Snowflake(1));
-            for (let i = 0; i < 15; i++) snowParticles.push(new Snowflake(2));
-        }
+/* TYPEWRITER SMOOTH */
+let txt="FULLSTACK DEV | CINEMATIC UI";
+let i=0;
+function type(){
+    if(i<txt.length){
+        document.getElementById("type").innerHTML+=txt[i];
+        i++;
+        setTimeout(type,50);
+    }
+}
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            snowParticles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
+/* START */
+function start(){
+    overlay.style.opacity=0;
+    setTimeout(()=>{
+        overlay.style.display="none";
+        main.style.opacity=1;
+        main.style.transform="scale(1)";
+        type();
+    },800);
+}
 
-        // 2. TYPEWRITER EFFECT
-        const text = "PYTHON DEVELOPER | PINK VIBE";
-        let charIndex = 0;
-        function typeEffect() {
-            if (charIndex < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(charIndex);
-                charIndex++; setTimeout(typeEffect, 100);
-            }
-        }
+/* RIPPLE */
+function ripple(e){
+    let r=document.createElement("div");
+    r.style.position="fixed";
+    r.style.border="2px solid pink";
+    r.style.borderRadius="50%";
+    r.style.left=e.clientX+"px";
+    r.style.top=e.clientY+"px";
+    r.style.transform="translate(-50%,-50%)";
+    r.style.animation="r 0.6s forwards";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),600);
+}
 
-        // 3. RIPPLE & START LOGIC
-        function createRipple(e) {
-            const ripple = document.createElement("div");
-            ripple.className = "ripple";
-            ripple.style.left = e.clientX + "px"; ripple.style.top = e.clientY + "px";
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        }
+/* SNOW ULTRA SMOOTH */
+let c=document.getElementById("snow");
+let ctx=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
 
-        function start() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('content').style.opacity = '1';
-                document.getElementById('content').style.transform = 'scale(1)';
-                typeEffect();
-            }, 800);
-            bgm.play().catch(() => {});
-        }
+let arr=[];
+for(let i=0;i<100;i++){
+    arr.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2});
+}
 
-        // 4. MOUSE & INTERACTION
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            const x = (window.innerWidth / 2 - e.clientX) / 30;
-            const y = (window.innerHeight / 2 - e.clientY) / 30;
-            card.style.transform = `rotateX(${y}deg) rotateY(${-x}deg)`;
-        });
+function snow(){
+    ctx.clearRect(0,0,c.width,c.height);
+    arr.forEach(p=>{
+        p.y+=0.3;
+        if(p.y>c.height)p.y=0;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle="rgba(255,77,148,0.6)";
+        ctx.fill();
+    });
+    requestAnimationFrame(snow);
+}
+snow();
+</script>
 
-        function focusIn() { cursor.style.transform = 'translate(-50%, -50%) scale(3.5)'; cursor.style.background = 'transparent'; cursor.style.border = '1px solid white'; }
-        function focusOut() { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; cursor.style.background = 'var(--pink)'; cursor.style.border = 'none'; }
-
-        window.addEventListener('keydown', (e) => { if(e.key === "Enter") start(); });
-        window.addEventListener('resize', initSnow);
-
-        initSnow(); animate();
-    </script>
 </body>
 </html>
