@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio-OS v3.14</title>
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.15</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
@@ -15,72 +15,74 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; touch-action: none; }
         
-        /* CANVAS 3 LỚP */
+        /* HỆ THỐNG CANVAS 3 LỚP (TRỞ LẠI) */
         #canvas-bg, #canvas-mid, #canvas-foreground { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         #canvas-foreground { z-index: 10001; } 
 
-        /* NÚT ĐIỀU KHIỂN NHẠC */
         #music-btn {
             position: fixed; top: 20px; right: 20px; z-index: 10005;
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 45px; height: 45px; border-radius: 50%;
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--pink);
             color: var(--pink); display: none; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px var(--pink-glow);
         }
-        #music-btn.playing i { animation: rotate 4s linear infinite; }
+        #music-btn.playing i { animation: rotate 3s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--pink); transition: all 0.8s ease;
+            color: var(--pink); transition: all 1s ease;
         }
-        .enter-btn { border: 2px solid var(--pink); padding: 12px 35px; cursor: pointer; text-transform: uppercase; font-weight: 600; background: transparent; color: var(--pink); transition: 0.3s; letter-spacing: 2px; }
-        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 30px var(--pink); }
+        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; font-family: 'Fira Code'; text-shadow: 0 0 25px var(--pink); }
+        .enter-btn { border: 2px solid var(--pink); padding: 15px 40px; cursor: pointer; text-transform: uppercase; font-weight: 600; background: transparent; color: var(--pink); transition: 0.3s; letter-spacing: 5px; }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 40px var(--pink); }
 
         .main-wrapper { 
             height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1200px; transition: all 1s ease; z-index: 10; position: relative; padding: 20px;
+            opacity: 0; perspective: 1200px; perspective-origin: center center;
+            transform: scale(0.9); transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1); 
+            z-index: 10; position: relative; padding: 20px;
         }
-        .main-wrapper.active { opacity: 1; }
+        .main-wrapper.active { opacity: 1; transform: scale(1); pointer-events: all; }
 
         .card {
-            background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(25px);
-            border-radius: 40px; padding: 45px 40px; width: 100%; max-width: 380px;
+            background: rgba(10, 10, 20, 0.85); backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 40px; padding: 40px 50px; width: 400px; max-height: 85vh;
             text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
-            box-shadow: 0 25px 65px rgba(0,0,0,0.85); transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.9); transform-style: preserve-3d;
+            transition: transform 0.2s ease-out; will-change: transform;
+            display: flex; flex-direction: column; justify-content: center;
         }
 
         .avatar-container {
-            width: 110px; height: 110px; border-radius: 50%;
-            border: 3px solid var(--pink); margin: 0 auto 30px;
-            box-shadow: 0 0 35px var(--pink); overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(255, 255, 255, 0.1); transform: translateZ(60px);
+            width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); 
+            margin: 0 auto 25px; box-shadow: 0 0 30px var(--pink); overflow: hidden;
+            display: flex; justify-content: center; align-items: center; transform: translateZ(60px);
         }
         .avatar { width: 100%; height: 100%; object-fit: cover; }
 
-        h1 { color: #fff; font-size: 28px; margin-bottom: 35px; text-shadow: 0 0 15px var(--pink); transform: translateZ(45px); font-weight: 700; }
+        h1 { color: #fff; font-size: 26px; margin-bottom: 10px; text-shadow: 0 0 15px var(--pink); transform: translateZ(40px); }
+        .typewriter { height: 20px; color: #aaa; font-size: 13px; margin-bottom: 25px; font-family: 'Fira Code'; transform: translateZ(20px); }
 
-        .links { display: flex; flex-direction: column; gap: 14px; width: 100%; transform: translateZ(35px); }
+        .links { display: flex; flex-direction: column; gap: 12px; transform: translateZ(30px); }
         .link-item {
-            background: rgba(255,255,255,0.05); padding: 16px 22px; border-radius: 20px; color: #fff;
+            background: rgba(255,255,255,0.04); padding: 15px 25px; border-radius: 20px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.08); transition: 0.4s ease;
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.2); border-color: var(--pink); transform: scale(1.03); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(10px); }
 
         @media (max-width: 480px) {
-            .card { padding: 35px 25px; }
-            h1 { font-size: 24px; }
-            .avatar-container { width: 100px; height: 100px; }
+            .card { width: 90%; padding: 30px 25px; }
+            h1 { font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
     <div id="overlay">
+        <div class="logo">HUNG MADDING</div>
         <button class="enter-btn" onclick="startExperience()">ENTER</button>
     </div>
 
@@ -102,6 +104,7 @@
             </div>
 
             <h1>Nguyễn Mạnh Hùng</h1>
+            <div class="typewriter" id="typewriter"></div>
             
             <div class="links">
                 <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
@@ -133,7 +136,7 @@
                 this.x = Math.random() * this.canvas.width;
                 this.y = Math.random() * this.canvas.height;
                 this.size = [Math.random()*1, Math.random()*2+1, Math.random()*4+2][this.depth];
-                this.speed = [0.2, 0.5, 1.0][this.depth];
+                this.speed = [Math.random()*0.2+0.1, Math.random()*0.6+0.3, Math.random()*1.2+0.7][this.depth];
                 this.opacity = [0.2, 0.4, 0.6][this.depth];
             }
             update() {
@@ -142,7 +145,7 @@
             draw() {
                 this.ctx.globalAlpha = this.opacity;
                 this.ctx.fillStyle = "#FFF";
-                this.ctx.beginPath(); this.ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); this.ctx.fill();
+                this.ctx.beginPath(); this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); this.ctx.fill();
             }
         }
 
@@ -151,7 +154,7 @@
             canvasB.height = canvasM.height = canvasF.height = window.innerHeight;
             stars = Array.from({length: 80}, () => new Snowflake(canvasB, 0));
             midParticles = Array.from({length: 50}, () => new Snowflake(canvasM, 1));
-            frontSnow = Array.from({length: 15}, () => new Snowflake(canvasF, 2));
+            frontSnow = Array.from({length: 20}, () => new Snowflake(canvasF, 2));
         }
 
         function draw() {
@@ -162,18 +165,26 @@
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
-            audio.play().catch(() => console.log("Cần tương tác để phát nhạc"));
+            audio.play().catch(() => {});
             btn.classList.add('playing');
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
                 btn.style.display = 'flex';
+                typeWriter();
             }, 800);
         }
 
+        function typeWriter() {
+            const text = "> Booting Bio-OS Terminal v3.15... Success!";
+            let i = 0; const target = document.getElementById('typewriter');
+            function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 50); } }
+            type();
+        }
+
         window.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.clientX) / 40;
-            const yAxis = (window.innerHeight / 2 - e.clientY) / 40;
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
             document.getElementById('profileCard').style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
