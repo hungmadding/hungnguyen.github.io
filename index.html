@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hihihoohohohaahhaa</title>
+    <title>Hùng Madding | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
@@ -15,20 +15,18 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; }
         
-        /* CURSOR CUSTOM */
         #cursor { 
             position: fixed; width: 20px; height: 20px; background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none; z-index: 10002; transform: translate(-50%, -50%);
-            box-shadow: 0 0 25px var(--pink-glow); display: none; transition: width 0.3s, height 0.3s;
+            box-shadow: 0 0 25px var(--pink-glow); display: none;
         }
 
-        /* LOADING SCREEN */
         #overlay {
             position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, #1a0a1a 100%);
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: var(--pink); transition: all 0.8s ease-in-out;
         }
-        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s ease-in-out infinite; font-family: 'Fira Code', monospace; text-shadow: 0 0 20px var(--pink); }
+        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s infinite; font-family: 'Fira Code', monospace; text-shadow: 0 0 20px var(--pink); }
         .loading-bar { width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 2rem; }
         .loading-progress { height: 100%; background: var(--pink); width: 0%; animation: load 2.5s forwards; box-shadow: 0 0 15px var(--pink); }
         .enter-btn { border: 2px solid var(--pink); padding: 15px 35px; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; font-weight: 600; transition: 0.3s; background: transparent; color: var(--pink); margin-top: 2rem; }
@@ -37,35 +35,41 @@
         @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
         @keyframes load { to { width: 100%; } }
 
-        /* CANVAS BACKGROUND */
         #canvas-bg, #canvas-snow { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* MAIN CARD */
         .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.9); transition: all 1.2s; z-index: 10; position: relative; pointer-events: none; }
         .main-wrapper.active { opacity: 1; transform: scale(1); pointer-events: all; }
 
         .card {
-            background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(20px);
-            border-radius: 30px; padding: 50px; width: 400px; text-align: center;
-            border: 1px solid rgba(255, 77, 148, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            background: rgba(15, 15, 25, 0.85); backdrop-filter: blur(25px);
+            border-radius: 35px; padding: 50px; width: 420px; text-align: center;
+            border: 1px solid rgba(255, 77, 148, 0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.9);
         }
 
-        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 20px; object-fit: cover; box-shadow: 0 0 20px var(--pink); }
-        h1 { color: #fff; font-size: 26px; margin-bottom: 5px; }
-        .subtitle { color: var(--pink); font-size: 14px; margin-bottom: 20px; font-family: 'Fira Code'; }
-        .typewriter { height: 20px; color: #ccc; font-size: 13px; margin-bottom: 30px; }
+        .avatar { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 25px; object-fit: cover; box-shadow: 0 0 30px var(--pink); }
+        
+        /* HIỆU ỨNG THẮP SÁNG CHỮ */
+        h1 { 
+            color: #fff; font-size: 28px; margin-bottom: 8px; 
+            text-shadow: 0 0 10px #fff, 0 0 20px var(--pink), 0 0 30px var(--pink-glow);
+        }
+        .subtitle { 
+            color: #fff; font-size: 15px; margin-bottom: 25px; font-family: 'Fira Code'; font-weight: 600;
+            text-shadow: 0 0 5px #fff, 0 0 15px var(--pink), 0 0 25px var(--pink-glow);
+        }
+        
+        .typewriter { height: 20px; color: #aaa; font-size: 13px; margin-bottom: 30px; font-family: 'Fira Code'; }
 
-        .links { display: flex; flex-direction: column; gap: 12px; }
+        .links { display: flex; flex-direction: column; gap: 15px; }
         .link-item {
-            background: rgba(255,255,255,0.05); padding: 14px; border-radius: 15px; color: #fff;
+            background: rgba(255,255,255,0.05); padding: 16px 25px; border-radius: 18px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.2); border-color: var(--pink); transform: translateX(10px); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.25); border-color: var(--pink); transform: translateX(12px) scale(1.02); box-shadow: 0 0 20px rgba(255, 77, 148, 0.3); }
 
-        /* PHỤ KIỆN */
         .stats { position: fixed; bottom: 20px; right: 20px; color: var(--pink); font-family: 'Fira Code'; font-size: 10px; z-index: 100; }
-        .toast { position: fixed; top: 20px; right: 20px; background: var(--pink); color: #fff; padding: 10px 20px; border-radius: 10px; display: none; z-index: 10005; }
+        .toast { position: fixed; top: 20px; right: 20px; background: var(--pink); color: #fff; padding: 12px 25px; border-radius: 30px; display: none; z-index: 10005; box-shadow: 0 0 20px var(--pink); }
     </style>
 </head>
 <body>
@@ -73,7 +77,7 @@
     <div id="overlay">
         <div class="logo">HUNG MADDING</div>
         <div class="loading-bar"><div class="loading-progress"></div></div>
-        <button class="enter-btn" onclick="startExperience()">Enter để vào nhoa:33</button>
+        <button class="enter-btn" onclick="startExperience()">ENTER TERMINAL</button>
     </div>
 
     <div id="cursor"></div>
@@ -82,21 +86,21 @@
 
     <div class="main-wrapper" id="mainContent">
         <div class="card">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar">
             <h1>Hùng Madding</h1>
             <div class="subtitle">Nguyễn Mạnh Hùng</div>
             <div class="typewriter" id="typewriter"></div>
             
             <div class="links">
-                <a href="https://www.facebook.com/hung.madding" class="link-item" target="_blank"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
-                <a href="https://github.com/hungmadding" class="link-item" target="_blank"><span>GitHub</span><i class="fab fa-github"></i></a>
-                <a href="https://www.tiktok.com/@hung_md3?lang=vi-VN" class="link-item" target="_blank"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
+                <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
                 <a href="#" class="link-item" onclick="copyEmail(event)"><span>Email</span><i class="fas fa-envelope"></i></a>
             </div>
         </div>
     </div>
 
-    <div class="stats">Nhìn cái db</div>
+    <div class="stats">BIO-OS v3.0 | SYSTEM SECURE</div>
     <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
@@ -106,42 +110,34 @@
         const ctxSnow = canvasSnow.getContext('2d');
         let snowParticles = [], stars = [];
 
-        // Khởi tạo Canvas
         function init() {
             canvasBg.width = canvasSnow.width = window.innerWidth;
             canvasBg.height = canvasSnow.height = window.innerHeight;
-            
             stars = [];
-            for(let i=0; i<100; i++) {
-                stars.push({ x: Math.random()*canvasBg.width, y: Math.random()*canvasBg.height, s: Math.random()*1.5 });
+            for(let i=0; i<120; i++) {
+                stars.push({ x: Math.random()*canvasBg.width, y: Math.random()*canvasBg.height, s: Math.random()*1.8 });
             }
-            
             snowParticles = [];
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<60; i++) {
                 snowParticles.push({
                     x: Math.random()*canvasSnow.width,
                     y: Math.random()*canvasSnow.height,
                     r: Math.random()*3+1,
-                    d: Math.random()*1+0.5
+                    d: Math.random()*0.8+0.4
                 });
             }
         }
 
-        // Vòng lặp hiệu ứng
         function draw() {
             ctxBg.clearRect(0,0,canvasBg.width, canvasBg.height);
             ctxSnow.clearRect(0,0,canvasSnow.width, canvasSnow.height);
-
-            // Vẽ sao
             ctxBg.fillStyle = "#FFF";
             stars.forEach(s => {
                 ctxBg.beginPath();
                 ctxBg.arc(s.x, s.y, s.s, 0, Math.PI*2);
                 ctxBg.fill();
             });
-
-            // Vẽ tuyết
-            ctxSnow.fillStyle = "rgba(255,255,255,0.6)";
+            ctxSnow.fillStyle = "rgba(255,255,255,0.5)";
             snowParticles.forEach(p => {
                 ctxSnow.beginPath();
                 ctxSnow.arc(p.x, p.y, p.r, 0, Math.PI*2);
@@ -149,15 +145,12 @@
                 p.y += p.d;
                 if(p.y > canvasSnow.height) p.y = -10;
             });
-
             requestAnimationFrame(draw);
         }
 
-        // Xử lý khi nhấn nút ENTER
         function startExperience() {
             const overlay = document.getElementById('overlay');
             const main = document.getElementById('mainContent');
-            
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -167,37 +160,35 @@
             }, 800);
         }
 
-        // Hiệu ứng gõ chữ
         function typeWriter() {
-            const text = "> Đang khởi chạy hệ thống Python... OK!";
+            const text = "> Initializing Python Terminal... OK!";
             let i = 0;
+            const target = document.getElementById('typewriter');
+            target.innerHTML = "";
             function type() {
                 if (i < text.length) {
-                    document.getElementById('typewriter').innerHTML += text.charAt(i);
+                    target.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, 50);
+                    setTimeout(type, 60);
                 }
             }
             type();
         }
 
-        // Copy Email
         function copyEmail(e) {
             e.preventDefault();
-            navigator.clipboard.writeText("your-email@gmail.com");
+            navigator.clipboard.writeText("contact@hungmadding.io");
             const toast = document.getElementById('toast');
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 2000);
+            setTimeout(() => toast.style.display = 'none', 2500);
         }
 
-        // Con trỏ chuột
         window.addEventListener('mousemove', (e) => {
             const cursor = document.getElementById('cursor');
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Chạy khởi tạo
         window.addEventListener('resize', init);
         init();
         draw();
