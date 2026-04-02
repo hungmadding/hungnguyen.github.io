@@ -13,165 +13,37 @@
         
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
 
-        /* CHUỘT CUSTOM NEON */
-        #cursor { position: fixed; width: 15px; height: 15px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; box-shadow: 0 0 15px var(--pink), 0 0 30px var(--pink); transition: transform 0.1s ease; }
+        /* --- CHUỘT CUSTOM ĐỔI MÀU NEON --- */
+        #cursor { 
+            position: fixed; width: 15px; height: 15px; border-radius: 50%; 
+            pointer-events: none; z-index: 10000; 
+            /* Màu nền mặc định, sẽ được thay đổi bằng JavaScript */
+            background: #fff;
+            /* Hiệu ứng phát sáng đổi màu */
+            animation: cursorColor 10s linear infinite;
+        }
 
-        /* MÀN HÌNH CHỜ CHẤT CHƠI */
+        /* Animation đổi màu cho chuột */
+        @keyframes cursorColor {
+            0%   { background: #fff; box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
+            20%  { background: #fff; box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
+            40%  { background: #fff; box-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; }
+            60%  { background: #fff; box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; }
+            80%  { background: #fff; box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff; }
+            100% { background: #fff; box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
+        }
+
+        /* --- PHẦN CÒN LẠI CŨ --- */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.8s; }
         #overlay i { font-size: 80px; color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); animation: pulse 1s infinite; }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
-
-        /* NỀN VÀ TUYẾT */
         .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
         #particles { position: fixed; top: 0; left: 0; z-index: -1; filter: blur(0.5px); }
-
-        /* CARD VỚI VIỀN RGB CHẠY QUANH */
         .container { perspective: 1500px; display: none; opacity: 0; transition: 1.5s; }
-        .card {
-            background: var(--glass); backdrop-filter: blur(30px); border-radius: 35px;
-            padding: 60px 45px; width: 400px; text-align: center; position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); transform-style: preserve-3d;
-        }
-        /* Viền Neon RGB chạy quanh */
-        .card::after {
-            content: ''; position: absolute; inset: -3px;
-            background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94);
-            background-size: 400%; z-index: -1; border-radius: 38px;
-            animation: rgbFlow 12s linear infinite; opacity: 0.8;
-        }
+        .card { background: var(--glass); backdrop-filter: blur(30px); border-radius: 35px; padding: 60px 45px; width: 400px; text-align: center; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.8); transform-style: preserve-3d; }
+        .card::after { content: ''; position: absolute; inset: -3px; background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94); background-size: 400%; z-index: -1; border-radius: 38px; animation: rgbFlow 12s linear infinite; opacity: 0.8; }
         @keyframes rgbFlow { 0% { background-position: 0 0; } 100% { background-position: 400% 0; } }
-
-        /* AVATAR DẬP DỀNH */
         .avatar { width: 130px; height: 130px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 40px var(--pink); margin-bottom: 30px; object-fit: cover; animation: floatAvatar 4s ease-in-out infinite; }
         @keyframes floatAvatar { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-15px) rotate(5deg); } }
-        
         h1 { font-size: 32px; color: #fff; text-shadow: 0 0 25px var(--pink); margin-bottom: 5px; letter-spacing: 2px; }
-        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 40px; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; }
-
-        /* NÚT BẤM CÓ HIỆU ỨNG GLOW KHI HOVER */
-        .links { display: flex; flex-direction: column; gap: 15px; }
-        .link-item {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 148, 0.3);
-            padding: 20px; border-radius: 25px; color: #fff; text-decoration: none; font-weight: 700;
-            display: flex; align-items: center; justify-content: space-between; transition: 0.5s;
-        }
-        .link-item:hover { background: #fff; color: #000; box-shadow: 0 0 40px #fff; transform: scale(1.05) translateY(-5px); }
-        .link-item i { font-size: 20px; }
-
-        .music-btn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--glass); border-radius: 50%; display: none; justify-content: center; align-items: center; color: #fff; z-index: 1000; border: 2px solid var(--pink); box-shadow: 0 0 20px var(--pink); transition: 0.3s; }
-        .music-btn:hover { transform: scale(1.1); }
-    </style>
-</head>
-<body>
-
-    <div id="cursor"></div>
-
-    <div id="overlay" onclick="startApp()">
-        <i class="fas fa-play"></i>
-        <p style="color:white; margin-top:30px; letter-spacing:8px; font-weight:bold;">CLICK TO ENTER</p>
-    </div>
-
-    <div class="bg-overlay"></div>
-    <canvas id="particles"></canvas>
-
-    <audio id="bgMusic" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-    
-    <div class="music-btn" id="musicToggle"><i class="fas fa-volume-up"></i></div>
-
-    <div class="container" id="mainApp">
-        <div class="card" id="card">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
-            <h1>Hùng Madding</h1>
-            <div class="tagline">Python Dev | Pink Vibe</div>
-            
-            <div class="links">
-                <a href="https://facebook.com/hung.madding" target="_blank" class="link-item"><span>FACEBOOK</span> <i class="fab fa-facebook-f"></i></a>
-                <a href="https://tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TIKTOK</span> <i class="fab fa-tiktok"></i></a>
-                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>GITHUB</span> <i class="fab fa-github"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const audio = document.getElementById('bgMusic');
-        const overlay = document.getElementById('overlay');
-        const app = document.getElementById('mainApp');
-        const card = document.getElementById('card');
-        const mBtn = document.getElementById('musicToggle');
-        const cursor = document.getElementById('cursor');
-
-        // CHUỘT CUSTOM & HIỆU ỨNG 3D NGHIÊNG CARD
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-            
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-
-        function startApp() {
-            audio.play().catch(() => console.log("Yêu cầu tương tác để phát nhạc"));
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                app.style.display = 'block';
-                setTimeout(() => app.style.opacity = '1', 50);
-                mBtn.style.display = 'flex';
-                initParticles();
-                drawParticles();
-            }, 800);
-        }
-
-        // --- HỆ THỐNG TUYẾT HỒNG NÂNG CẤP (TO - NHANH - ĐẸP) ---
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let dots = [];
-
-        function initParticles() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            dots = [];
-            for(let i = 0; i < 120; i++) {
-                dots.push({ 
-                    x: Math.random() * canvas.width, 
-                    y: Math.random() * canvas.height, 
-                    s: Math.random() * 5 + 2, // Kích thước to rõ rệt
-                    vY: Math.random() * 3 + 1.5, // Tốc độ rơi nhanh hơn
-                    vX: (Math.random() - 0.5) * 1.5, // Gió thổi ngang mạnh hơn
-                    o: Math.random() * 0.9 + 0.1 
-                });
-            }
-        }
-
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            dots.forEach(d => {
-                ctx.beginPath();
-                ctx.arc(d.x, d.y, d.s, 0, Math.PI * 2);
-                ctx.shadowBlur = 15; // Hiệu ứng phát sáng mạnh
-                ctx.shadowColor = "#ff4d94";
-                ctx.fillStyle = `rgba(255, 77, 148, ${d.o})`;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-
-                d.y += d.vY;
-                d.x += d.vX;
-
-                if(d.y > canvas.height) { d.y = -10; d.x = Math.random() * canvas.width; }
-                if(d.x > canvas.width) d.x = 0;
-                if(d.x < 0) d.x = canvas.width;
-            });
-            requestAnimationFrame(drawParticles);
-        }
-
-        mBtn.addEventListener('click', () => {
-            if(audio.paused) { audio.play(); mBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
-            else { audio.pause(); mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
-        });
-
-        window.addEventListener('resize', initParticles);
-    </script>
-</body>
-</html>
+        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 40px; font-size: 14px; letter-spacing: 4px;
