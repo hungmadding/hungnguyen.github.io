@@ -14,78 +14,66 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg); overflow: hidden; }
-        body:not(.loaded) * { cursor: none !important; }
+        
+        /* CURSOR CUSTOM */
+        #cursor { 
+            position: fixed; width: 20px; height: 20px; background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 10002; transform: translate(-50%, -50%);
+            box-shadow: 0 0 25px var(--pink-glow); display: none; transition: width 0.3s, height 0.3s;
+        }
 
         /* LOADING SCREEN */
         #overlay {
             position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg) 0%, #1a0a1a 100%);
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--pink); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: var(--pink); transition: all 0.8s ease-in-out;
         }
-        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s ease-in-out infinite; font-family: 'Fira Code', monospace; }
+        .logo { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; animation: logoFloat 3s ease-in-out infinite; font-family: 'Fira Code', monospace; text-shadow: 0 0 20px var(--pink); }
         .loading-bar { width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 2rem; }
-        .loading-progress { height: 100%; background: linear-gradient(90deg, var(--pink), var(--pink-glow)); width: 0%; border-radius: 2px; animation: load 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 0 20px var(--pink-glow); }
-        .enter-btn { border: 2px solid var(--pink); padding: 18px 40px; letter-spacing: 6px; animation: neonPulse 2s infinite; text-transform: uppercase; font-weight: 600; font-size: 1.1rem; backdrop-filter: blur(10px); background: var(--glass); cursor: pointer; margin-top: 2rem; }
-        .enter-btn:hover { background: rgba(255,77,148,0.15); transform: scale(1.05); }
+        .loading-progress { height: 100%; background: var(--pink); width: 0%; animation: load 2.5s forwards; box-shadow: 0 0 15px var(--pink); }
+        .enter-btn { border: 2px solid var(--pink); padding: 15px 35px; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; font-weight: 600; transition: 0.3s; background: transparent; color: var(--pink); margin-top: 2rem; }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 30px var(--pink); }
 
-        @keyframes logoFloat { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-20px);} }
-        @keyframes neonPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,77,148,0.7);} 50%{box-shadow:0 0 0 30px rgba(255,77,148,0);} }
+        @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
         @keyframes load { to { width: 100%; } }
 
-        /* CURSOR */
-        #cursor { 
-            position: fixed; width: 20px; height: 20px; background: radial-gradient(circle, var(--pink) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 10002; transform: translate(-50%, -50%);
-            box-shadow: 0 0 25px var(--pink-glow); transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: none;
-        }
-        #cursor.hover { width: 50px; height: 50px; opacity: 0.7; }
-        #cursor.click { transform: translate(-50%, -50%) scale(0); animation: clickPulse 0.3s forwards; }
-        @keyframes clickPulse { 0%{transform:translate(-50%,-50%) scale(0);} 50%{transform:translate(-50%,-50%) scale(1.2);} 100%{transform:translate(-50%,-50%) scale(1);} }
+        /* CANVAS BACKGROUND */
+        #canvas-bg, #canvas-snow { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* CANVAS */
-        #canvas-bg, #canvas-snow { position: fixed; inset: 0; z-index: 1; }
-
-        /* MAIN */
-        .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; perspective: 1500px; opacity: 0; transform: scale(0.8) rotateX(10deg); transition: all 2s cubic-bezier(0.23, 1, 0.32, 1); }
-        .main-wrapper.active { opacity: 1; transform: scale(1) rotateX(0deg); }
+        /* MAIN CARD */
+        .main-wrapper { height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.9); transition: all 1.2s; z-index: 10; position: relative; pointer-events: none; }
+        .main-wrapper.active { opacity: 1; transform: scale(1); pointer-events: all; }
 
         .card {
-            background: linear-gradient(145deg, rgba(20,20,30,0.8), rgba(10,10,20,0.9)); backdrop-filter: blur(35px) saturate(180%);
-            border-radius: 40px; padding: 60px 50px; width: 420px; text-align: center; position: relative;
-            border: 1px solid rgba(255,77,148,0.2); box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-            transform-style: preserve-3d; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(20px);
+            border-radius: 30px; padding: 50px; width: 400px; text-align: center;
+            border: 1px solid rgba(255, 77, 148, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
 
-        .avatar-container { position: relative; width: 140px; height: 140px; margin: 0 auto 30px; animation: floatCard 6s ease-in-out infinite; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; border: 4px solid transparent; background: linear-gradient(var(--pink), var(--pink-glow)) padding-box, linear-gradient(45deg, var(--pink), #ff69b4) border-box; position: relative; z-index: 3; object-fit: cover; box-shadow: 0 0 40px rgba(255,77,148,0.4); }
-        
-        h1 { color: #fff; font-size: 28px; font-weight: 700; margin-bottom: 12px; background: linear-gradient(135deg, #fff 0%, var(--pink) 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .typewriter { font-family: 'Fira Code', monospace; color: var(--pink); font-size: 12px; letter-spacing: 3px; height: 20px; margin: 20px 0; border-right: 2px solid var(--pink); }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--pink); margin-bottom: 20px; object-fit: cover; box-shadow: 0 0 20px var(--pink); }
+        h1 { color: #fff; font-size: 26px; margin-bottom: 5px; }
+        .subtitle { color: var(--pink); font-size: 14px; margin-bottom: 20px; font-family: 'Fira Code'; }
+        .typewriter { height: 20px; color: #ccc; font-size: 13px; margin-bottom: 30px; }
 
+        .links { display: flex; flex-direction: column; gap: 12px; }
         .link-item {
-            background: var(--glass); padding: 15px 25px; border-radius: 20px; color: var(--text); text-decoration: none; display: flex;
-            justify-content: space-between; align-items: center; margin-bottom: 12px; transition: 0.4s; border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05); padding: 14px; border-radius: 15px; color: #fff;
+            text-decoration: none; display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
         }
-        .link-item:hover { background: rgba(255,77,148,0.2); transform: translateX(10px); color: #fff; border-color: var(--pink); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.2); border-color: var(--pink); transform: translateX(10px); }
 
-        .music-toggle, .stats {
-            position: fixed; bottom: 25px; left: 25px; color: var(--pink); font-size: 11px; font-family: 'Fira Code', monospace;
-            padding: 12px 20px; backdrop-filter: blur(20px); background: var(--glass); border-radius: 25px; z-index: 100; cursor: pointer;
-        }
-        .stats { left: auto; right: 25px; }
-        .toast { position: fixed; top: 30px; right: 30px; padding: 15px 25px; background: var(--pink); color: white; border-radius: 30px; opacity: 0; transition: 0.4s; z-index: 10000; }
-        .toast.show { opacity: 1; }
-
-        @keyframes floatCard { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+        /* PHỤ KIỆN */
+        .stats { position: fixed; bottom: 20px; right: 20px; color: var(--pink); font-family: 'Fira Code'; font-size: 10px; z-index: 100; }
+        .toast { position: fixed; top: 20px; right: 20px; background: var(--pink); color: #fff; padding: 10px 20px; border-radius: 10px; display: none; z-index: 10005; }
     </style>
 </head>
 <body>
 
-    <div id="overlay" onclick="startExperience()">
+    <div id="overlay">
         <div class="logo">HUNG MADDING</div>
         <div class="loading-bar"><div class="loading-progress"></div></div>
-        <div class="enter-btn">ENTER TERMINAL</div>
+        <button class="enter-btn" onclick="startExperience()">ENTER TERMINAL</button>
     </div>
 
     <div id="cursor"></div>
@@ -94,122 +82,125 @@
 
     <div class="main-wrapper" id="mainContent">
         <div class="card">
-            <div class="avatar-container">
-                <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Avatar">
-            </div>
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng">
             <h1>Hùng Madding</h1>
-            <div class="subtitle">Python Developer</div>
+            <div class="subtitle">Python Developer | 11A6</div>
             <div class="typewriter" id="typewriter"></div>
             
             <div class="links">
-                <a href="https://facebook.com" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
-                <a href="https://tiktok.com" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <a href="https://github.com" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
+                <a href="https://facebook.com/yourprofile" class="link-item" target="_blank"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
+                <a href="https://github.com/yourprofile" class="link-item" target="_blank"><span>GitHub</span><i class="fab fa-github"></i></a>
+                <a href="https://tiktok.com/@yourprofile" class="link-item" target="_blank"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
                 <a href="#" class="link-item" onclick="copyEmail(event)"><span>Email</span><i class="fas fa-envelope"></i></a>
             </div>
         </div>
     </div>
 
-    <div class="music-toggle" onclick="toggleMusic()"><i class="fas fa-music" id="musicIcon"></i></div>
-    <div class="stats" id="stats">BIO-OS v3.0 | READY</div>
-    <div class="toast" id="toast">Copied!</div>
+    <div class="stats">SYSTEM STATUS: READY v3.0</div>
+    <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
         const canvasBg = document.getElementById('canvas-bg');
         const canvasSnow = document.getElementById('canvas-snow');
         const ctxBg = canvasBg.getContext('2d');
         const ctxSnow = canvasSnow.getContext('2d');
-        let stars = [], snowParticles = [];
+        let snowParticles = [], stars = [];
 
-        class Snowflake {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.size = Math.random() * 3 + 1;
-                this.speed = Math.random() * 1 + 0.5;
-            }
-            update() {
-                this.y += this.speed;
-                if (this.y > window.innerHeight) this.y = -10;
-            }
-            draw() {
-                ctxSnow.fillStyle = "rgba(255, 255, 255, 0.5)";
-                ctxSnow.beginPath();
-                ctxSnow.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctxSnow.fill();
-            }
-        }
-
-        class Star {
-            constructor() {
-                this.x = Math.random() * window.innerWidth;
-                this.y = Math.random() * window.innerHeight;
-                this.size = Math.random() * 1.5;
-            }
-            draw() {
-                ctxBg.fillStyle = "#fff";
-                ctxBg.beginPath();
-                ctxBg.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctxBg.fill();
-            }
-        }
-
+        // Khởi tạo Canvas
         function init() {
             canvasBg.width = canvasSnow.width = window.innerWidth;
             canvasBg.height = canvasSnow.height = window.innerHeight;
-            stars = Array.from({length: 100}, () => new Star());
-            snowParticles = Array.from({length: 50}, () => new Snowflake());
+            
+            stars = [];
+            for(let i=0; i<100; i++) {
+                stars.push({ x: Math.random()*canvasBg.width, y: Math.random()*canvasBg.height, s: Math.random()*1.5 });
+            }
+            
+            snowParticles = [];
+            for(let i=0; i<50; i++) {
+                snowParticles.push({
+                    x: Math.random()*canvasSnow.width,
+                    y: Math.random()*canvasSnow.height,
+                    r: Math.random()*3+1,
+                    d: Math.random()*1+0.5
+                });
+            }
         }
 
-        function animate() {
+        // Vòng lặp hiệu ứng
+        function draw() {
             ctxBg.clearRect(0,0,canvasBg.width, canvasBg.height);
             ctxSnow.clearRect(0,0,canvasSnow.width, canvasSnow.height);
-            stars.forEach(s => s.draw());
-            snowParticles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+
+            // Vẽ sao
+            ctxBg.fillStyle = "#FFF";
+            stars.forEach(s => {
+                ctxBg.beginPath();
+                ctxBg.arc(s.x, s.y, s.s, 0, Math.PI*2);
+                ctxBg.fill();
+            });
+
+            // Vẽ tuyết
+            ctxSnow.fillStyle = "rgba(255,255,255,0.6)";
+            snowParticles.forEach(p => {
+                ctxSnow.beginPath();
+                ctxSnow.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctxSnow.fill();
+                p.y += p.d;
+                if(p.y > canvasSnow.height) p.y = -10;
+            });
+
+            requestAnimationFrame(draw);
         }
 
+        // Xử lý khi nhấn nút ENTER
         function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
+            const overlay = document.getElementById('overlay');
+            const main = document.getElementById('mainContent');
+            
+            overlay.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('mainContent').classList.add('active');
-                document.body.classList.add('loaded');
+                overlay.style.display = 'none';
+                main.classList.add('active');
                 document.getElementById('cursor').style.display = 'block';
-                startTypewriter();
-            }, 1000);
+                typeWriter();
+            }, 800);
         }
 
-        function startTypewriter() {
-            const text = "> Python Automation Engineer _";
+        // Hiệu ứng gõ chữ
+        function typeWriter() {
+            const text = "> Đang khởi chạy hệ thống Python... OK!";
             let i = 0;
             function type() {
                 if (i < text.length) {
                     document.getElementById('typewriter').innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, 100);
+                    setTimeout(type, 50);
                 }
             }
             type();
         }
 
+        // Copy Email
         function copyEmail(e) {
             e.preventDefault();
-            navigator.clipboard.writeText("contact@hungmadding.io");
-            const t = document.getElementById('toast');
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
+            navigator.clipboard.writeText("your-email@gmail.com");
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
         }
 
+        // Con trỏ chuột
         window.addEventListener('mousemove', (e) => {
-            const c = document.getElementById('cursor');
-            c.style.left = e.clientX + 'px';
-            c.style.top = e.clientY + 'px';
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        init(); animate();
-        window.onresize = init;
+        // Chạy khởi tạo
+        window.addEventListener('resize', init);
+        init();
+        draw();
     </script>
 </body>
 </html>
