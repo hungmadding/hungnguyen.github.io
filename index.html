@@ -3,178 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Cinematic</title>
+<title>Hùng Madding | Cinematic Bio</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 
 <style>
-:root{
---pink:#ff4fa3;
---blue:#6ee7ff;
-}
+:root { --pink:#ff4d94; --bg:#050505; }
 
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;cursor:none!important}
 
-body{
-height:100vh;
+body,html{
+height:100%;
+font-family:'Quicksand',sans-serif;
+background:var(--bg);
 overflow:hidden;
-font-family:'Inter',sans-serif;
-
-/* NỀN ANIME THẬT */
-background:
-radial-gradient(circle at 20% 30%, rgba(255,79,163,0.4), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(110,231,255,0.3), transparent 40%),
-linear-gradient(120deg,#0f0f1a,#1a1a2e,#0f0f1a);
 }
 
-/* ánh sáng mờ */
-body::before{
-content:"";
+/* overlay */
+#overlay{
+position:fixed;inset:0;
+background:var(--bg);
+z-index:9999;
+display:flex;justify-content:center;align-items:center;
+color:var(--pink);
+transition:.8s;
+}
+
+.enter-btn{
+border:1px solid var(--pink);
+padding:15px 35px;
+letter-spacing:5px;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(255,77,148,0.4)}
+70%{box-shadow:0 0 0 20px rgba(255,77,148,0)}
+}
+
+/* cursor */
+#cursor{
+position:fixed;
+width:15px;height:15px;
+background:var(--pink);
+border-radius:50%;
+pointer-events:none;
+z-index:1000;
+transform:translate(-50%,-50%);
+box-shadow:0 0 20px var(--pink);
+}
+
+/* canvas */
+#canvas-snow{
 position:fixed;
 inset:0;
-background:linear-gradient(120deg,#ff4fa3,#6ee7ff);
-opacity:0.08;
-filter:blur(120px);
+z-index:0;
 }
 
-/* CARD */
-.wrapper{
-height:100%;
+/* main */
+.main-wrapper{
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+opacity:0;
+transform:scale(.9);
+transition:1.2s;
 }
 
 .card{
-width:360px;
-padding:50px;
-border-radius:30px;
-
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(30px);
-
-border:1px solid rgba(255,255,255,0.1);
-box-shadow:0 0 60px rgba(255,79,163,0.15);
-
+background:rgba(15,15,20,0.75);
+backdrop-filter:blur(25px);
+border-radius:35px;
+padding:55px 45px;
+width:370px;
 text-align:center;
-transition:0.3s;
+border:1px solid rgba(255,77,148,0.25);
 }
 
-/* AVATAR */
+/* avatar */
+.avatar-container{
+position:relative;
+width:125px;height:125px;
+margin:0 auto 25px;
+}
+
 .avatar{
-width:100px;height:100px;
+width:100%;height:100%;
 border-radius:50%;
-border:2px solid var(--pink);
-margin-bottom:20px;
-
-box-shadow:
-0 0 20px var(--pink),
-0 0 40px rgba(255,79,163,0.5);
+border:3px solid var(--pink);
 }
 
-/* TEXT */
-h1{
-color:#fff;
-font-weight:600;
-margin-bottom:10px;
+.avatar-glow{
+position:absolute;
+inset:-8px;
+background:var(--pink);
+filter:blur(20px);
+border-radius:50%;
+opacity:.3;
+animation:breathe 4s infinite;
 }
 
-.type{
+@keyframes breathe{
+50%{opacity:.5;transform:scale(1.15)}
+}
+
+h1{color:#fff;margin-bottom:10px}
+
+/* type */
+.typewriter{
+font-family:'Fira Code';
 color:var(--pink);
-font-size:13px;
+font-size:11px;
 letter-spacing:2px;
 margin-bottom:30px;
 }
 
-/* LINKS */
-.link{
-display:block;
-padding:15px;
-margin-bottom:12px;
-border-radius:14px;
-
-background:rgba(255,255,255,0.06);
-color:#ddd;
+/* links */
+.link-item{
+background:rgba(255,255,255,0.05);
+padding:16px;
+border-radius:15px;
+color:#fff;
 text-decoration:none;
-
-transition:0.25s;
+display:flex;
+justify-content:space-between;
+margin-bottom:12px;
+transition:.3s;
 }
 
-.link:hover{
-background:linear-gradient(90deg,var(--pink),var(--blue));
-color:#000;
-transform:translateY(-3px) scale(1.03);
+.link-item:hover{
+background:rgba(255,77,148,0.2);
+transform:translateX(6px);
 }
 
-/* SAKURA */
-canvas{
+/* ripple */
+.ripple{
 position:fixed;
-inset:0;
-pointer-events:none;
+border:2px solid var(--pink);
+border-radius:50%;
+transform:translate(-50%,-50%);
+animation:ripple .6s forwards;
+}
+
+@keyframes ripple{
+to{width:120px;height:120px;opacity:0}
 }
 </style>
 </head>
 
-<body>
+<body onclick="createRipple(event)">
 
-<canvas id="sakura"></canvas>
+<div id="overlay" onclick="start()">
+<div class="enter-btn">ENTER</div>
+</div>
 
-<div class="wrapper">
-<div class="card">
+<div id="cursor"></div>
+<canvas id="canvas-snow"></canvas>
+
+<div class="main-wrapper" id="content">
+<div class="card" id="card">
+
+<div class="avatar-container">
+<div class="avatar-glow"></div>
 <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+</div>
 
 <h1>Hùng Madding</h1>
-<div class="type">ANIME CINEMATIC</div>
+<div class="typewriter" id="typewriter"></div>
 
-<a href="#" class="link">Facebook</a>
-<a href="#" class="link">TikTok</a>
-<a href="#" class="link">GitHub</a>
+<div class="links">
 
+<!-- GIỮ NGUYÊN LINK FB CỦA BẠN -->
+<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+<span>Facebook</span><i class="fab fa-facebook-f"></i>
+</a>
+
+<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+<span>TikTok</span><i class="fab fa-tiktok"></i>
+</a>
+
+<a href="#" class="link-item" onmouseover="focusIn()" onmouseout="focusOut()">
+<span>GitHub</span><i class="fab fa-github"></i>
+</a>
+
+</div>
 </div>
 </div>
 
 <script>
-let c=document.getElementById("sakura");
-let ctx=c.getContext("2d");
+const canvas=document.getElementById('canvas-snow');
+const ctx=canvas.getContext('2d');
+const cursor=document.getElementById('cursor');
+const card=document.getElementById('card');
 
-c.width=innerWidth;
-c.height=innerHeight;
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
+/* 🌸 SAKURA */
 let petals=[];
-
-/* ít nhưng đẹp */
-for(let i=0;i<25;i++){
+for(let i=0;i<35;i++){
 petals.push({
-x:Math.random()*c.width,
-y:Math.random()*c.height,
-size:Math.random()*5+3,
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*6+4,
 speed:Math.random()*0.7+0.3,
 angle:Math.random()*Math.PI*2
 });
 }
 
-function draw(){
-ctx.clearRect(0,0,c.width,c.height);
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
 petals.forEach(p=>{
 p.y+=p.speed;
-p.x+=Math.sin(p.angle)*0.3;
+p.x+=Math.sin(p.angle)*0.5;
 p.angle+=0.01;
 
-if(p.y>c.height){
+if(p.y>canvas.height){
 p.y=0;
-p.x=Math.random()*c.width;
+p.x=Math.random()*canvas.width;
 }
 
 ctx.beginPath();
-ctx.fillStyle="rgba(255,182,193,0.7)";
+ctx.fillStyle="rgba(255,182,193,0.8)";
 ctx.ellipse(p.x,p.y,p.size,p.size/2,0,0,Math.PI*2);
 ctx.fill();
 });
 
-requestAnimationFrame(draw);
+requestAnimationFrame(animate);
 }
-draw();
+animate();
+
+/* cursor + tilt */
+document.addEventListener('mousemove',e=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+
+let x=(innerWidth/2-e.clientX)/30;
+let y=(innerHeight/2-e.clientY)/30;
+
+card.style.transform=`rotateX(${y}deg) rotateY(${-x}deg)`;
+});
+
+/* type */
+let text="PYTHON DEV | PINK VIBE";
+let i=0;
+function typeEffect(){
+if(i<text.length){
+document.getElementById("typewriter").innerHTML+=text[i];
+i++;
+setTimeout(typeEffect,80);
+}
+}
+
+/* start */
+function start(){
+overlay.style.opacity=0;
+setTimeout(()=>{
+overlay.style.display="none";
+content.style.opacity=1;
+content.style.transform="scale(1)";
+typeEffect();
+},600);
+}
+
+/* ripple */
+function createRipple(e){
+const r=document.createElement("div");
+r.className="ripple";
+r.style.left=e.clientX+"px";
+r.style.top=e.clientY+"px";
+document.body.appendChild(r);
+setTimeout(()=>r.remove(),600);
+}
+
+function focusIn(){cursor.style.transform="translate(-50%,-50%) scale(3)"}
+function focusOut(){cursor.style.transform="translate(-50%,-50%) scale(1)"}
 </script>
 
 </body>
