@@ -3,124 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding | Elegant Bio</title>
+    <title>Hùng Madding | Ultimate Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --soft-glow: rgba(255, 77, 148, 0.3); }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        :root { --pink: #ff4d94; --glass: rgba(10, 10, 15, 0.9); }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; } /* Ẩn chuột mặc định */
         
-        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #0a0a0a; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        body, html { height: 100%; font-family: 'Quicksand', sans-serif; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
 
-        /* CHUỘT ICON VÒNG TRÒN NEON */
+        /* --- CHUỘT CUSTOM ĐỔI MÀU NEON --- */
         #cursor { 
-            position: fixed; width: 25px; height: 25px; border: 2px solid var(--pink); border-radius: 50%; 
-            pointer-events: none; z-index: 10001; transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out; box-shadow: 0 0 15px var(--pink);
+            position: fixed; width: 12px; height: 12px; border-radius: 50%; 
+            pointer-events: none; z-index: 10001; background: #fff;
+            animation: cursorColor 5s linear infinite;
+            transform: translate(-50%, -50%); /* Căn giữa con trỏ */
+            transition: width 0.2s, height 0.2s;
         }
 
-        #canvas-snow { position: fixed; inset: 0; z-index: -1; }
+        @keyframes cursorColor {
+            0%   { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
+            25%  { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; }
+            50%  { box-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00; }
+            75%  { box-shadow: 0 0 15px #00ff00, 0 0 30px #00ff00; }
+            100% { box-shadow: 0 0 15px #ff4d94, 0 0 30px #ff4d94; }
+        }
 
-        /* CARD VỚI LED CHUYỂN MÀU NHẸ */
-        .container { perspective: 1000px; z-index: 10; }
+        /* --- MÀN HÌNH CHỜ --- */
+        #overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 1s; }
+        #overlay i { font-size: 80px; color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+
+        /* NỀN VÀ TUYẾT */
+        .bg-overlay { position: fixed; inset: 0; z-index: -2; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.pinimg.com/originals/a0/0c/33/a00c33a948e7b9b1e9b1e9b1e9b1e9b1.jpg'); background-size: cover; background-position: center; }
+        #particles { position: fixed; inset: 0; z-index: -1; }
+
+        /* --- CARD VIP - DỌC - KÍNH MỜ - VIỀN ĐÈN LED --- */
+        .container { perspective: 1000px; display: none; opacity: 0; transition: 1s; z-index: 10; }
         .card {
-            background: rgba(20, 20, 25, 0.9); backdrop-filter: blur(15px); border-radius: 35px;
+            background: var(--glass); backdrop-filter: blur(20px); border-radius: 35px;
             padding: 50px 40px; width: 380px; text-align: center; position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1); transform-style: preserve-3d;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d;
+            transition: transform 0.1s ease;
         }
         
-        /* Hiệu ứng LED viền nhẹ nhàng */
+        /* Hiệu ứng viền phát sáng chạy quanh (RGB Border) */
         .card::before {
-            content: ''; position: absolute; inset: -1px;
-            background: linear-gradient(45deg, #ff4d94, #7000ff, #ff4d94);
-            background-size: 200% 200%; z-index: -1; border-radius: 36px;
-            animation: soft-glow 6s ease infinite; opacity: 0.5;
+            content: ''; position: absolute; inset: -2px;
+            background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94);
+            background-size: 400%; z-index: -1; border-radius: 38px;
+            animation: steam 15s linear infinite; opacity: 0.7;
         }
-        @keyframes soft-glow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); box-shadow: 0 0 20px var(--soft-glow); margin-bottom: 25px; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        h1 { color: #fff; font-size: 26px; margin-bottom: 5px; }
-        .tagline { color: var(--pink); font-size: 11px; letter-spacing: 2px; margin-bottom: 35px; opacity: 0.8; }
+        /* Hiệu ứng bóng đổ phát sáng (Glow) */
+        .card::after { content: ''; position: absolute; inset: -2px; background: linear-gradient(45deg, #ff4d94, #00ffff, #ff00ff, #ff4d94); background-size: 400%; z-index: -1; border-radius: 38px; animation: steam 15s linear infinite; filter: blur(15px); opacity: 0.7; }
 
+        @keyframes steam { 0% { background-position: 0 0; } 100% { background-position: 400% 0; } }
+
+        /* AVATAR DẬP DỀNH 3D */
+        .avatar { width: 120px; height: 120px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 30px var(--pink); margin-bottom: 20px; object-fit: cover; animation: floatAvatar 4s ease-in-out infinite; transform: translateZ(60px); }
+        @keyframes floatAvatar { 0%, 100% { transform: translateY(0) translateZ(60px); } 50% { transform: translateY(-10px) translateZ(60px); } }
+        
+        h1 { font-size: 28px; color: #fff; text-shadow: 0 0 20px var(--pink); margin-bottom: 5px; transform: translateZ(50px); }
+        .tagline { color: var(--pink); font-weight: bold; margin-bottom: 30px; font-size: 12px; letter-spacing: 3px; transform: translateZ(40px); }
+
+        /* LINK ITEMS */
+        .links { display: flex; flex-direction: column; gap: 12px; transform-style: preserve-3d; }
         .link-item {
-            background: rgba(255, 255, 255, 0.03); padding: 16px; border-radius: 18px; color: #fff;
-            text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; transition: 0.3s; border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 148, 0.2);
+            padding: 18px; border-radius: 20px; color: #fff; text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; justify-content: space-between; 
+            transition: 0.3s; transform: translateZ(30px);
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.1); border-color: var(--pink); transform: scale(1.02); }
+        .link-item:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; transform: scale(1.05) translateZ(50px); }
+        .link-item i { font-size: 18px; }
 
-        .music-btn { position: fixed; bottom: 30px; right: 30px; color: #fff; opacity: 0.5; transition: 0.3s; }
-        .music-btn:hover { opacity: 1; transform: scale(1.1); }
+        /* TRÌNH PHÁT NHẠC MINI */
+        .music-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--glass); border-radius: 50%; display: none; justify-content: center; align-items: center; color: #fff; z-index: 1000; border: 1px solid var(--pink); }
     </style>
 </head>
 <body>
 
     <div id="cursor"></div>
-    <canvas id="canvas-snow"></canvas>
-    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
-    <div class="music-btn" id="mToggle" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
 
-    <div class="container">
+    <div id="overlay" onclick="startApp()">
+        <i class="fas fa-play"></i>
+        <p style="color:white; margin-top:20px; letter-spacing:5px;">HÙNG MADDING ENTER</p>
+    </div>
+
+    <div class="bg-overlay"></div>
+    <canvas id="particles"></canvas>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="music-btn" id="musicToggle"><i class="fas fa-volume-up"></i></div>
+
+    <div class="container" id="mainApp">
         <div class="card" id="card">
-            <img src="https://i.imgur.com/uIKY94v.png" class="avatar">
+            <img src="https://i.imgur.com/uIKY94v.png" class="avatar" alt="Hùng Madding">
             <h1>Hùng Madding</h1>
-            <p class="tagline">PYTHON DEVELOPER | PINK VIBE</p>
+            <div class="tagline">Python Developer | Pink Vibe</div>
+            
             <div class="links">
-                <a href="https://facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
-                <a href="https://tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
+                <a href="https://facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span> <i class="fab fa-facebook"></i></a>
+                <a href="https://tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TikTok</span> <i class="fab fa-tiktok"></i></a>
+                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>GitHub</span> <i class="fab fa-github"></i></a>
             </div>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas-snow');
-        const ctx = canvas.getContext('2d');
-        const cursor = document.getElementById('cursor');
+        const audio = document.getElementById('bgMusic');
+        const overlay = document.getElementById('overlay');
+        const app = document.getElementById('mainApp');
         const card = document.getElementById('card');
-        
-        // Chuột và 3D
+        const mBtn = document.getElementById('musicToggle');
+        const cursor = document.getElementById('cursor');
+
+        // ĐIỀU KHIỂN CHUỘT CUSTOM & 3D NGHIÊNG CARD
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            let x = (window.innerWidth / 2 - e.pageX) / 30;
-            let y = (window.innerHeight / 2 - e.pageY) / 30;
-            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        // Tuyết bông to lãng mạn
-        let flakes = [];
-        function initSnow() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            flakes = [];
-            for(let i=0; i<45; i++) {
-                flakes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*15+8, v: Math.random()*0.8+0.4, o: Math.random()*0.4+0.1 });
+        function startApp() {
+            audio.play().catch(() => console.log("Yêu cầu tương tác để phát nhạc"));
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                app.style.display = 'block';
+                setTimeout(() => app.style.opacity = '1', 50);
+                mBtn.style.display = 'flex';
+                initParticles();
+                drawParticles();
+            }, 800);
+        }
+
+        // --- HỆ THỐNG TUYẾT HỒNG NÂNG CẤP (Dày - Lấp lánh) ---
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            dots = [];
+            for(let i = 0; i < 80; i++) {
+                dots.push({ 
+                    x: Math.random()*canvas.width, 
+                    y: Math.random()*canvas.height, 
+                    s: Math.random()*2+1, 
+                    v: Math.random()*0.6+0.2 
+                });
             }
         }
-        function drawSnow() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            flakes.forEach(f => {
-                ctx.fillStyle = `rgba(255, 77, 148, ${f.o})`;
-                ctx.font = `${f.s}px Arial`;
-                ctx.fillText("❄", f.x, f.y);
-                f.y += f.v; if(f.y > canvas.height) f.y = -20;
-            });
-            requestAnimationFrame(drawSnow);
-        }
-        window.addEventListener('resize', initSnow);
-        initSnow(); drawSnow();
 
-        function toggleMusic() {
-            const a = document.getElementById('bgm');
-            if(a.paused) a.play(); else a.pause();
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff4d94";
+            dots.forEach(d => {
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.s, 0, Math.PI*2);
+                ctx.fill();
+                d.y -= d.v;
+                if(d.y < 0) d.y = canvas.height;
+            });
+            requestAnimationFrame(drawParticles);
         }
+
+        mBtn.addEventListener('click', () => {
+            if(audio.paused) { audio.play(); mBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }
+            else { audio.pause(); mBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+        });
+
+        window.addEventListener('resize', initParticles);
     </script>
 </body>
 </html>
