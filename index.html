@@ -2,191 +2,255 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hùng Madding - Bio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hùng Madding Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --glow: #ff0077; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { 
+            --pink: #ff4d94; --pink-glow: #ff0077;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body, html { 
             height: 100%; 
             font-family: 'Quicksand', sans-serif; 
-            /* SỬ DỤNG FILE background.jpg TRÊN GITHUB CỦA BẠN */
+            /* SỬ DỤNG FILE CỤC BỘ BACKGROUND.JPG ĐÃ TẢI LÊN GITHUB */
             background: #000 url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             overflow: hidden; 
+            touch-action: none; 
         }
         
-        canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+        canvas { position: fixed; inset: 0; pointer-events: none; }
+        #canvas-bg { z-index: 1; }
+        #canvas-mid { z-index: 2; }
+        #canvas-foreground { z-index: 10001; }
 
+        /* MÀN HÌNH CHỜ - GIỮ NGUYÊN */
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: var(--pink); transition: opacity 1s ease;
         }
+        .logo-enter { 
+            font-size: 3rem; font-weight: 700; margin-bottom: 2rem; 
+            font-family: 'Fira Code'; text-shadow: 0 0 25px var(--pink);
+            letter-spacing: 5px;
+        }
+
+        .loader-container { width: 300px; text-align: center; margin-top: 20px; }
+        .progress-bar {
+            width: 100%; height: 12px; background: rgba(255, 77, 148, 0.1);
+            border: 1px solid var(--pink); border-radius: 6px; overflow: hidden;
+            position: relative; box-shadow: 0 0 15px rgba(255, 77, 148, 0.3);
+        }
+        .progress-fill {
+            height: 100%; width: 0%; background: var(--pink);
+            box-shadow: 0 0 20px var(--pink); transition: width 0.1s linear;
+        }
+        .load-text { font-family: 'Fira Code'; font-size: 12px; margin-top: 10px; letter-spacing: 1px; }
 
         .enter-btn { 
-            border: 2px solid var(--pink); padding: 12px 40px; cursor: pointer;
-            background: transparent; color: var(--pink); font-weight: 700;
-            letter-spacing: 4px; transition: 0.4s; margin-top: 20px;
-            font-family: 'Fira Code';
+            display: none; border: 2px solid var(--pink); padding: 15px 45px; 
+            cursor: pointer; text-transform: uppercase; font-weight: 600; 
+            background: transparent; color: var(--pink); transition: 0.3s; 
+            letter-spacing: 5px; animation: fadeIn 0.8s forwards;
         }
-        .enter-btn:hover { background: var(--pink); color: #fff; box-shadow: 0 0 40px var(--pink); }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 40px var(--pink); }
 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* GIAO DIỆN CHÍNH */
         .main-wrapper { 
             height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1200px; transition: all 1s ease; z-index: 10;
+            opacity: 0; perspective: 1200px; transform: scale(0.9) translateY(30px); 
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10;
         }
-        .main-wrapper.active { opacity: 1; }
+        .main-wrapper.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
 
         .card {
-            background: rgba(15, 15, 25, 0.45); 
-            backdrop-filter: blur(20px); 
+            background: rgba(10, 10, 20, 0.65); 
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 40px; padding: 45px; width: 420px;
-            text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+            border-radius: 40px; padding: 40px; width: 420px; min-height: 550px;
+            text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6); transform-style: preserve-3d;
+            transition: transform 0.2s ease-out; display: flex; flex-direction: column; align-items: center;
         }
 
         .avatar-container {
             width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); 
-            margin: 0 auto 20px; box-shadow: 0 0 30px var(--pink); overflow: hidden;
+            margin-bottom: 20px; box-shadow: 0 0 35px var(--pink); overflow: hidden;
+            transform: translateZ(80px);
         }
+        .avatar { width: 100%; height: 100%; object-fit: cover; }
 
-        h1 { color: #fff; font-size: 28px; text-shadow: 0 0 15px var(--pink), 0 0 30px var(--pink); margin-bottom: 5px; }
-        .subtitle { color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 20px; font-weight: 500; }
-        .typewriter { font-family: 'Fira Code'; font-size: 13px; color: #fff; text-shadow: 0 0 10px var(--pink); margin-bottom: 30px; min-height: 20px; }
+        h1 { color: #fff; font-size: 28px; text-shadow: 0 0 20px var(--pink); transform: translateZ(60px); }
+        .subtitle { color: #fff; font-size: 15px; margin: 5px 0 20px; transform: translateZ(50px); }
+        .typewriter { height: 20px; color: #fff; font-size: 13px; margin-bottom: 25px; font-family: 'Fira Code'; font-weight: bold; }
 
-        .links { display: flex; flex-direction: column; gap: 14px; }
+        .links { width: 100%; display: flex; flex-direction: column; gap: 12px; transform: translateZ(50px); }
         .link-item {
-            background: rgba(255, 255, 255, 0.08); padding: 15px 22px; border-radius: 18px; color: #fff;
+            background: rgba(255,255,255,0.08); padding: 14px 22px; border-radius: 18px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px); font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease;
         }
-        .link-item:hover { 
-            background: rgba(255, 77, 148, 0.4); transform: translateX(10px) scale(1.02);
-            border-color: var(--pink); box-shadow: 0 0 20px var(--pink);
-        }
+        .link-item:hover { background: rgba(255, 77, 148, 0.4); transform: translateX(10px) translateZ(20px); }
 
         #music-btn {
-            position: fixed; top: 25px; right: 25px; z-index: 1000;
-            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--pink);
+            position: fixed; top: 25px; right: 25px; z-index: 10005;
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--pink);
             color: var(--pink); display: none; justify-content: center; align-items: center;
-            cursor: pointer; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px var(--pink);
+            cursor: pointer; box-shadow: 0 0 20px var(--pink-glow);
+            background: rgba(0,0,0,0.5);
         }
-        .footer { position: fixed; bottom: 15px; right: 20px; font-size: 10px; color: #fff; opacity: 0.7; font-family: 'Fira Code'; }
+        #music-btn.playing i { animation: rotate 3s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .footer-info { position: fixed; bottom: 15px; right: 20px; font-size: 10px; color: #fff; font-family: 'Fira Code'; text-shadow: 0 0 5px #000; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <h1 style="letter-spacing: 8px; font-family: 'Fira Code';">HUNG MADDING</h1>
-        <button class="enter-btn" onclick="start()">ENTER SYSTEM</button>
+        <div class="logo-enter">HUNG MADDING</div>
+        <div class="loader-container" id="loader">
+            <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+            <div class="load-text" id="status">đang load nè.. 0%</div>
+        </div>
+        <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER SYSTEM</button>
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
     
-    <audio id="bg-audio" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-audio" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-    <canvas id="snow"></canvas>
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="canvas-mid"></canvas>
+    <canvas id="canvas-foreground"></canvas>
 
-    <div class="main-wrapper" id="content">
-        <div class="card" id="card">
+    <div class="main-wrapper" id="mainContent">
+        <div class="card" id="profileCard">
             <div class="avatar-container">
-                <img src="https://ui-avatars.com/api/?name=H&background=0a0a1a&color=ff4d94" style="width:100%">
+                <img src="https://ui-avatars.com/api/?name=H&background=0a0a1a&color=ff4d94" class="avatar">
             </div>
             <h1>Hùng Madding</h1>
             <div class="subtitle">Nguyễn Mạnh Hùng</div>
-            <div class="typewriter" id="tw"></div>
+            <div class="typewriter" id="typewriter"></div>
             <div class="links">
-                <a href="https://facebook.com" class="link-item">Facebook <i class="fab fa-facebook-f"></i></a>
-                <a href="https://github.com/hungmadding" class="link-item">GitHub <i class="fab fa-github"></i></a>
-                <a href="https://tiktok.com" class="link-item">TikTok <i class="fab fa-tiktok"></i></a>
-                <div class="link-item" onclick="alert('Chào bạn nhé! ❤️')">About me <i class="fas fa-heart"></i></div>
+                <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
+                <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
+                <div class="link-item" onclick="alert('Ô cảm ơn bạn nhé! ❤️')"><span>About me</span><i class="fas fa-heart"></i></div>
             </div>
         </div>
     </div>
 
-    <div class="footer">NHÌN CÁI DB</div>
+    <div class="footer-info">NHÌN CÁI DB</div>
 
     <script>
         const audio = document.getElementById('bg-audio');
-        const mBtn = document.getElementById('music-btn');
+        const btn = document.getElementById('music-btn');
+        const fill = document.getElementById('fill');
+        const status = document.getElementById('status');
+        const loader = document.getElementById('loader');
+        const enterBtn = document.getElementById('enterBtn');
 
-        function start() {
+        let width = 0;
+        const loading = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(loading);
+                status.innerText = "SYSTEM READY TO BOOT";
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    enterBtn.style.display = 'block';
+                }, 500);
+            } else {
+                width++;
+                fill.style.width = width + '%';
+                status.innerText = `đang load nè má... ${width}%`;
+            }
+        }, 35);
+
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); btn.classList.add('playing'); }
+            else { audio.pause(); btn.classList.remove('playing'); }
+        }
+
+        function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
-            audio.play().catch(() => console.log("Music blocked by browser"));
+            audio.play().then(() => {
+                btn.classList.add('playing');
+            }).catch(e => console.log("Cần click để phát nhạc"));
+            
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
-                document.getElementById('content').classList.add('active');
-                mBtn.style.display = 'flex';
-                type();
+                document.getElementById('mainContent').classList.add('active');
+                btn.style.display = 'flex';
+                typeWriter();
             }, 800);
         }
 
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); mBtn.style.boxShadow = "0 0 20px var(--pink)"; } 
-            else { audio.pause(); mBtn.style.boxShadow = "none"; }
+        function typeWriter() {
+            const text = "> Booting Bio-OS Terminal v3.22... Success!";
+            let i = 0; const target = document.getElementById('typewriter');
+            function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 50); } }
+            type();
         }
 
-        function type() {
-            const txt = "> Booting Bio-OS Terminal v3.22... Success!";
-            let i = 0;
-            function run() {
-                if (i < txt.length) {
-                    document.getElementById('tw').innerHTML += txt.charAt(i++);
-                    setTimeout(run, 40);
-                }
+        const canvases = [document.getElementById('canvas-bg'), document.getElementById('canvas-mid'), document.getElementById('canvas-foreground')];
+        const ctxs = canvases.map(c => c.getContext('2d'));
+        let particles = [[], [], []];
+
+        class Particle {
+            constructor(idx) { this.idx = idx; this.reset(); }
+            reset() {
+                const c = canvases[this.idx];
+                this.x = Math.random() * c.width;
+                this.y = Math.random() * c.height;
+                this.size = [1.2, 2.8, 5.5][this.idx];
+                this.speed = [0.3, 0.7, 1.8][this.idx];
             }
-            run();
+            update() { this.y += this.speed; if (this.y > canvases[this.idx].height) this.y = -10; }
+            draw() {
+                const ctx = ctxs[this.idx];
+                ctx.globalAlpha = [0.3, 0.5, 0.8][this.idx];
+                ctx.fillStyle = "#FFF";
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
         }
-
-        const canvas = document.getElementById('snow');
-        const ctx = canvas.getContext('2d');
-        let flakes = [];
 
         function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            flakes = Array.from({length: 120}, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 2 + 1,
-                d: Math.random() * 1,
-                s: Math.random() * 1.5 + 0.5
-            }));
+            canvases.forEach(c => { c.width = window.innerWidth; c.height = window.innerHeight; });
+            particles = [
+                Array.from({length: 80}, () => new Particle(0)),
+                Array.from({length: 45}, () => new Particle(1)),
+                Array.from({length: 25}, () => new Particle(2))
+            ];
         }
 
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-            ctx.beginPath();
-            flakes.forEach(f => {
-                ctx.moveTo(f.x, f.y);
-                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-                f.y += f.s;
-                f.x += Math.sin(f.d += 0.01);
-                if (f.y > canvas.height) f.y = -10;
-                if (f.x > canvas.width) f.x = 0;
+        function animate() {
+            ctxs.forEach((ctx, i) => {
+                ctx.clearRect(0, 0, canvases[i].width, canvases[i].height);
+                particles[i].forEach(p => { p.update(); p.draw(); });
             });
-            ctx.fill();
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animate);
         }
 
         window.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.clientX) / 25;
-            let y = (window.innerHeight / 2 - e.clientY) / 25;
-            document.getElementById('card').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            const card = document.getElementById('profileCard');
+            if(card) card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
         window.addEventListener('resize', init);
-        init(); draw();
+        init(); 
+        animate();
     </script>
 </body>
 </html>
