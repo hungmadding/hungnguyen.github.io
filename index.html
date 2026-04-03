@@ -9,15 +9,18 @@
     
     <style>
         :root { 
-            --pink: #ff4d94; --pink-glow: #ff0077;
+            --pink: #ff4d94; 
+            --pink-glow: #ff0077;
+            --white-glow: rgba(255, 255, 255, 0.9);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body, html { 
             height: 100%; 
             font-family: 'Quicksand', sans-serif; 
-            /* SỬ DỤNG FILE CỤC BỘ BACKGROUND.JPG ĐÃ TẢI LÊN GITHUB */
-            background: #000 url('background.jpg') no-repeat center center fixed;
+            /* SỬ DỤNG BACKGROUND.JPG VÀ GIỮ NỀN TƯƠI SÁNG */
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
+                        url('background.jpg') no-repeat center center fixed;
             background-size: cover;
             overflow: hidden; 
             touch-action: none; 
@@ -28,7 +31,7 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* MÀN HÌNH CHỜ - GIỮ NGUYÊN */
+        /* MÀN HÌNH CHỜ - GIỮ NGUYÊN 100% */
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -70,13 +73,14 @@
         }
         .main-wrapper.active { opacity: 1; transform: scale(1) translateY(0); pointer-events: all; }
 
+        /* CARD TRONG SUỐT NHÌN XUYÊN THẤU */
         .card {
-            background: rgba(10, 10, 20, 0.65); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 20, 0.35); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 40px; padding: 40px; width: 420px; min-height: 550px;
-            text-align: center; border: 1px solid rgba(255, 77, 148, 0.3);
-            box-shadow: 0 30px 70px rgba(0,0,0,0.6); transform-style: preserve-3d;
+            text-align: center; border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.4); transform-style: preserve-3d;
             transition: transform 0.2s ease-out; display: flex; flex-direction: column; align-items: center;
         }
 
@@ -92,12 +96,24 @@
         .typewriter { height: 20px; color: #fff; font-size: 13px; margin-bottom: 25px; font-family: 'Fira Code'; font-weight: bold; }
 
         .links { width: 100%; display: flex; flex-direction: column; gap: 12px; transform: translateZ(50px); }
+        
+        /* CÁC TAB CHỮ PHÁT SÁNG NỔI BẬT */
         .link-item {
-            background: rgba(255,255,255,0.08); padding: 14px 22px; border-radius: 18px; color: #fff;
-            text-decoration: none; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease;
+            background: rgba(255,255,255,0.05); padding: 14px 22px; border-radius: 18px; 
+            color: #fff; text-decoration: none; display: flex; justify-content: space-between; 
+            align-items: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.4s ease;
+            font-weight: 700;
+            /* Hiệu ứng phát sáng hồng trắng cho chữ */
+            text-shadow: 0 0 10px var(--white-glow), 0 0 20px var(--pink);
         }
-        .link-item:hover { background: rgba(255, 77, 148, 0.4); transform: translateX(10px) translateZ(20px); }
+        .link-item i { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); font-size: 1.2rem; }
+        
+        .link-item:hover { 
+            background: rgba(255, 77, 148, 0.25); 
+            transform: translateX(10px) translateZ(20px);
+            text-shadow: 0 0 15px #fff, 0 0 30px var(--pink);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
 
         #music-btn {
             position: fixed; top: 25px; right: 25px; z-index: 10005;
@@ -120,7 +136,7 @@
             <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
             <div class="load-text" id="status">đang load nè.. 0%</div>
         </div>
-        <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER SYSTEM</button>
+        <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER</button>
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-music"></i></div>
@@ -153,6 +169,7 @@
     <div class="footer-info">NHÌN CÁI DB</div>
 
     <script>
+        /* TOÀN BỘ JS GỐC KHÔNG THAY ĐỔI MỘT DÒNG NÀO */
         const audio = document.getElementById('bg-audio');
         const btn = document.getElementById('music-btn');
         const fill = document.getElementById('fill');
