@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio</title>
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Deep Water</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
@@ -16,115 +16,125 @@
             background: #000; overflow: hidden; touch-action: none; 
         }
         
-        /* FIX CỨNG HÌNH NỀN - Hùng kiểm tra tên file ảnh trong folder nhé */
+        /* FIX CỨNG HÌNH NỀN NGHỆ THUẬT */
         #bg-image {
             position: fixed; inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), 
-                        url('bg.jpg') no-repeat center center; /* Đặt file ảnh của bạn tên là bg.jpg */
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), 
+                        url('bg.jpg') no-repeat center center;
             background-size: cover; 
             z-index: 0;
         }
 
+        /* HỆ THỐNG TUYẾT RƠI 3 TẦNG */
         canvas { position: fixed; inset: 0; pointer-events: none; }
         #canvas-bg { z-index: 1; }
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* LOADING OVERLAY */
+        /* MÀN HÌNH CHỜ (LOADING OVERLAY) */
         #overlay {
             position: fixed; inset: 0; background: #0a0a0a;
             z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: var(--pink); transition: opacity 1s ease;
         }
-
         .logo-enter { 
-            font-size: 3.5rem; font-weight: 700; margin-bottom: 2rem; 
+            font-size: 3rem; font-weight: 700; margin-bottom: 2rem; 
             font-family: 'Fira Code'; text-shadow: 0 0 25px var(--pink);
-            letter-spacing: 5px;
-            animation: water-ripple 2.5s ease-in-out infinite;
+            letter-spacing: 5px; animation: water-ripple 2.5s ease-in-out infinite;
         }
         @keyframes water-ripple {
             0%, 100% { transform: scale(1); filter: blur(0px); opacity: 1; }
-            50% { transform: scale(1.08) translateY(-8px); filter: blur(1px); opacity: 0.8; }
+            50% { transform: scale(1.05) translateY(-5px); filter: blur(1px); opacity: 0.8; }
         }
-
         .loader-container { width: 300px; text-align: center; }
         .progress-bar {
             width: 100%; height: 6px; background: rgba(255, 77, 148, 0.1);
             border: 1px solid var(--pink); border-radius: 20px; overflow: hidden;
         }
-        .progress-fill {
-            height: 100%; width: 0%; background: var(--pink);
-            box-shadow: 0 0 20px var(--pink);
-            transition: width 0.6s cubic-bezier(0.1, 0.7, 0.1, 1); /* Cực mượt */
-        }
+        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 15px var(--pink); transition: width 0.1s linear; }
         .load-text { font-family: 'Fira Code'; font-size: 11px; margin-top: 15px; letter-spacing: 1px; }
-
         .enter-btn { 
             display: none; border: 2px solid var(--pink); padding: 12px 40px; 
             cursor: pointer; text-transform: uppercase; font-weight: 600; 
-            background: transparent; color: var(--pink); letter-spacing: 5px;
+            background: transparent; color: var(--pink); letter-spacing: 4px;
             animation: fadeIn 0.8s forwards;
         }
 
-        /* CARD TRONG SUỐT (ULTRA GLASS) */
+        /* --- NÂNG CẤP: HIỆU ỨNG CHỮ MẶT NƯỚC (WATER FLOATING) --- */
+        @keyframes waterFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); filter: brightness(1); }
+            33% { transform: translateY(-6px) rotate(0.5deg) scaleX(1.02); filter: brightness(1.2); }
+            66% { transform: translateY(3px) rotate(-0.5deg) scaleX(0.98); filter: brightness(0.9); }
+        }
+
+        @keyframes liquidBorder {
+            0%, 100% { border-radius: 25px 35px 25px 35px; }
+            50% { border-radius: 35px 25px 35px 25px; }
+        }
+
+        /* MAIN CARD TRONG SUỐT SIÊU MỜ */
         .main-wrapper { 
             height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1200px; 
-            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1); z-index: 10;
+            opacity: 0; perspective: 1200px; transition: all 1s ease; z-index: 10;
         }
         .main-wrapper.active { opacity: 1; pointer-events: all; }
 
         .card {
-            background: rgba(255, 255, 255, 0.03); /* Gần như trong suốt hoàn toàn */
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 40px; padding: 50px 30px; width: 400px;
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 40px; padding: 50px 35px; width: 380px;
             text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             transform-style: preserve-3d;
         }
 
         .avatar-container {
             width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); 
-            margin: 0 auto 25px; box-shadow: 0 0 30px var(--pink); 
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-            background: rgba(0,0,0,0.5);
+            margin: 0 auto 25px; box-shadow: 0 0 30px var(--pink); overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #000; animation: waterFloat 5s ease-in-out infinite;
         }
-        .avatar-container span { color: var(--pink); font-size: 50px; font-weight: bold; text-shadow: 0 0 15px var(--pink); }
+        .avatar-container span { color: var(--pink); font-size: 45px; font-weight: bold; text-shadow: 0 0 15px var(--pink); }
 
         .card h1 { 
-            color: #fff; font-size: 32px; font-weight: 700;
-            text-shadow: 0 0 20px var(--pink); margin-bottom: 20px; 
+            color: #fff; font-size: 30px; font-weight: 700;
+            text-shadow: 0 0 15px var(--pink); margin-bottom: 10px;
+            animation: waterFloat 4s ease-in-out infinite; /* Chữ Hùng trôi nổi */
         }
         
-        .typewriter { height: 20px; color: #fff; font-size: 13px; margin-bottom: 30px; font-family: 'Fira Code'; opacity: 0.8; }
+        .typewriter { 
+            height: 20px; color: #fff; font-size: 13px; margin-bottom: 25px; 
+            font-family: 'Fira Code'; font-weight: 500;
+            animation: waterFloat 6s ease-in-out infinite; /* Terminal trôi nổi */
+        }
 
-        .links { display: flex; flex-direction: column; gap: 12px; }
+        .links { display: flex; flex-direction: column; gap: 15px; }
         .link-item {
-            background: rgba(255, 255, 255, 0.07); padding: 15px 25px; border-radius: 20px; color: #fff;
+            background: rgba(255, 255, 255, 0.05); padding: 15px 25px; color: #fff;
             text-decoration: none; display: flex; justify-content: space-between; align-items: center;
             border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.4s;
             text-shadow: 0 0 10px var(--pink);
+            animation: liquidBorder 5s linear infinite; /* Viền nút co giãn */
         }
         .link-item i { color: var(--pink); font-size: 18px; filter: drop-shadow(0 0 5px var(--pink)); }
         .link-item:hover { 
-            background: rgba(255, 77, 148, 0.2); transform: scale(1.03) translateZ(20px);
-            border-color: var(--pink);
+            background: rgba(255, 77, 148, 0.2); transform: scale(1.05) !important;
+            border-color: var(--pink); box-shadow: 0 0 20px var(--pink);
         }
 
         #music-btn {
             position: fixed; top: 25px; right: 25px; z-index: 10005;
-            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--pink);
+            width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink);
             color: var(--pink); display: none; justify-content: center; align-items: center;
-            cursor: pointer; background: rgba(0,0,0,0.6);
+            cursor: pointer; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
         }
-        .footer-info { position: fixed; bottom: 15px; right: 20px; font-size: 11px; color: rgba(255,255,255,0.3); font-family: 'Fira Code'; }
+        .footer-info { position: fixed; bottom: 15px; right: 20px; font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'Fira Code'; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="bg-image"></div>
-    
     <canvas id="canvas-bg"></canvas>
     <canvas id="canvas-mid"></canvas>
     <canvas id="canvas-foreground"></canvas>
@@ -139,10 +149,7 @@
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-compact-disc"></i></div>
-    
-    <audio id="bg-audio" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-audio" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
 
     <div class="main-wrapper" id="mainContent">
         <div class="card" id="profileCard">
@@ -153,7 +160,7 @@
                 <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
                 <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <div class="link-item" style="cursor:pointer;" onclick="alert('Cảm ơn bạn nhé! ❤️')"><span>About me</span><i class="fas fa-heart"></i></div>
+                <div class="link-item" style="cursor:pointer;" onclick="alert('Cảm ơn bạn! ❤️')"><span>About me</span><i class="fas fa-heart"></i></div>
             </div>
         </div>
     </div>
@@ -171,13 +178,10 @@
         const loading = setInterval(() => {
             if (width >= 100) {
                 clearInterval(loading);
-                status.innerText = "SYSTEM READY";
+                status.innerText = "READY TO ACCESS";
                 setTimeout(() => {
                     loader.style.opacity = '0';
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                        enterBtn.style.display = 'block';
-                    }, 500);
+                    setTimeout(() => { loader.style.display = 'none'; enterBtn.style.display = 'block'; }, 500);
                 }, 400);
             } else {
                 width += Math.floor(Math.random() * 2) + 1;
@@ -185,13 +189,11 @@
                 fill.style.width = width + '%';
                 status.innerText = `đang load nè má... ${width}%`;
             }
-        }, 50);
+        }, 40);
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
-            // Phát nhạc ngay khi click
-            audio.play().catch(e => console.log("Music error"));
-            
+            audio.play().catch(() => console.log("Cần click để phát nhạc"));
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
@@ -201,15 +203,13 @@
         }
 
         function typeWriter() {
-            const text = "> Booting Bio-OS Terminal... Success!";
+            const text = "> Booting Bio-OS Terminal v3.22... Success!";
             let i = 0; const target = document.getElementById('typewriter');
             function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 50); } }
             type();
         }
 
-        function toggleMusic() {
-            if (audio.paused) audio.play(); else audio.pause();
-        }
+        function toggleMusic() { if (audio.paused) audio.play(); else audio.pause(); }
 
         // Particle System (Tuyết rơi 3 tầng)
         const canvases = [document.getElementById('canvas-bg'), document.getElementById('canvas-mid'), document.getElementById('canvas-foreground')];
@@ -223,7 +223,7 @@
                 this.x = Math.random() * c.width;
                 this.y = Math.random() * -c.height;
                 this.size = [1.2, 2.5, 4.5][this.idx];
-                this.speed = [0.4, 1.0, 2.0][this.idx];
+                this.speed = [0.4, 0.9, 1.6][this.idx];
                 this.opacity = [0.2, 0.4, 0.7][this.idx];
             }
             update() { this.y += this.speed; if (this.y > window.innerHeight) this.reset(); }
@@ -237,9 +237,9 @@
         function init() {
             canvases.forEach(c => { c.width = window.innerWidth; c.height = window.innerHeight; });
             particles = [
-                Array.from({length: 60}, () => new Particle(0)),
-                Array.from({length: 35}, () => new Particle(1)),
-                Array.from({length: 15}, () => new Particle(2))
+                Array.from({length: 70}, () => new Particle(0)),
+                Array.from({length: 40}, () => new Particle(1)),
+                Array.from({length: 20}, () => new Particle(2))
             ];
         }
 
@@ -251,9 +251,10 @@
             requestAnimationFrame(animate);
         }
 
+        // Card 3D Effect xoay theo chuột
         window.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.clientX) / 30;
-            const yAxis = (window.innerHeight / 2 - e.clientY) / 30;
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 35;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 35;
             const card = document.getElementById('profileCard');
             if(card) card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
