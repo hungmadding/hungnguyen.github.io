@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hùng Madding - Profile</title>
+    <title>Hùng Profile</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -110,7 +110,7 @@
         
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-        /* --- HIỆU ỨNG THẮP SÁNG ICON (GLOW EFFECT) --- */
+        /* --- HIỆU ỨNG ICON LUÔN PHÁT SÁNG (ALWAYS GLOW) --- */
         .link-item { 
             position: relative; overflow: hidden;
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2); 
@@ -120,27 +120,55 @@
             z-index: 1;
         }
 
-        /* Facebook Glow */
-        .link-item[href*="facebook"]:hover { 
-            box-shadow: 0 0 20px rgba(24, 119, 242, 0.5); border-color: #1877f2; background: rgba(24, 119, 242, 0.1);
+        /* 1. Facebook - Luôn sáng xanh dương */
+        .link-item[href*="facebook"] i { 
+            color: #1877f2; 
+            filter: drop-shadow(0 0 5px #1877f2); 
+            animation: glowPulseBlue 3s infinite ease-in-out;
         }
-        .link-item[href*="facebook"]:hover i { color: #1877f2; filter: drop-shadow(0 0 8px #1877f2); }
 
-        /* TikTok & Github Glow */
-        .link-item[href*="tiktok"]:hover, .link-item[href*="github"]:hover { 
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); border-color: #fff; background: rgba(255, 255, 255, 0.08);
+        /* 2. TikTok & Github - Luôn sáng trắng Neon */
+        .link-item[href*="tiktok"] i, .link-item[href*="github"] i { 
+            color: #fff; 
+            filter: drop-shadow(0 0 5px #fff); 
+            animation: glowPulseWhite 3s infinite ease-in-out;
         }
-        .link-item[href*="tiktok"]:hover i, .link-item[href*="github"]:hover i { color: #fff; filter: drop-shadow(0 0 8px #fff); }
 
-        /* Work/Mail Glow */
-        .link-item[href*="mailto"]:hover { 
-            box-shadow: 0 0 20px rgba(255, 77, 148, 0.5); border-color: var(--pink); background: rgba(255, 77, 148, 0.1);
+        /* 3. Work/Mail - Luôn sáng hồng */
+        .link-item[href*="mailto"] i { 
+            color: var(--pink); 
+            filter: drop-shadow(0 0 5px var(--pink)); 
+            animation: glowPulsePink 3s infinite ease-in-out;
         }
-        .link-item[href*="mailto"]:hover i { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); }
 
-        .link-item i { font-size: 18px; transition: all 0.4s ease; color: rgba(255,255,255,0.6); }
-        .link-item:hover span { transform: translateX(5px); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        /* Keyframes cho hiệu ứng nhịp thở ánh sáng */
+        @keyframes glowPulseBlue { 
+            0%, 100% { filter: drop-shadow(0 0 3px #1877f2); opacity: 0.8; } 
+            50% { filter: drop-shadow(0 0 12px #1877f2); opacity: 1; } 
+        }
+        @keyframes glowPulseWhite { 
+            0%, 100% { filter: drop-shadow(0 0 3px #fff); opacity: 0.8; } 
+            50% { filter: drop-shadow(0 0 12px #fff); opacity: 1; } 
+        }
+        @keyframes glowPulsePink { 
+            0%, 100% { filter: drop-shadow(0 0 3px var(--pink)); opacity: 0.8; } 
+            50% { filter: drop-shadow(0 0 12px var(--pink)); opacity: 1; } 
+        }
+
+        /* Khi di chuột vào (Hover) rực rỡ hơn */
+        .link-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        .link-item:hover i {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 15px currentColor) brightness(1.5) !important;
+        }
+
+        .link-item i { font-size: 18px; transition: all 0.4s ease; }
         .link-item span { transition: all 0.4s ease; font-weight: 500; }
+        .link-item:hover span { transform: translateX(5px); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .system-time { position: fixed; top: 15px; left: 15px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
         #music-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
@@ -252,9 +280,9 @@
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
-            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành ☀️" :
-                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha 🍱" :
-                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Làm việc hiệu quả nhé ☕" :
+            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha bạn ☀️" :
+                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha cậu 🍱" :
+                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Làm việc hiệu quả nhé cậu ☕" :
                       (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
