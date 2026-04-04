@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>dit con me</title>
+    <title>Bio-OS v3.22 Ultimate</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -36,21 +36,21 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* FIX LOADING ĐEN: Thêm fallback màu đen cho background-image */
+        /* SỬA LỖI NỀN ĐEN: Ép overlay nhận ảnh anhcho.jpg ngay lập tức */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background-color: #000;
+            background: #000 url('anhcho.jpg') no-repeat center center;
+            background-size: cover;
         }
 
         .overlay-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000 url('anh cho.jpg') no-repeat center center;
-            background-size: cover;
-            filter: blur(25px) brightness(0.4);
-            transform: scale(1.1);
+            background: rgba(0,0,0,0.6); /* Lớp phủ đen mờ thay vì ảnh lặp lại */
+            backdrop-filter: blur(25px) brightness(0.4);
+            -webkit-backdrop-filter: blur(25px) brightness(0.4);
             z-index: -1;
         }
 
@@ -67,6 +67,7 @@
             animation: floatImage 5s ease-in-out infinite;
             background: transparent;
         }
+        /* ĐỔI TÊN FILE: anh cho.jpg -> anhcho.jpg */
         .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
         .loading-name { 
@@ -115,35 +116,29 @@
         h1 { font-size: 26px; margin-bottom: 12px; }
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
         
-        /* PHÁT SÁNG MẶC ĐỊNH CHO CHỮ VÀ ICON */
+        /* PHÁT SÁNG MẶC ĐỊNH MẠNH HƠN */
         .link-item { 
             background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255, 77, 148, 0.3);
+            border: 1px solid rgba(255, 77, 148, 0.4) !important;
             border-radius: 18px; padding: 16px 22px; 
-            color: #fff;
+            color: #fff !important;
             text-decoration: none; display: flex; 
             justify-content: space-between; align-items: center; 
             margin-bottom: 15px; transition: 0.4s; 
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px var(--pink-glow); 
+            text-shadow: 0 0 10px var(--pink-glow) !important; 
         }
 
         .link-item i { 
             font-size: 20px; 
-            color: #fff;
-            transition: 0.3s; 
-            filter: drop-shadow(0 0 8px var(--pink-glow)); 
+            color: #fff !important;
+            filter: drop-shadow(0 0 10px var(--pink-glow)) !important; 
         }
 
         .link-item:hover { 
             background: rgba(255, 77, 148, 0.15); 
             border-color: var(--pink); 
             transform: translateX(5px); 
-            text-shadow: 0 0 12px #fff, 0 0 25px var(--pink-glow);
-        }
-
-        .link-item:hover i {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 15px var(--pink-glow));
+            text-shadow: 0 0 15px #fff, 0 0 30px var(--pink-glow) !important;
         }
 
         #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; }
@@ -172,7 +167,7 @@
         <div class="overlay-bg"></div> 
         <div class="loading-content">
             <div class="loading-img-box">
-                <img src="anh cho.jpg" onerror="this.src='https://via.placeholder.com/250x360?text=Error+Filename'">
+                <img src="anhcho.jpg" onerror="this.src='https://via.placeholder.com/250x360?text=Error+Filename'">
             </div>
             <div class="loading-name">HUNG MADDING</div>
             
