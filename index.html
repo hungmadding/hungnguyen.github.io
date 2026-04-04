@@ -111,7 +111,7 @@
         .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
         
-        /* HIỆU ỨNG CHỮ SÓNG NƯỚC */
+        /* HIỆU ỨNG CHỮ SÓNG NƯỚC NHẸ NHÀNG (ĐÃ TINH CHỈNH) */
         .waviy {
             position: relative;
             display: inline-block;
@@ -121,7 +121,7 @@
         .waviy span {
             position: relative;
             display: inline-block;
-            animation: waviy 2s infinite;
+            animation: waviy 3s infinite; /* Tăng thời gian lên 3s để sóng chậm lại */
             animation-delay: calc(.1s * var(--i));
             text-shadow: 0 4px 10px rgba(255, 77, 148, 0.5);
         }
@@ -129,7 +129,7 @@
         
         @keyframes waviy {
             0%, 40%, 100% { transform: translateY(0); }
-            20% { transform: translateY(-8px); }
+            20% { transform: translateY(-3px); } /* Giảm biên độ xuống còn -3px cực nhẹ */
         }
 
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; }
