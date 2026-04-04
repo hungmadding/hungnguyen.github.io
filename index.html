@@ -7,154 +7,176 @@
     <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Ultimate</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --pink: #ff4d94; 
             --pink-glow: #ff0077;
             --pink-dark: #cc005f;
+            --glass: rgba(15, 10, 15, 0.15);
+            --glass-border: rgba(255, 77, 148, 0.25);
             --bg-dark: #050505;
+            --text-main: #ffffff;
+            --text-sub: rgba(255, 255, 255, 0.7);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: #fff; }
+        body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
 
-        /* --- BACKGROUND CHÍNH VÀ TUYẾT RƠI (GIỮ NGUYÊN) --- */
+        /* --- BACKGROUND CHÍNH --- */
         #bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
                         url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
-            background-size: cover; z-index: 0; filter: brightness(0.8);
+            background-size: cover; z-index: 0; filter: brightness(0.8) contrast(1.1);
         }
-        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10001; }
 
-        /* --- LOADING OVERLAY VÀ KHUNG NEON (GIỮ NGUYÊN) --- */
+        /* --- SNOW SYSTEM --- */
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        #canvas-bg { z-index: 1; }
+        #canvas-mid { z-index: 2; }
+        #canvas-foreground { z-index: 10001; }
+
+        /* --- LOADING OVERLAY --- */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1.5s ease; background-color: #000;
+            z-index: 99999; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #000;
         }
+
         .overlay-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('anhcho.jpg') no-repeat center center;
-            background-size: cover; filter: blur(30px) brightness(0.3); transform: scale(1.1); z-index: -1;
-        }
-        .loading-img-box {
-            width: 320px; height: 420px; border-radius: 45px; 
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 50px var(--pink-glow), inset 0 0 20px var(--pink-glow);
-            overflow: hidden; margin-bottom: 35px; 
-            animation: floatImage 5s ease-in-out infinite;
-        }
-        .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .loading-name { 
-            font-family: 'Fira Code', monospace; font-size: 32px; font-weight: 700; 
-            letter-spacing: 12px; margin-bottom: 40px; color: #fff;
-            text-shadow: 0 0 20px var(--pink-glow); animation: textPulse 1.5s infinite alternate;
-        }
-
-        /* --- CHỈNH SỬA THANH LIÊN KẾT: THẮP SÁNG ICON VÀ CHỮ --- */
-        .link-item { 
-            background: rgba(15, 10, 15, 0.4); /* Nền mờ hơn */
-            border-radius: 15px; 
-            padding: 14px 20px; 
-            color: rgba(255, 255, 255, 0.7); /* Chữ mặc định tối hơn */
-            text-decoration: none; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 12px; 
-            border: 1px solid transparent; 
-            transition: 0.3s;
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(255, 77, 148, 0.1);
-        }
-
-        /* Khi di chuột qua hoặc được chọn: THẮP SÁNG TẤT CẢ */
-        .link-item:hover { 
-            border-color: var(--pink); 
-            background: rgba(255, 77, 148, 0.15); 
-            transform: translateX(5px); 
-            box-shadow: 0 0 20px rgba(255, 77, 148, 0.3); /* Thắp sáng viền và nền */
-            
-            color: #fff; /* CHỮ SÁNG TRẮNG HOÀN TOÀN */
-            text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); /* Hiệu ứng thắp sáng cho chữ */
-        }
-
-        /* CẤU HÌNH ICON VÀ QUẦNG SÁNG PLASMA */
-        .link-item i { 
-            position: relative;
-            color: var(--pink-dark); /* Icon mặc định tối hơn */
-            font-size: 20px; 
-            transition: 0.3s;
-        }
-
-        /* Quầng sáng Plasma bao quanh Icon */
-        .link-item i::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(8px);
-            opacity: 0.1; /* Quầng sáng mặc định mờ */
-            transition: 0.3s;
+            background: url('anh cho.jpg') no-repeat center center;
+            background-size: cover;
+            filter: blur(25px) brightness(0.4);
+            transform: scale(1.1);
             z-index: -1;
         }
 
-        /* Khi di chuột qua: THẮP SÁNG ICON VÀ QUẦNG SÁNG */
-        .link-item:hover i {
-            color: #fff; /* Icon sáng trắng */
-            text-shadow: 0 0 15px #fff, 0 0 30px var(--pink-glow); /* Thắp sáng icon */
+        .loading-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        
+        /* FIX: BỎ VIỀN HỒNG PHẦN LOADING */
+        .loading-img-box {
+            width: 320px; 
+            height: 380px; 
+            border-radius: 40px; 
+            border: none; /* Đã bỏ viền hồng */
+            box-shadow: none; /* Đã bỏ phát sáng viền */
+            overflow: hidden; 
+            margin-bottom: 30px; 
+            animation: floatImage 5s ease-in-out infinite;
+            background: transparent;
+        }
+        .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .loading-name { 
+            font-family: 'Fira Code', monospace; 
+            font-size: 32px; 
+            font-weight: 700; 
+            letter-spacing: 15px; 
+            text-shadow: 0 0 30px var(--pink-glow); 
+            margin-bottom: 25px; 
+            color: #fff;
         }
 
-        .link-item:hover i::after {
-            opacity: 1; /* Quầng sáng Plasma hiện rõ và rực rỡ */
-            filter: blur(12px) contrast(1.5);
+        .loader-container { width: 350px; transition: opacity 0.5s; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.2s; }
+        
+        .status-box { 
+            display: flex; justify-content: space-between; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 11px; 
+            color: var(--pink); 
         }
 
-        /* --- CÁC PHẦN CÒN LẠI (GIỮ NGUYÊN) --- */
-        .enter-btn { display: none; background: transparent; border: 2.5px solid var(--pink); color: var(--pink); padding: 18px 60px; font-family: 'Fira Code', monospace; font-weight: 700; font-size: 15px; letter-spacing: 5px; border-radius: 15px; cursor: pointer; text-transform: uppercase; transition: 0.4s; box-shadow: 0 0 15px var(--pink-glow); }
-        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); }
-        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; }
+        .enter-btn {
+            display: none; background: transparent; border: 2.5px solid var(--pink);
+            color: var(--pink); padding: 18px 60px; font-family: 'Fira Code', monospace;
+            font-weight: 700; font-size: 15px; letter-spacing: 5px; border-radius: 15px;
+            cursor: pointer; text-transform: uppercase; transition: all 0.4s;
+            margin-top: -10px;
+        }
+        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
+
+        /* --- MAIN UI --- */
+        .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 10px var(--pink-glow); display: none; }
+        #real-clock { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
+        #real-date { font-size: 10px; text-transform: uppercase; opacity: 0.7; margin-top: 5px; }
+
+        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
         .main-wrapper.active { opacity: 1; visibility: visible; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 40px; width: 90%; max-width: 380px; padding: 45px 25px; text-align: center; border: 1px solid rgba(255, 77, 148, 0.3); position: relative; }
-        .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--pink); margin: 0 auto 20px; overflow: hidden; box-shadow: 0 0 20px var(--pink-glow); }
-        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); margin-bottom: 25px; min-height: 45px; line-height: 1.4; }
-        .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); display: none; text-shadow: 0 0 10px var(--pink-glow); }
-        #real-clock { font-size: 22px; font-weight: 700; }
-        #music-btn { position: fixed; top: 25px; right: 25px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 60px 35px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
+        .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
+        
+        /* AVATAR CHỮ H TỎA SÁNG */
+        .avatar-box { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
+        .avatar-box span { color: var(--pink); font-size: 55px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
+        
+        h1 { font-size: 26px; margin-bottom: 12px; }
+        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
+        
+        /* FIX: THẮP SÁNG CHỮ VÀ ICON KHI HOVER */
+        .link-item { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 18px; padding: 16px 22px; 
+            color: rgba(255, 255, 255, 0.7); 
+            text-decoration: none; display: flex; 
+            justify-content: space-between; align-items: center; 
+            margin-bottom: 15px; transition: 0.4s; 
+        }
+        .link-item:hover { 
+            background: rgba(255, 77, 148, 0.12); 
+            border-color: var(--pink); 
+            transform: translateX(5px); 
+            color: #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); /* Chữ phát sáng */
+        }
+        .link-item i { font-size: 20px; color: var(--pink); transition: 0.3s; }
+        .link-item:hover i {
+            color: #fff;
+            filter: drop-shadow(0 0 10px var(--pink-glow)); /* Icon phát sáng */
+        }
+
+        #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; }
+        .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.3; font-family: 'Fira Code'; }
+
+        @keyframes rotateLED { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes textPulse { from { opacity: 0.7; } to { opacity: 1; text-shadow: 0 0 30px var(--pink-glow); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 20px var(--pink-glow); } 50% { box-shadow: 0 0 40px var(--pink-glow); } 100% { box-shadow: 0 0 20px var(--pink-glow); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="bg-image"></div>
-    <canvas id="snowCanvas"></canvas>
-
     <div class="system-time" id="sysTime">
         <div id="real-clock">00:00:00</div>
+        <div id="real-date">...</div>
     </div>
+    
+    <canvas id="canvas-bg"></canvas>
+    <canvas id="canvas-mid"></canvas>
+    <canvas id="canvas-foreground"></canvas>
 
     <div id="overlay">
         <div class="overlay-bg"></div> 
         <div class="loading-content">
             <div class="loading-img-box">
-                <img src="anhcho.jpg" alt="Profile">
+                <img src="anh cho.jpg" onerror="this.src='https://via.placeholder.com/250x360?text=Error+Filename'">
             </div>
             <div class="loading-name">HUNG MADDING</div>
             
             <div id="loaderUI" class="loader-container">
                 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
                 <div class="status-box">
-                    <span id="loadStatus">System Booting...</span>
+                    <span id="loadStatus">Initializing UI...</span>
                     <span id="loadPercent">0%</span>
                 </div>
             </div>
@@ -167,49 +189,121 @@
     <audio id="mainAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
     <main id="mainUI" class="main-wrapper">
-        <div class="card">
-            <div class="avatar-box"><img src="anhcho.jpg"></div>
-            <h1 style="font-size: 24px; margin-bottom: 10px; letter-spacing: 1px;">Nguyễn Mạnh Hùng</h1>
+        <div id="tiltCard" class="card">
+            <div class="avatar-box"><span>H</span></div>
+            <h1>Nguyễn Mạnh Hùng</h1>
             <div id="typewriter" class="typewriter"></div>
-            
             <div class="links-container">
-                <div class="link-item" onclick="showAbout()">
-                    <span>About Me</span>
-                    <i class="fas fa-user-astronaut"></i>
-                </div>
-                
                 <a href="https://facebook.com/m.hung.11.02" target="_blank" class="link-item">
                     <span>Facebook Official</span>
                     <i class="fab fa-facebook"></i>
                 </a>
-                
-                <a href="https://github.com/hungmadding" target="_blank" class="link-item">
-                    <span>GitHub Projects</span>
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://tiktok.com/@hung_madding" target="_blank" class="link-item">
-                    <span>TikTok Channel</span>
-                    <i class="fab fa-tiktok"></i>
-                </a>
+                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>Github Projects</span><i class="fab fa-github"></i></a>
+                <a href="https://tiktok.com/@hung_madding" target="_blank" class="link-item"><span>Tiktok Channel</span><i class="fab fa-tiktok"></i></a>
+                <a href="mailto:contact@hungmadding.vn" class="link-item"><span>Work Inquiry</span><i class="fas fa-envelope"></i></a>
             </div>
         </div>
     </main>
 
+    <div class="footer">BIO-OS v3.22 | HUNG MADDING</div>
+
     <script>
-        // CÁC KỊCH BẢN JAVASCRIPT GIỮ NGUYÊN
         const audio = document.getElementById('mainAudio');
         const fill = document.getElementById('progressFill');
         const percentTxt = document.getElementById('loadPercent');
+        const statusTxt = document.getElementById('loadStatus');
         const enterBtn = document.getElementById('enterBtn');
         const loaderUI = document.getElementById('loaderUI');
-        let progress = 0;
-        const interval = setInterval(() => { progress += Math.random() * 4; if (progress >= 100) { progress = 100; clearInterval(interval); setTimeout(() => { loaderUI.style.display = "none"; enterBtn.style.display = "block"; }, 500); } fill.style.width = progress + "%"; percentTxt.innerText = Math.floor(progress) + "%"; }, 60);
-        function updateTime() { const now = new Date(); document.getElementById('real-clock').innerText = now.toLocaleTimeString('en-GB'); }
-        function initSystem() { document.getElementById('overlay').style.opacity = "0"; audio.play().catch(() => {}); setTimeout(() => { document.getElementById('overlay').style.display = "none"; document.getElementById('mainUI').classList.add('active'); document.getElementById('music-btn').style.display = "flex"; document.getElementById('music-btn').style.animation = "rotateCD 3s linear infinite"; document.getElementById('sysTime').style.display = "block"; updateTime(); setInterval(updateTime, 1000); startTypeWriter(); }, 1000); }
-        function startTypeWriter() { const text = "> Initializing Bio-OS...\n> Access Granted: Hùng Madding\n> System Status: Stable"; let i = 0; const target = document.getElementById('typewriter'); function type() { if (i < text.length) { target.innerHTML += text.charAt(i) === "\n" ? "<br>" : text.charAt(i); i++; setTimeout(type, 40); } } type(); }
-        function showAbout() { alert("Cảm ơn bạn đã quan tâm đến tôi!"); }
-        function toggleMusic() { if (audio.paused) audio.play(); else audio.pause(); }
-        const canvas = document.getElementById('snowCanvas'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const flakes = []; for(let i=0; i<80; i++) flakes.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2+1, d: Math.random()+0.3}); function drawSnow() { ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "rgba(255,255,255,0.5)"; ctx.beginPath(); flakes.forEach(f => { ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); }); ctx.fill(); flakes.forEach(f => { f.y += f.d; if(f.y > canvas.height) f.y = -10; }); requestAnimationFrame(drawSnow); } drawSnow(); window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        
+        let currentProgress = 0;
+        const loaderTask = setInterval(() => {
+            if (currentProgress >= 100) {
+                currentProgress = 100;
+                clearInterval(loaderTask);
+                setTimeout(() => {
+                    loaderUI.style.opacity = "0";
+                    setTimeout(() => {
+                        loaderUI.style.display = "none";
+                        enterBtn.style.display = "block";
+                        enterBtn.style.animation = "fadeIn 0.8s forwards, pulse 2s infinite";
+                    }, 500);
+                }, 500);
+            } else {
+                currentProgress += Math.random() * 2;
+                if (currentProgress > 100) currentProgress = 100;
+                fill.style.width = currentProgress + "%";
+                percentTxt.innerText = Math.floor(currentProgress) + "%";
+                if(currentProgress > 80) statusTxt.innerText = "System Ready!";
+                else if(currentProgress > 40) statusTxt.innerText = "Processing Data...";
+            }
+        }, 40);
+
+        function updateSystemTime() {
+            const now = new Date();
+            document.getElementById('real-clock').innerText = now.toLocaleTimeString('en-GB', { hour12: false });
+            document.getElementById('real-date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        function initSystem() {
+            document.getElementById('overlay').style.opacity = "0";
+            audio.play().catch(() => {});
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = "none";
+                document.getElementById('mainUI').classList.add('active');
+                document.getElementById('music-btn').style.display = "flex";
+                document.getElementById('music-btn').style.animation = "rotateCD 4s linear infinite";
+                document.getElementById('sysTime').style.display = "block";
+                updateSystemTime();
+                setInterval(updateSystemTime, 1000);
+                startTypeWriter();
+            }, 1000);
+        }
+
+        function startTypeWriter() {
+            const text = "> Initializing Bio-OS... Access Granted. \nWelcome back, Hùng.";
+            let i = 0;
+            const target = document.getElementById('typewriter');
+            function type() {
+                if (i < text.length) { 
+                    target.innerHTML += text.charAt(i) === "\n" ? "<br>" : text.charAt(i); 
+                    i++; setTimeout(type, 50); 
+                }
+            }
+            type();
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('music-btn');
+            if (audio.paused) { audio.play(); btn.style.animationPlayState = "running"; }
+            else { audio.pause(); btn.style.animationPlayState = "paused"; }
+        }
+
+        /* --- SNOW ENGINE --- */
+        class SnowEngine {
+            constructor(canvasId, count, config) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.count = count; this.particles = []; this.config = config; this.init();
+            }
+            init() { this.resize(); window.addEventListener('resize', () => this.resize()); for (let i = 0; i < this.count; i++) this.particles.push(this.createParticle()); this.animate(); }
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            createParticle() { return { x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height, r: Math.random() * this.config.size + 1, v: Math.random() * this.config.speed + 0.5, o: Math.random() * 0.5 + this.config.opacity }; }
+            draw() { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.particles.forEach(p => { this.ctx.fillStyle = `rgba(255, 255, 255, ${p.o})`; this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); this.ctx.fill(); }); this.update(); }
+            update() { this.particles.forEach(p => { p.y += p.v; if (p.y > this.canvas.height) p.y = -10; }); }
+            animate() { this.draw(); requestAnimationFrame(() => this.animate()); }
+        }
+        new SnowEngine('canvas-bg', 60, { size: 1, speed: 0.3, opacity: 0.1 });
+        new SnowEngine('canvas-mid', 40, { size: 2, speed: 0.7, opacity: 0.2 });
+        new SnowEngine('canvas-foreground', 15, { size: 4, speed: 1.2, opacity: 0.4 });
+
+        const card = document.getElementById('tiltCard');
+        if (!/Android|iPhone/i.test(navigator.userAgent)) {
+            document.addEventListener('mousemove', (e) => {
+                let x = (window.innerWidth / 2 - e.clientX) / 30;
+                let y = (window.innerHeight / 2 - e.clientY) / 30;
+                card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            });
+        }
     </script>
 </body>
 </html>
