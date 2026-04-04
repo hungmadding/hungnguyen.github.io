@@ -3,138 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Deep Water</title>
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Ultimate</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --pink-glow: #ff0077; --bg-dark: #050505; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body, html { 
-            height: 100%; font-family: 'Quicksand', sans-serif; 
-            background: var(--bg-dark); overflow: hidden; touch-action: none; 
-        }
-        
-        /* NỀN HOA ANH ĐÀO */
-        #bg-image {
-            position: fixed; inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
-                        url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
-            background-size: cover; z-index: 0;
+        /* --- 1. BIẾN HỆ THỐNG & RESET --- */
+        :root { 
+            --pink: #ff4d94; 
+            --pink-glow: rgba(255, 77, 148, 0.8);
+            --glass: rgba(15, 10, 15, 0.15);
+            --bg-dark: #000000;
         }
 
-        /* TUYẾT RƠI 3 LỚP NÂNG CAO */
-        canvas { position: fixed; inset: 0; pointer-events: none; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        body, html { 
+            height: 100%; 
+            width: 100%;
+            font-family: 'Quicksand', sans-serif; 
+            background: var(--bg-dark); 
+            overflow: hidden; 
+            touch-action: none; 
+        }
+
+        /* --- 2. NỀN & HIỆU ỨNG MÔI TRƯỜNG --- */
+        #bg-image {
+            position: fixed; 
+            inset: 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                        url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
+            background-size: cover; 
+            z-index: 0;
+            transition: transform 2s ease;
+        }
+
+        canvas { 
+            position: fixed; 
+            inset: 0; 
+            pointer-events: none; 
+        }
         #canvas-bg { z-index: 1; }
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* MÀN HÌNH CHỜ (LOADING OVERLAY) */
+        /* --- 3. MÀN HÌNH CHỜ (LOADING OVERLAY) --- */
         #overlay {
-            position: fixed; inset: 0; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1); background: #000;
+            position: fixed; 
+            inset: 0; 
+            z-index: 9999;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+            background: #000;
+            transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
         }
         
-        .loading-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 35px; }
+        .loading-content { 
+            position: relative; 
+            z-index: 2; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 40px; 
+        }
         
-        /* ẢNH CHỜ MỜ ẢO ĐA TẦNG */
+        /* ẢNH CHỜ MỜ ẢO ĐA LỚP (Ý ÔNG THÍCH) */
         .loading-img-box {
-            width: 240px; height: 320px; border-radius: 30px; 
+            width: 250px; 
+            height: 350px; 
+            border-radius: 30px; 
             border: 2px solid var(--pink); 
-            box-shadow: 0 0 45px rgba(255, 77, 148, 0.6);
-            animation: waterFloat 4s ease-in-out infinite, deepPulse 3s infinite;
-            overflow: hidden; position: relative;
+            box-shadow: 0 0 50px var(--pink-glow);
+            overflow: hidden;
+            position: relative;
+            animation: waterFloat 4s ease-in-out infinite, pulseGlow 3s infinite;
         }
 
         .loading-img-box img { 
-            width: 100%; height: 100%; object-fit: cover;
-            /* Hiệu ứng mờ dần vào tâm */
-            -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 95%);
-            mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 95%);
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            /* Mask loang màu mờ dần ra cạnh */
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 30%, rgba(0,0,0,0.6) 60%, transparent 95%);
+            mask-image: radial-gradient(circle at 50% 50%, black 30%, rgba(0,0,0,0.6) 60%, transparent 95%);
         }
 
-        @keyframes deepPulse {
-            0% { box-shadow: 0 0 35px rgba(255, 77, 148, 0.4); }
-            50% { box-shadow: 0 0 60px rgba(255, 77, 148, 0.9); }
-            100% { box-shadow: 0 0 35px rgba(255, 77, 148, 0.4); }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 77, 148, 0.4); }
+            50% { box-shadow: 0 0 60px rgba(255, 77, 148, 0.8); }
         }
 
         .logo-enter { 
-            font-size: 2.7rem; font-weight: 700; font-family: 'Fira Code'; 
-            color: var(--pink); text-shadow: 0 0 25px var(--pink);
-            letter-spacing: 7px; animation: waterFloat 3s ease-in-out infinite;
+            font-size: 2.8rem; 
+            font-weight: 700; 
+            font-family: 'Fira Code'; 
+            color: var(--pink); 
+            text-shadow: 0 0 30px var(--pink);
+            letter-spacing: 8px; 
+            animation: waterFloat 3s ease-in-out infinite;
         }
 
         .loader-container { width: 320px; text-align: center; }
         .progress-bar {
-            width: 100%; height: 6px; background: rgba(255, 77, 148, 0.1);
-            border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 77, 148, 0.2);
+            width: 100%; 
+            height: 6px; 
+            background: rgba(255, 77, 148, 0.1);
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid rgba(255, 77, 148, 0.2);
+            position: relative;
         }
-        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.3s ease-out; }
-        .load-text { font-family: 'Fira Code'; font-size: 12px; margin-top: 15px; color: var(--pink); letter-spacing: 2px; font-weight: 500; }
+        .progress-fill { 
+            height: 100%; 
+            width: 0%; 
+            background: var(--pink); 
+            box-shadow: 0 0 20px var(--pink); 
+            transition: width 0.4s ease-out; 
+        }
+        .load-text { 
+            font-family: 'Fira Code'; 
+            font-size: 13px; 
+            margin-top: 15px; 
+            color: var(--pink); 
+            letter-spacing: 2px; 
+            font-weight: 500;
+            text-transform: uppercase;
+        }
 
-        /* NÚT ENTER SYSTEM GIẬT GIẬT */
         .enter-btn { 
-            display: none; border: 2px solid var(--pink); padding: 16px 50px; 
-            cursor: pointer; background: transparent; color: var(--pink); letter-spacing: 5px;
-            font-weight: 700; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: none; 
+            border: 2px solid var(--pink); 
+            padding: 18px 55px; 
+            cursor: pointer; 
+            background: transparent; 
+            color: var(--pink); 
+            letter-spacing: 6px;
+            font-weight: 700; 
+            font-family: 'Fira Code';
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 20px var(--pink); 
         }
-        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink); transform: scale(1.1); }
-        .enter-btn:active { transform: scale(0.9); }
-
-        /* KEYFRAMES DẬP DÌU MẶT NƯỚC */
-        @keyframes waterFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-18px) rotate(1.2deg); }
+        .enter-btn:hover { 
+            background: var(--pink); 
+            color: #000; 
+            box-shadow: 0 0 60px var(--pink); 
+            transform: scale(1.1); 
         }
 
-        /* GIAO DIỆN CHÍNH - CARD TRONG SUỐT ANH ĐÀO */
+        /* --- 4. GIAO DIỆN CHÍNH - CARD KÍNH ANH ĐÀO --- */
         .main-wrapper { 
-            height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1800px; transition: all 1.8s ease; z-index: 10; visibility: hidden;
+            height: 100vh; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            perspective: 2000px; 
+            transition: all 2s ease; 
+            z-index: 10; 
+            visibility: hidden;
         }
         .main-wrapper.active { opacity: 1; visibility: visible; }
 
         .card {
-            background: rgba(15, 10, 15, 0.15); /* Trong suốt 15% */
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 45px; padding: 55px 45px; width: 380px;
-            text-align: center; border: 1px solid rgba(255, 77, 148, 0.25);
-            box-shadow: 0 35px 70px rgba(0,0,0,0.6), 0 0 35px rgba(255, 77, 148, 0.1);
-            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+            background: var(--glass);
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 50px; 
+            padding: 60px 45px; 
+            width: 380px;
+            text-align: center; 
+            border: 1px solid rgba(255, 77, 148, 0.25);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.7), 
+                        0 0 40px rgba(255, 77, 148, 0.1);
+            transform-style: preserve-3d; 
+            transition: transform 0.1s ease-out;
         }
 
         .avatar-box {
-            width: 115px; height: 115px; border-radius: 50%; border: 3px solid var(--pink); 
-            margin: 0 auto 30px; box-shadow: 0 0 40px var(--pink);
-            display: flex; align-items: center; justify-content: center;
-            background: #000; animation: waterFloat 5s ease-in-out infinite;
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            border: 3px solid var(--pink); 
+            margin: 0 auto 30px; 
+            box-shadow: 0 0 45px var(--pink);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            background: #000; 
+            animation: waterFloat 5s ease-in-out infinite;
         }
-        .avatar-box span { color: var(--pink); font-size: 48px; font-weight: bold; text-shadow: 0 0 25px var(--pink); }
+        .avatar-box span { 
+            color: var(--pink); 
+            font-size: 50px; 
+            font-weight: 900; 
+            text-shadow: 0 0 25px var(--pink); 
+        }
 
-        h1 { color: #fff; font-size: 30px; text-shadow: 0 0 25px var(--pink); margin-bottom: 15px; animation: waterFloat 4.5s ease-in-out infinite; }
-        .typewriter { height: 28px; color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 35px; font-family: 'Fira Code'; }
+        h1 { 
+            color: #fff; 
+            font-size: 32px; 
+            font-weight: 700;
+            text-shadow: 0 0 25px var(--pink); 
+            margin-bottom: 15px; 
+            animation: waterFloat 4s ease-in-out infinite; 
+        }
+        
+        .typewriter { 
+            height: 30px; 
+            color: rgba(255,255,255,0.85); 
+            font-size: 14px; 
+            margin-bottom: 40px; 
+            font-family: 'Fira Code';
+        }
 
-        .links { display: flex; flex-direction: column; gap: 15px; }
+        .links { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 18px; 
+        }
         .link-item {
-            background: rgba(255, 255, 255, 0.06); padding: 16px 25px; color: #fff;
-            text-decoration: none; border-radius: 20px; display: flex; justify-content: space-between; align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.4s;
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 18px 30px; 
+            color: #fff;
+            text-decoration: none; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 20px;
+            transition: all 0.4s ease;
         }
-        .link-item i { color: var(--pink); font-size: 22px; filter: drop-shadow(0 0 8px var(--pink)); }
-        .link-item:hover { background: rgba(255, 77, 148, 0.3); border-color: var(--pink); transform: translateZ(40px) scale(1.05); }
+        .link-item i { 
+            color: var(--pink); 
+            font-size: 24px; 
+            filter: drop-shadow(0 0 10px var(--pink)); 
+        }
+        .link-item:hover { 
+            background: rgba(255, 77, 148, 0.3); 
+            transform: translateZ(50px) scale(1.05); 
+            border-color: var(--pink);
+            box-shadow: 0 10px 30px rgba(255, 77, 148, 0.3);
+        }
 
         #music-btn {
-            position: fixed; top: 35px; right: 35px; z-index: 10005;
-            width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid var(--pink);
-            color: var(--pink); display: none; justify-content: center; align-items: center;
-            cursor: pointer; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
+            position: fixed; 
+            top: 40px; 
+            right: 40px; 
+            z-index: 10005;
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            border: 2px solid var(--pink);
+            color: var(--pink); 
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            cursor: pointer; 
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(10px);
+            transition: 0.5s;
+        }
+        #music-btn:hover { transform: rotate(360deg) scale(1.1); box-shadow: 0 0 30px var(--pink); }
+
+        @keyframes waterFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1.5deg); }
         }
 
-        .footer-info { position: fixed; bottom: 25px; right: 30px; font-size: 11px; color: rgba(255,255,255,0.2); font-family: 'Fira Code'; letter-spacing: 2px; }
+        .footer-info { 
+            position: fixed; 
+            bottom: 25px; 
+            right: 35px; 
+            font-size: 12px; 
+            color: rgba(255,255,255,0.2); 
+            font-family: 'Fira Code'; 
+            letter-spacing: 2px; 
+        }
     </style>
 </head>
 <body>
@@ -147,11 +300,13 @@
     <div id="overlay">
         <div class="loading-content">
             <div class="loading-img-box">
-                <img id="mainLoadImg" src="" alt="Loading">
+                <img id="mainLoadImg" src="" alt="Madding">
             </div>
             <div class="logo-enter">HUNG MADDING</div>
             <div class="loader-container" id="loader">
-                <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="fill"></div>
+                </div>
                 <div class="load-text" id="status">ĐANG LOAD NÈ MÁ... 0%</div>
             </div>
             <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER SYSTEM</button>
@@ -159,7 +314,9 @@
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-compact-disc"></i></div>
-    <audio id="bg-audio" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-audio" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="main-wrapper" id="mainContent">
         <div class="card" id="profileCard">
@@ -167,10 +324,18 @@
             <h1>Nguyễn Mạnh Hùng</h1>
             <div class="typewriter" id="typewriter"></div>
             <div class="links">
-                <a href="https://facebook.com/m.hung.11.02" class="link-item"><span>Facebook</span><i class="fab fa-facebook-f"></i></a>
-                <a href="https://github.com/hungmadding" class="link-item"><span>GitHub</span><i class="fab fa-github"></i></a>
-                <a href="https://tiktok.com/@hung_madding" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <div class="link-item" style="cursor:pointer;" onclick="alert('Cảm ơn bạn đã ghé thăm Bio của Hùng nhé! ❤️')"><span>About me</span><i class="fas fa-heart"></i></div>
+                <a href="https://facebook.com/m.hung.11.02" class="link-item">
+                    <span>Facebook</span><i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://github.com/hungmadding" class="link-item">
+                    <span>GitHub</span><i class="fab fa-github"></i>
+                </a>
+                <a href="https://tiktok.com/@hung_madding" class="link-item">
+                    <span>TikTok</span><i class="fab fa-tiktok"></i>
+                </a>
+                <div class="link-item" style="cursor:pointer;" onclick="alert('Cảm ơn bạn đã ghé thăm Bio của Hùng nhé! ❤️')">
+                    <span>About me</span><i class="fas fa-heart"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -178,7 +343,7 @@
     <div class="footer-info">NHÌN CÁI DB</div>
 
     <script>
-        // Fix đường dẫn file có dấu đúng chuẩn GitHub của Hùng
+        // Fix đường dẫn file ảnh chờ có dấu
         document.getElementById('mainLoadImg').src = decodeURIComponent('%E1%BA%A3nh%20ch%E1%BB%9D.jpg');
 
         const audio = document.getElementById('bg-audio');
@@ -187,96 +352,146 @@
         const enterBtn = document.getElementById('enterBtn');
         const loader = document.getElementById('loader');
 
-        let width = 0;
-        const loading = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(loading);
+        // Logic Loading mượt mà
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+            if (progress >= 100) {
+                clearInterval(loadingInterval);
                 status.innerText = "SYSTEM READY!";
+                status.style.color = "#fff";
+                status.style.textShadow = "0 0 10px var(--pink)";
+                
                 setTimeout(() => {
                     loader.style.opacity = '0';
+                    loader.style.transform = 'translateY(20px)';
                     setTimeout(() => { 
                         loader.style.display = 'none'; 
                         enterBtn.style.display = 'block'; 
+                        enterBtn.style.animation = 'waterFloat 2s infinite';
                     }, 600);
                 }, 500);
             } else {
-                width += Math.random() * 1.8;
-                if(width > 100) width = 100;
-                fill.style.width = width + '%';
-                status.innerText = `ĐANG LOAD NÈ MÁ... ${Math.floor(width)}%`;
+                let step = Math.random() * 2.5;
+                progress += step;
+                if(progress > 100) progress = 100;
+                fill.style.width = progress + '%';
+                status.innerText = `ĐANG LOAD NÈ MÁ... ${Math.floor(progress)}%`;
             }
-        }, 40);
+        }, 45);
 
+        // Khởi tạo hệ thống chính
         function startExperience() {
-            document.getElementById('overlay').style.transform = 'scale(1.6) rotate(3deg)';
-            document.getElementById('overlay').style.opacity = '0';
-            audio.play().catch(() => console.log("Audio Play Blocked"));
+            const overlay = document.getElementById('overlay');
+            overlay.style.transform = 'scale(2) rotate(5deg)';
+            overlay.style.opacity = '0';
+            overlay.style.filter = 'blur(20px)';
+            
+            audio.play().catch(e => console.log("Audio Error: ", e));
             
             setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
+                overlay.style.display = 'none';
                 document.getElementById('mainContent').classList.add('active');
                 document.getElementById('music-btn').style.display = 'flex';
-                typeWriter();
-            }, 1000);
+                document.getElementById('bg-image').style.transform = 'scale(1.1)';
+                startTypewriter();
+            }, 1200);
         }
 
-        function typeWriter() {
+        function startTypewriter() {
             const text = "> Booting Bio-OS Terminal v3.22... Success!";
-            let i = 0; const target = document.getElementById('typewriter');
-            function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 65); } }
+            let index = 0;
+            const container = document.getElementById('typewriter');
+            function type() {
+                if (index < text.length) {
+                    container.innerHTML += text.charAt(index++);
+                    setTimeout(type, 70);
+                }
+            }
             type();
         }
 
-        function toggleMusic() { if (audio.paused) audio.play(); else audio.pause(); }
-
-        // HỆ THỐNG TUYẾT 3 TẦNG V2
-        const canvases = [document.getElementById('canvas-bg'), document.getElementById('canvas-mid'), document.getElementById('canvas-foreground')];
-        const ctxs = canvases.map(c => c.getContext('2d'));
-        let particles = [[], [], []];
-
-        class Snow {
-            constructor(idx) { this.idx = idx; this.reset(); }
-            reset() {
-                const c = canvases[this.idx];
-                this.x = Math.random() * c.width;
-                this.y = Math.random() * -c.height;
-                this.size = [1.8, 3.2, 4.8][this.idx];
-                this.speed = [0.6, 1.4, 2.2][this.idx];
-                this.opacity = [0.25, 0.45, 0.75][this.idx];
-            }
-            update() { this.y += this.speed; if (this.y > window.innerHeight) this.reset(); }
-            draw() {
-                const ctx = ctxs[this.idx];
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('music-btn').style.animation = 'rotate 2s linear infinite';
+            } else {
+                audio.pause();
+                document.getElementById('music-btn').style.animation = 'none';
             }
         }
 
-        function init() {
+        // HỆ THỐNG TUYẾT RƠI ĐA TẦNG (DETAILED SNOW)
+        const canvases = [
+            document.getElementById('canvas-bg'), 
+            document.getElementById('canvas-mid'), 
+            document.getElementById('canvas-foreground')
+        ];
+        const ctxs = canvases.map(c => c.getContext('2d'));
+        let snowParticles = [[], [], []];
+
+        class Particle {
+            constructor(stage) {
+                this.stage = stage;
+                this.reset();
+            }
+            reset() {
+                const canvas = canvases[this.stage];
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height;
+                this.size = [1.5, 3.5, 5.5][this.stage];
+                this.velocity = [0.7, 1.5, 2.5][this.stage];
+                this.opacity = [0.2, 0.45, 0.75][this.stage];
+                this.wind = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.y += this.velocity;
+                this.x += this.wind;
+                if (this.y > window.innerHeight) this.reset();
+            }
+            draw() {
+                const ctx = ctxs[this.stage];
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initEnvironment() {
             canvases.forEach((c, i) => {
-                c.width = window.innerWidth; c.height = window.innerHeight;
-                particles[i] = Array.from({length: [70, 40, 20][i]}, () => new Snow(i));
+                c.width = window.innerWidth;
+                c.height = window.innerHeight;
+                const count = [80, 40, 20][i];
+                snowParticles[i] = Array.from({length: count}, () => new Particle(i));
             });
         }
 
-        function animate() {
+        function runAnimation() {
             ctxs.forEach((ctx, i) => {
                 ctx.clearRect(0, 0, canvases[i].width, canvases[i].height);
-                particles[i].forEach(p => { p.update(); p.draw(); });
+                snowParticles[i].forEach(p => {
+                    p.update();
+                    p.draw();
+                });
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(runAnimation);
         }
 
-        // 3D CARD TILT EFFECT ĐA CHIỀU
+        // HIỆU ỨNG CARD 3D THEO CHUỘT
         window.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            const x = (window.innerWidth / 2 - e.clientX) / 20;
+            const y = (window.innerHeight / 2 - e.clientY) / 20;
             const card = document.getElementById('profileCard');
-            if(card) card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            if(card) {
+                card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            }
         });
 
-        window.addEventListener('resize', init);
-        init(); animate();
+        window.addEventListener('resize', initEnvironment);
+        initEnvironment();
+        runAnimation();
+
+        console.log("Bio-OS v3.22 Fully Loaded - Developed for Hung Madding");
     </script>
 </body>
 </html>
