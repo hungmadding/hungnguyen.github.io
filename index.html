@@ -47,7 +47,7 @@
             background-color: #000;
         }
 
-        /* Lớp nền Full Screen làm mờ - ĐÃ ĐỔI THÀNH anhcho.jpg */
+        /* Lớp nền Full Screen làm mờ - HIỆN THỊ ẢNH CÔ GÁI */
         .overlay-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: url('anhcho.jpg') no-repeat center center;
@@ -59,27 +59,43 @@
 
         .loading-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
         
-        /* Khung ảnh trung tâm - ĐÃ ĐỔI THÀNH anhcho.jpg */
+        /* Khung ảnh trung tâm - ĐÃ FIX KÍCH THƯỚC */
         .loading-img-box {
-            width: 250px; height: 360px; border-radius: 40px; 
+            width: 320px; /* Tăng chiều rộng để khung ảnh rộng hơn */
+            height: 380px; /* Tăng chiều cao để khung ảnh cao hơn */
+            border-radius: 40px; 
             border: 3px solid var(--pink);
             box-shadow: 0 0 50px var(--pink-glow), inset 0 0 20px var(--pink-glow);
-            overflow: hidden; margin-bottom: 40px; 
+            overflow: hidden; 
+            margin-bottom: 30px; /* Giảm margin bottom một chút */
             animation: floatImage 5s ease-in-out infinite;
             background: #000;
         }
         .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
+        /* Chỉnh tên HUNG MADDING */
         .loading-name { 
-            font-family: 'Fira Code', monospace; font-size: 32px; font-weight: 700; 
-            letter-spacing: 12px; text-shadow: 0 0 30px var(--pink-glow); 
-            margin-bottom: 50px; color: #fff;
+            font-family: 'Fira Code', monospace; 
+            font-size: 32px; /* Giữ nguyên cỡ chữ */
+            font-weight: 700; 
+            letter-spacing: 15px; /* Tăng khoảng cách chữ để trông thoáng hơn */
+            text-shadow: 0 0 30px var(--pink-glow); 
+            margin-bottom: 25px; /* Giảm margin bottom */
+            color: #fff;
         }
 
-        .loader-container { width: 320px; transition: opacity 0.5s; }
-        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 15px; }
+        /* Chỉnh thanh loading */
+        .loader-container { width: 350px; /* Tăng chiều rộng thanh loading */ transition: opacity 0.5s; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 10px; /* Giảm margin bottom */ }
         .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.2s; }
-        .status-box { display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 11px; color: var(--pink); }
+        
+        /* Chỉnh trạng thái */
+        .status-box { 
+            display: flex; justify-content: space-between; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 11px; /* Cỡ chữ trạng thái */
+            color: var(--pink); 
+        }
 
         .enter-btn {
             display: none; background: transparent; border: 2.5px solid var(--pink);
