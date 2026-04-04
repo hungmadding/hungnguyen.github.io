@@ -111,25 +111,29 @@
         .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
         
-        /* HIỆU ỨNG CHỮ SÓNG NƯỚC NHẸ NHÀNG (ĐÃ TINH CHỈNH) */
+        /* FIX LỖI TÊN HIỂN THỊ */
         .waviy {
             position: relative;
-            display: inline-block;
+            display: inline-flex; /* Ép chữ nằm trên 1 hàng */
+            flex-wrap: wrap;
+            justify-content: center;
             margin-bottom: 12px;
             font-size: 24px;
+            width: 100%;
+            line-height: 1.8; /* Tạo không gian cho chữ nổi lên */
         }
         .waviy span {
             position: relative;
             display: inline-block;
-            animation: waviy 3s infinite; /* Tăng thời gian lên 3s để sóng chậm lại */
+            animation: waviy 3s infinite;
             animation-delay: calc(.1s * var(--i));
             text-shadow: 0 4px 10px rgba(255, 77, 148, 0.5);
+            white-space: pre; /* Giữ nguyên khoảng trống nếu có */
         }
-        .space { width: 8px; display: inline-block; }
         
         @keyframes waviy {
             0%, 40%, 100% { transform: translateY(0); }
-            20% { transform: translateY(-3px); } /* Giảm biên độ xuống còn -3px cực nhẹ */
+            20% { transform: translateY(-4px); } /* Nổi lên cực nhẹ */
         }
 
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; }
@@ -208,22 +212,7 @@
             <div class="avatar-box"><span>H</span></div>
             
             <h1 class="waviy">
-                <span style="--i:1">N</span>
-                <span style="--i:2">g</span>
-                <span style="--i:3">u</span>
-                <span style="--i:4">y</span>
-                <span style="--i:5">ễ</span>
-                <span style="--i:6">n</span>
-                <div class="space"></div>
-                <span style="--i:7">M</span>
-                <span style="--i:8">ạ</span>
-                <span style="--i:9">n</span>
-                <span style="--i:10">h</span>
-                <div class="space"></div>
-                <span style="--i:11">H</span>
-                <span style="--i:12">ù</span>
-                <span style="--i:13">n</span>
-                <span style="--i:14">g</span>
+                <span style="--i:1">N</span><span style="--i:2">g</span><span style="--i:3">u</span><span style="--i:4">y</span><span style="--i:5">ễ</span><span style="--i:6">n</span><span>&nbsp;</span><span style="--i:7">M</span><span style="--i:8">ạ</span><span style="--i:9">n</span><span style="--i:10">h</span><span>&nbsp;</span><span style="--i:11">H</span><span style="--i:12">ù</span><span style="--i:13">n</span><span style="--i:14">g</span>
             </h1>
 
             <div id="typewriter" class="typewriter"></div>
