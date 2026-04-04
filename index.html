@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bio-OS v3.22 Ultimate | Full Screen Avatar</title>
+    <title>Bio-OS v3.22 Ultimate | Full Background</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,14 +14,13 @@
             --pink: #ff4d94; 
             --pink-glow: #ff0077;
             --pink-dark: #cc005f;
-            --glass: rgba(15, 10, 15, 0.15);
-            --glass-border: rgba(255, 77, 148, 0.25);
+            --glass: rgba(15, 10, 15, 0.4); /* Tăng độ đậm để dễ đọc chữ trên nền ảnh */
+            --glass-border: rgba(255, 77, 148, 0.35);
             --bg-dark: #050505;
             --text-main: #ffffff;
             --text-sub: rgba(255, 255, 255, 0.7);
         }
 
-        /* Tối ưu hiển thị toàn màn hình */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
         body, html { 
             height: 100vh; 
@@ -32,11 +31,14 @@
             color: var(--text-main); 
         }
 
+        /* FIX 1: ẢNH CÔ GÁI LÀM NỀN TOÀN MÀN HÌNH */
         #bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
-                        url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
-            background-size: cover; z-index: 0; filter: brightness(0.8) contrast(1.1);
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), 
+                        url('anhcho.jpg') no-repeat center center;
+            background-size: cover; 
+            z-index: 0; 
+            filter: brightness(0.8) contrast(1.1);
         }
 
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -44,40 +46,16 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* --- SỬA LỖI LOADING: NỀN ĐEN BẰNG ẢNH CÔ GÁI --- */
+        /* LOADING OVERLAY */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; display: flex; flex-direction: column; 
             justify-content: center; align-items: center;
             transition: opacity 1.5s;
-            /* SỬA TẠI ĐÂY: Dùng ảnh cô gái làm nền mờ cho cả overlay */
-            background: #000 url('anhcho.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        .overlay-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(25px) brightness(0.4);
-            -webkit-backdrop-filter: blur(25px) brightness(0.4);
-            z-index: -1;
+            background: #000;
         }
 
         .loading-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
-        
-        /* FIX: PHÓNG TO KHUNG ẢNH LOADING TRUNG TÂM */
-        .loading-img-box {
-            width: 320px; 
-            height: 400px; /* Tăng chiều cao để giống một tấm ảnh chân dung Full Screen */
-            border-radius: 40px; 
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 50px var(--pink-glow), inset 0 0 20px var(--pink-glow);
-            overflow: hidden; 
-            margin-bottom: 30px; 
-            animation: floatImage 5s ease-in-out infinite;
-            background: transparent;
-        }
-        .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
         .loading-name { 
             font-family: 'Fira Code', monospace; 
@@ -109,46 +87,52 @@
         }
         .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
 
-        /* --- MAIN UI --- */
+        /* MAIN UI */
         .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 10px var(--pink-glow); display: none; }
         #real-clock { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
         #real-date { font-size: 10px; text-transform: uppercase; opacity: 0.7; margin-top: 5px; }
 
         .main-wrapper { position: relative; height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
         .main-wrapper.active { opacity: 1; visibility: visible; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 60px 35px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
-        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
-        .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
         
-        /* FIX: PHÓNG TO AVATAR TRONG THẺ BIO */
+        .card { 
+            background: var(--glass); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border-radius: 50px; width: 90%; max-width: 380px; 
+            padding: 60px 35px; text-align: center; 
+            border: 1px solid var(--glass-border); 
+            position: relative; overflow: hidden; 
+        }
+        .card::after { content: ''; position: absolute; inset: 2px; background: rgba(10, 5, 10, 0.4); border-radius: 48px; z-index: -1; }
+        
         .avatar-box { 
-            width: 120px; /* Tăng kích thước avt một chút để nổi bật hơn */
-            height: 120px; 
+            width: 120px; height: 120px; 
             border-radius: 50%; border: 3px solid var(--pink); 
             margin: 0 auto 25px; 
             display: flex; align-items: center; justify-content: center; 
             box-shadow: 0 0 30px var(--pink-glow); 
-            overflow: hidden; /* Cần thiết để ảnh không bị tràn */
+            overflow: hidden; 
         }
-        /* FIX: Ảnh trong avatar-box phải chiếm full để hiển thị rực rỡ */
         .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
         
         h1 { font-size: 26px; margin-bottom: 12px; }
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
-        .link-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px 22px; color: #fff; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; transition: 0.4s; }
-        .link-item:hover { background: rgba(255, 77, 148, 0.12); border-color: var(--pink); transform: translateX(5px); }
+        .link-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 16px 22px; color: #fff; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; transition: 0.4s; }
+        .link-item:hover { background: rgba(255, 77, 148, 0.2); border-color: var(--pink); transform: translateX(5px); }
         .link-item i { font-size: 20px; color: var(--pink); }
+        
         #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; }
-        .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.3; font-family: 'Fira Code'; }
+        .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.5; font-family: 'Fira Code'; }
 
-        @keyframes rotateLED { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="bg-image"></div>
+    
     <div class="system-time" id="sysTime">
         <div id="real-clock">00:00:00</div>
         <div id="real-date">...</div>
@@ -159,13 +143,8 @@
     <canvas id="canvas-foreground"></canvas>
 
     <div id="overlay">
-        <div class="overlay-bg"></div> 
         <div class="loading-content">
-            <div class="loading-img-box">
-                <img src="anhcho.jpg" alt="Hùng Madding Portrait">
-            </div>
             <div class="loading-name">HUNG MADDING</div>
-            
             <div id="loaderUI" class="loader-container">
                 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
                 <div class="status-box">
@@ -173,7 +152,6 @@
                     <span id="loadPercent">0%</span>
                 </div>
             </div>
-            
             <button id="enterBtn" class="enter-btn" onclick="initSystem()">Access System</button>
         </div>
     </div>
@@ -217,7 +195,7 @@
                     setTimeout(() => {
                         loaderUI.style.display = "none";
                         enterBtn.style.display = "block";
-                        enterBtn.style.animation = "fadeIn 0.8s forwards, pulse 2s infinite";
+                        enterBtn.style.animation = "fadeIn 0.8s forwards";
                     }, 500);
                 }, 500);
             } else {
@@ -230,17 +208,8 @@
             }
         }, 40);
 
-        // HÀM KÍCH HOẠT FULL SCREEN (GIỮ NGUYÊN)
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
-            }
-        }
-
+        // FIX 2: ĐÃ LOẠI BỎ HÀM toggleFullScreen KHỎI initSystem
         function initSystem() {
-            toggleFullScreen(); // Kích hoạt ngay khi nhấn nút
             document.getElementById('overlay').style.opacity = "0";
             audio.play().catch(() => {});
             setTimeout(() => {
@@ -280,7 +249,6 @@
             else { audio.pause(); btn.style.animationPlayState = "paused"; }
         }
 
-        // SNOW ENGINE (GIỮ NGUYÊN)
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
