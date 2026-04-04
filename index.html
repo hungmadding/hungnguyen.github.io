@@ -112,7 +112,6 @@
             transform-style: preserve-3d;
         }
 
-        /* NEON LED ROTATING BORDER */
         .card::before {
             content: ''; position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
@@ -139,7 +138,6 @@
             font-family: 'Fira Code'; 
         }
 
-        /* SOCIAL LINKS */
         .links { display: flex; flex-direction: column; gap: 15px; }
         .link-item {
             background: rgba(255, 255, 255, 0.05); padding: 18px 25px; color: #fff;
@@ -153,7 +151,6 @@
         }
         .link-item i { font-size: 22px; color: var(--pink); filter: drop-shadow(0 0 5px var(--pink)); }
 
-        /* MUSIC PLAYER BUTTON */
         #music-btn {
             position: fixed; top: 30px; right: 30px; z-index: 10005;
             width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--pink);
@@ -162,7 +159,6 @@
             box-shadow: 0 0 15px var(--pink);
         }
 
-        /* KEYFRAMES */
         @keyframes rotateLED { 100% { transform: rotate(360deg); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -180,7 +176,7 @@
     <div id="overlay">
         <div class="loading-content">
             <div class="loading-img-box">
-                <img id="loadImg" src="" alt="Deep Madding">
+                <img id="loadImg" src="ảnh chờ.jpg" alt="Deep Madding">
             </div>
             <div id="loader" class="loader-container">
                 <div class="progress-bar"><div id="fill" class="progress-fill"></div></div>
@@ -210,15 +206,11 @@
     <div class="footer-info">BUILD BY HUNG MADDING v3.22</div>
 
     <script>
-        // Load ảnh chờ
-        document.getElementById('loadImg').src = decodeURIComponent('%E1%BA%A3nh%20ch%E1%BB%9D.jpg');
-        
         const audio = document.getElementById('audio');
         const fill = document.getElementById('fill');
         const status = document.getElementById('status');
         let prog = 0;
 
-        // Xử lý tiến trình loading
         const loadingInterval = setInterval(function() {
             if (prog >= 100) {
                 clearInterval(loadingInterval);
@@ -236,7 +228,6 @@
             }
         }, 40);
 
-        // Hàm bắt đầu vào hệ thống
         function start() {
             document.getElementById('overlay').style.opacity = '0';
             audio.play().catch(function(e) { console.log("Autoplay blocked"); });
@@ -250,7 +241,6 @@
             }, 1500);
         }
 
-        // Hiệu ứng chữ chạy
         function runTypeWriter() {
             const message = "> Booting Deep Madding System... Success!";
             let index = 0;
@@ -264,7 +254,6 @@
             write();
         }
 
-        // Bật tắt nhạc
         function toggleMusic() {
             if (audio.paused) { 
                 audio.play(); 
@@ -275,7 +264,6 @@
             }
         }
 
-        // --- SNOW SYSTEM LAYERS ---
         function createSnow(canvasId, count, size, speed, opacity) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
@@ -318,16 +306,14 @@
             setInterval(draw, 33);
         }
 
-        // Khởi tạo 3 lớp tuyết riêng biệt
         createSnow('canvas-bg', 60, 1, 0.5, 0.2);
         createSnow('canvas-mid', 40, 2.5, 1.2, 0.4);
         createSnow('canvas-foreground', 15, 5, 2.5, 0.7);
 
         window.addEventListener('resize', function() {
-            location.reload(); // Reset lại tuyết khi xoay màn hình
+            location.reload();
         });
 
-        // 3D TILT EFFECT
         if (!/Android|iPhone/i.test(navigator.userAgent)) {
             const cardElement = document.getElementById('card');
             window.addEventListener('mousemove', function(e) {
