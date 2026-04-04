@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ditconmemay</title>
+    <title>Hùng Madding - Profile</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -102,6 +102,8 @@
 
         .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
         .main-wrapper.active { opacity: 1; visibility: visible; }
+        
+        /* CARD CSS */
         .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 45px 30px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
         .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
@@ -109,7 +111,27 @@
         .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
         
-        h1 { font-size: 24px; margin-bottom: 10px; }
+        /* HIỆU ỨNG CHỮ SÓNG NƯỚC */
+        .waviy {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+        .waviy span {
+            position: relative;
+            display: inline-block;
+            animation: waviy 2s infinite;
+            animation-delay: calc(.1s * var(--i));
+            text-shadow: 0 4px 10px rgba(255, 77, 148, 0.5);
+        }
+        .space { width: 8px; display: inline-block; }
+        
+        @keyframes waviy {
+            0%, 40%, 100% { transform: translateY(0); }
+            20% { transform: translateY(-8px); }
+        }
+
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; }
         
         .link-item { 
@@ -184,7 +206,26 @@
     <main id="mainUI" class="main-wrapper">
         <div id="tiltCard" class="card">
             <div class="avatar-box"><span>H</span></div>
-            <h1>Nguyễn Mạnh Hùng</h1>
+            
+            <h1 class="waviy">
+                <span style="--i:1">N</span>
+                <span style="--i:2">g</span>
+                <span style="--i:3">u</span>
+                <span style="--i:4">y</span>
+                <span style="--i:5">ễ</span>
+                <span style="--i:6">n</span>
+                <div class="space"></div>
+                <span style="--i:7">M</span>
+                <span style="--i:8">ạ</span>
+                <span style="--i:9">n</span>
+                <span style="--i:10">h</span>
+                <div class="space"></div>
+                <span style="--i:11">H</span>
+                <span style="--i:12">ù</span>
+                <span style="--i:13">n</span>
+                <span style="--i:14">g</span>
+            </h1>
+
             <div id="typewriter" class="typewriter"></div>
             
             <div class="links-container">
