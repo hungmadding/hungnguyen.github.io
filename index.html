@@ -21,7 +21,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        /* Sử dụng 100dvh để tránh lỗi thanh địa chỉ trên trình duyệt di động */
         body, html { height: 100dvh; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
 
         #bg-image {
@@ -62,7 +61,7 @@
 
         .loading-name { 
             font-family: 'Fira Code', monospace; 
-            font-size: clamp(24px, 8vw, 32px); /* Tự động co giãn theo màn hình */
+            font-size: clamp(24px, 8vw, 32px); 
             font-weight: 700; letter-spacing: 10px; 
             text-shadow: 0 0 30px var(--pink-glow); margin-bottom: 25px; color: #fff; 
         }
@@ -73,6 +72,7 @@
         .status-box { display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 10px; color: var(--pink); font-weight: bold; }
 
         .enter-btn { 
+            position: relative; overflow: hidden;
             display: none; background: rgba(0,0,0,0.6); border: 2.5px solid var(--pink); 
             color: var(--pink); padding: 15px 40px; font-family: 'Fira Code', monospace; 
             font-weight: 700; font-size: 14px; letter-spacing: 3px; border-radius: 15px; 
@@ -110,21 +110,57 @@
         .waviy { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; font-size: clamp(18px, 5vw, 22px); font-weight: 700; line-height: 1.4; }
         .waviy span { position: relative; display: inline-block; animation: waviy 3s infinite; animation-delay: calc(.1s * var(--i)); color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); }
         
-        @keyframes waviy { 0%, 40%, 100% { transform: translateY(0); } 20% { transform: translateY(-4px); } }
-
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-        .link-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4); border-radius: 12px; padding: 12px 18px; color: #fff; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: 0.3s; font-size: 14px; }
-        .link-item:active { transform: scale(0.97); background: rgba(255, 77, 148, 0.2); }
+        /* Cải tiến link-item với hiệu ứng phát sáng rực rỡ */
+        .link-item { 
+            position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4); 
+            border-radius: 12px; padding: 12px 18px; color: #fff; text-decoration: none; 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 10px; transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); font-size: 14px; 
+        }
+
+        .link-item span, .link-item i { transition: all 0.3s ease; text-shadow: 0 0 8px rgba(255, 77, 148, 0.5); }
+        .link-item i { font-size: 18px; filter: drop-shadow(0 0 5px var(--pink)); }
+
+        .link-item:active, .link-item:hover { 
+            background: rgba(255, 77, 148, 0.2); 
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .link-item:active span, .link-item:hover span {
+            color: #fff; text-shadow: 0 0 15px #fff, 0 0 25px var(--pink-glow); transform: translateX(5px);
+        }
+
+        .link-item:active i, .link-item:hover i {
+            color: #fff; filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 20px var(--pink-glow));
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        /* Shine Effect */
+        .link-item::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+        .link-item:active::after { left: 100%; transition: 0.5s; }
 
         .footer { position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 8px; opacity: 0.4; font-family: 'Fira Code'; }
         
+        @keyframes waviy { 0%, 40%, 100% { transform: translateY(0); } 20% { transform: translateY(-4px); } }
         @keyframes rotateLED { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0% { box-shadow: 0 0 15px var(--pink-glow); } 50% { box-shadow: 0 0 30px var(--pink-glow); } 100% { box-shadow: 0 0 15px var(--pink-glow); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        /* Ripple Keyframe */
+        @keyframes ripple {
+            0% { width: 0; height: 0; opacity: 0.5; }
+            100% { width: 500px; height: 500px; opacity: 0; }
+        }
 
-        /* Media query nhỏ để xử lý máy màn hình cực ngắn */
         @media (max-height: 600px) {
             .card { padding: 20px 20px; }
             .avatar-box { width: 60px; height: 60px; }
@@ -237,7 +273,6 @@
 
         function initSystem() {
             document.getElementById('overlay').style.opacity = "0";
-            // Cố gắng chạy audio (trình duyệt di động yêu cầu tương tác người dùng)
             audio.play().catch(e => console.log("Audio play blocked"));
             
             setTimeout(() => {
@@ -273,7 +308,6 @@
             else { audio.pause(); btn.style.animationPlayState = "paused"; }
         }
 
-        // Tối ưu SnowEngine cho hiệu năng di động
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
@@ -322,13 +356,11 @@
             }
         }
         
-        // Giảm nhẹ số lượng hạt trên mobile để tránh nóng máy
         const isMobile = /Android|iPhone/i.test(navigator.userAgent);
         new SnowEngine('canvas-bg', isMobile ? 30 : 60, { size: 1, speed: 0.3, opacity: 0.1 });
         new SnowEngine('canvas-mid', isMobile ? 20 : 40, { size: 2, speed: 0.7, opacity: 0.2 });
         new SnowEngine('canvas-foreground', isMobile ? 8 : 15, { size: 4, speed: 1.2, opacity: 0.4 });
 
-        // Chỉ kích hoạt Tilt Effect trên máy tính (Mousemove không tồn tại trên cảm ứng thông thường)
         const card = document.getElementById('tiltCard');
         if (!isMobile) {
             document.addEventListener('mousemove', (e) => {
@@ -337,14 +369,34 @@
                 card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
             });
         } else {
-            // Tối ưu cho cảm ứng: Click vào card tạo hiệu ứng nhẹ
-            card.addEventListener('touchstart', () => {
-                card.style.transform = "scale(0.98)";
-            });
-            card.addEventListener('touchend', () => {
-                card.style.transform = "scale(1)";
-            });
+            card.addEventListener('touchstart', () => { card.style.transform = "scale(0.98)"; });
+            card.addEventListener('touchend', () => { card.style.transform = "scale(1)"; });
         }
+
+        // Script hiệu ứng sóng nước (Ripple) khi bấm
+        document.querySelectorAll('.link-item, .enter-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                let ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.style.width = '2px';
+                ripple.style.height = '2px';
+                ripple.style.background = 'white';
+                ripple.style.opacity = '0.5';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
     </script>
 </body>
 </html>
