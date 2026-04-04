@@ -111,7 +111,7 @@
         .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 20px var(--pink-glow); }
         
-        /* HIỆU ỨNG PHÁT SÁNG CHO TÊN (ĐÃ FIX LỖI HIỂN THỊ) */
+        /* HIỆU ỨNG PHÁT SÁNG CHO TÊN */
         .waviy {
             position: relative;
             display: inline-flex;
@@ -129,7 +129,6 @@
             animation: waviy 3s infinite;
             animation-delay: calc(.1s * var(--i));
             color: #fff;
-            /* Hiệu ứng phát sáng rực rỡ */
             text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow), 0 0 40px var(--pink-glow);
         }
         
@@ -149,7 +148,6 @@
             text-shadow: 0 0 10px var(--pink-glow);
         }
         
-        /* PHÁT SÁNG CHO CÁC NÚT LINK */
         .link-item { 
             background: rgba(255,255,255,0.03); 
             border: 1px solid rgba(255, 77, 148, 0.4) !important;
@@ -308,13 +306,29 @@
             }, 1000);
         }
 
+        // HỆ THỐNG XÁC ĐỊNH THỜI GIAN VÀ LỜI CHÚC
         function startTypeWriter() {
-            const text = "> cám ơn bạn gì đó trai xinh gái đẹp đã ghé thăm nha!";
+            const now = new Date();
+            const hours = now.getHours();
+            let greeting = "";
+
+            if (hours >= 5 && hours < 11) {
+                greeting = "> Chúc bạn một buổi sáng tốt lành và tràn đầy năng lượng nha! ☀️";
+            } else if (hours >= 11 && hours < 14) {
+                greeting = "> Chúc bạn buổi trưa vui vẻ, đừng quên nghỉ ngơi ăn uống đầy đủ nhé! 🍱";
+            } else if (hours >= 14 && hours < 18) {
+                greeting = "> Chúc bạn một buổi chiều làm việc và học tập hiệu quả nha! ☕";
+            } else if (hours >= 18 && hours < 22) {
+                greeting = "> Chúc bạn buổi tối ấm áp bên gia đình và người thân yêu! ✨";
+            } else {
+                greeting = "> Đã khuya rồi, chúc bạn ngủ thật ngon và có những giấc mơ đẹp nha! 🌙";
+            }
+
             let i = 0;
             const target = document.getElementById('typewriter');
             function type() {
-                if (i < text.length) { 
-                    target.innerHTML += text.charAt(i) === "\n" ? "<br>" : text.charAt(i); 
+                if (i < greeting.length) { 
+                    target.innerHTML += greeting.charAt(i); 
                     i++; setTimeout(type, 50); 
                 }
             }
@@ -354,4 +368,4 @@
         }
     </script>
 </body>
-</html>
+</html>ư
