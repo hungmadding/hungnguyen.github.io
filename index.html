@@ -13,204 +13,234 @@
         :root { 
             --pink: #ff4d94; 
             --pink-glow: #ff0077;
+            --pink-dark: #cc005f;
             --glass: rgba(15, 10, 15, 0.15);
             --glass-border: rgba(255, 77, 148, 0.25);
             --bg-dark: #050505;
+            --text-main: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: #fff; }
+        body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
 
-        /* NỀN TRANG CHÍNH */
         #bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
                         url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
-            background-size: cover; z-index: 0; filter: brightness(0.8);
+            background-size: cover; z-index: 0; filter: brightness(0.8) contrast(1.1);
         }
 
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         #canvas-bg { z-index: 1; }
+        #canvas-mid { z-index: 2; }
+        #canvas-foreground { z-index: 10001; }
 
-        /* =========================================
-           FULL SCREEN LOADING OVERLAY 
-        ========================================= */
+        /* --- LOADING OVERLAY FULL SCREEN IMAGE --- */
         #overlay {
-            position: fixed; 
-            inset: 0; /* Phủ toàn màn hình */
-            z-index: 99999; 
-            display: flex;
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center;
-            background: #000; /* Nền đen sâu */
-            transition: opacity 1.2s ease-in-out, visibility 1.2s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 99999; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #000; /* Nền dự phòng */
+            overflow: hidden;
         }
 
-        /* Hình nền mờ phía sau loading */
-        .overlay-bg-image {
+        /* Lớp nền ảnh Full Screen */
+        .loading-bg-full {
             position: absolute;
-            inset: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: url('anhcho.jpg') no-repeat center center;
             background-size: cover;
-            filter: blur(50px) brightness(0.3); /* Làm mờ cực mạnh để nổi bật nội dung */
-            transform: scale(1.1);
             z-index: -1;
+            /* Thêm filter để chữ dễ đọc hơn */
+            filter: brightness(0.5); 
         }
 
         .loading-content { 
             position: relative; 
-            z-index: 1; 
+            z-index: 2; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             width: 100%; 
-            max-width: 400px;
-            padding: 20px;
+            background: rgba(0,0,0,0.2); /* Tạo lớp phủ nhẹ quanh nội dung */
+            padding: 40px 0;
         }
-        
-        .loading-img-box {
-            width: 200px; 
-            height: 200px; 
-            border-radius: 30px; 
-            overflow: hidden; 
-            margin-bottom: 40px; 
-            border: 2px solid var(--pink);
-            box-shadow: 0 0 30px var(--pink-glow);
-            animation: floatImage 4s ease-in-out infinite;
-        }
-        .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        
+
+        /* Ẩn box cũ vì ảnh đã tràn nền */
+        .loading-img-box { display: none; }
+
         .loading-name { 
             font-family: 'Fira Code', monospace; 
-            font-size: 28px; 
+            font-size: 32px; 
             font-weight: 700; 
-            letter-spacing: 10px; 
-            text-shadow: 0 0 20px var(--pink-glow); 
-            margin-bottom: 30px; 
-            color: #fff;
-            text-align: center;
+            letter-spacing: 15px; 
+            text-shadow: 0 0 30px var(--pink-glow); 
+            margin-bottom: 25px; 
+            color: #fff; 
         }
 
-        .loader-container { width: 80%; max-width: 300px; }
-        .progress-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
-        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 15px var(--pink); transition: width 0.3s ease; }
-        
-        .status-box { 
-            display: flex; justify-content: space-between; 
-            font-family: 'Fira Code', monospace; 
-            font-size: 10px; 
-            color: var(--pink); 
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .loader-container { width: 350px; transition: opacity 0.5s; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.2s; }
+        .status-box { display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 11px; color: var(--pink); font-weight: bold; }
+
+        .enter-btn { 
+            display: none; background: rgba(0,0,0,0.6); border: 2.5px solid var(--pink); 
+            color: var(--pink); padding: 18px 60px; font-family: 'Fira Code', monospace; 
+            font-weight: 700; font-size: 15px; letter-spacing: 5px; border-radius: 15px; 
+            cursor: pointer; text-transform: uppercase; transition: all 0.4s; 
+            margin-top: -10px; backdrop-filter: blur(5px);
         }
+        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
 
-        .enter-btn {
-            display: none; background: rgba(255, 77, 148, 0.1); border: 1px solid var(--pink);
-            color: var(--pink); padding: 15px 40px; font-family: 'Fira Code', monospace;
-            font-weight: 700; font-size: 14px; letter-spacing: 3px; border-radius: 50px;
-            cursor: pointer; transition: all 0.4s;
-            box-shadow: 0 0 15px rgba(255, 77, 148, 0.2);
-        }
-        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 30px var(--pink-glow); transform: translateY(-3px); }
+        /* CLOCK & MUSIC BTN */
+        .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
+        #real-clock { font-size: 24px; font-weight: 700; }
+        #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
 
-        /* =========================================
-           MAIN UI
-        ========================================= */
-        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; }
-        .main-wrapper.active { opacity: 1; visibility: visible; }
-        
-        .card { background: var(--glass); backdrop-filter: blur(20px); border-radius: 40px; width: 90%; max-width: 360px; padding: 40px 25px; text-align: center; border: 1px solid var(--glass-border); position: relative; }
-        
-        .avatar-box { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px var(--pink-glow); }
-        .avatar-box span { color: var(--pink); font-size: 40px; font-weight: 900; text-shadow: 0 0 10px var(--pink-glow); }
-        
-        .waviy { margin-bottom: 15px; font-size: 22px; font-weight: 700; color: #fff; text-shadow: 0 0 15px var(--pink-glow); }
-        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 20px; }
-
-        .link-item { 
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2);
-            border-radius: 12px; padding: 12px 20px; color: #fff !important;
-            text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: 0.3s;
-        }
-        .link-item:hover { background: rgba(255, 77, 148, 0.1); border-color: var(--pink); transform: scale(1.02); box-shadow: 0 0 15px rgba(255, 77, 148, 0.2); }
-
+        /* GREETING TOAST */
         #greeting-toast {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            position: fixed; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px);
             background: rgba(255, 77, 148, 0.2); border: 1px solid var(--pink);
-            padding: 10px 20px; border-radius: 30px; backdrop-filter: blur(10px);
-            color: #fff; font-size: 13px; z-index: 10006; opacity: 0; transition: 0.5s;
+            padding: 12px 25px; border-radius: 20px; backdrop-filter: blur(10px);
+            color: #fff; font-weight: 600; font-size: 14px; z-index: 10006;
+            box-shadow: 0 0 20px var(--pink-glow); opacity: 0; visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; white-space: nowrap;
         }
-        #greeting-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        #greeting-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-        @keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        /* MAIN UI & CARD */
+        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
+        .main-wrapper.active { opacity: 1; visibility: visible; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 45px 30px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
+        .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
+        
+        .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
+        .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 20px var(--pink-glow); }
+        
+        .waviy { position: relative; display: inline-flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-size: 24px; width: 100%; line-height: 1.8; font-weight: 700; }
+        .waviy span { position: relative; display: inline-block; animation: waviy 3s infinite; animation-delay: calc(.1s * var(--i)); color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow), 0 0 40px var(--pink-glow); }
+        
+        @keyframes waviy { 0%, 40%, 100% { transform: translateY(0); } 20% { transform: translateY(-4px); } }
+
+        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; text-shadow: 0 0 10px var(--pink-glow); }
+        
+        .link-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4) !important; border-radius: 15px; padding: 14px 20px; color: #fff !important; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; transition: 0.4s; text-shadow: 0 0 10px var(--pink-glow) !important; }
+        .link-item i { font-size: 18px; color: #fff !important; filter: drop-shadow(0 0 10px var(--pink-glow)) !important; }
+        .link-item:hover { background: rgba(255, 77, 148, 0.15); border-color: var(--pink); transform: translateX(5px); text-shadow: 0 0 15px #fff, 0 0 30px var(--pink-glow) !important; }
+
+        .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.3; font-family: 'Fira Code'; }
+        @keyframes rotateLED { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 20px var(--pink-glow); } 50% { box-shadow: 0 0 40px var(--pink-glow); } 100% { box-shadow: 0 0 20px var(--pink-glow); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="bg-image"></div>
+    <div class="system-time" id="sysTime">
+        <div id="real-clock">00:00:00</div>
+        <div id="real-date">...</div>
+    </div>
+
+    <div id="greeting-toast">Chào mừng bạn!</div>
     
     <canvas id="canvas-bg"></canvas>
+    <canvas id="canvas-mid"></canvas>
+    <canvas id="canvas-foreground"></canvas>
 
     <div id="overlay">
-        <div class="overlay-bg-image"></div> 
+        <div class="loading-bg-full"></div> 
+        
         <div class="loading-content">
-            <div class="loading-img-box">
-                <img src="anhcho.jpg" onerror="this.src='https://via.placeholder.com/200'">
-            </div>
             <div class="loading-name">HUNG MADDING</div>
-            
             <div id="loaderUI" class="loader-container">
                 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-                <div class="status-box">
-                    <span id="loadStatus">Loading System...</span>
-                    <span id="loadPercent">0%</span>
-                </div>
+                <div class="status-box"><span id="loadStatus">Initializing UI...</span><span id="loadPercent">0%</span></div>
             </div>
-            
-            <button id="enterBtn" class="enter-btn" onclick="initSystem()">ENTER SYSTEM</button>
+            <button id="enterBtn" class="enter-btn" onclick="initSystem()">Bấm để vô nhoa:3</button>
         </div>
     </div>
 
-    <div id="greeting-toast"></div>
+    <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-compact-disc"></i></div>
     <audio id="mainAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
     <main id="mainUI" class="main-wrapper">
-        <div class="card">
+        <div id="tiltCard" class="card">
             <div class="avatar-box"><span>H</span></div>
-            <h1 class="waviy">Nguyễn Mạnh Hùng</h1>
+            <h1 class="waviy">
+                <span style="--i:1">N</span><span style="--i:2">g</span><span style="--i:3">u</span><span style="--i:4">y</span><span style="--i:5">ễ</span><span style="--i:6">n</span><span>&nbsp;</span><span style="--i:7">M</span><span style="--i:8">ạ</span><span style="--i:9">n</span><span style="--i:10">h</span><span>&nbsp;</span><span style="--i:11">H</span><span style="--i:12">ù</span><span style="--i:13">n</span><span style="--i:14">g</span>
+            </h1>
+
             <div id="typewriter" class="typewriter"></div>
+            
             <div class="links-container">
-                <a href="#" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
-                <a href="#" class="link-item"><span>TikTok</span><i class="fab fa-tiktok"></i></a>
-                <a href="#" class="link-item"><span>Github</span><i class="fab fa-github"></i></a>
+                <a href="https://www.facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
+                <a href="https://www.tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TikTok Channel</span><i class="fab fa-tiktok"></i></a>
+                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>Github Projects</span><i class="fab fa-github"></i></a>
+                <a href="mailto:contact@hungmadding.vn" class="link-item"><span>Work Inquiry</span><i class="fas fa-envelope"></i></a>
             </div>
         </div>
     </main>
 
+    <div class="footer">welcome:3</div>
+
     <script>
+        const audio = document.getElementById('mainAudio');
         const fill = document.getElementById('progressFill');
         const percentTxt = document.getElementById('loadPercent');
         const statusTxt = document.getElementById('loadStatus');
         const enterBtn = document.getElementById('enterBtn');
         const loaderUI = document.getElementById('loaderUI');
-        const audio = document.getElementById('mainAudio');
         
         let currentProgress = 0;
         const loaderTask = setInterval(() => {
             if (currentProgress >= 100) {
                 currentProgress = 100;
                 clearInterval(loaderTask);
-                loaderUI.style.display = "none";
-                enterBtn.style.display = "block";
+                setTimeout(() => {
+                    loaderUI.style.opacity = "0";
+                    setTimeout(() => {
+                        loaderUI.style.display = "none";
+                        enterBtn.style.display = "block";
+                        enterBtn.style.animation = "fadeIn 0.8s forwards, pulse 2s infinite";
+                    }, 500);
+                }, 500);
             } else {
-                currentProgress += Math.random() * 3;
+                currentProgress += Math.random() * 2;
                 if (currentProgress > 100) currentProgress = 100;
                 fill.style.width = currentProgress + "%";
                 percentTxt.innerText = Math.floor(currentProgress) + "%";
-                if(currentProgress > 70) statusTxt.innerText = "Ready!";
+                if(currentProgress > 80) statusTxt.innerText = "System Ready!";
+                else if(currentProgress > 40) statusTxt.innerText = "Processing Data...";
             }
-        }, 50);
+        }, 40);
+
+        function updateSystemTime() {
+            const now = new Date();
+            document.getElementById('real-clock').innerText = now.toLocaleTimeString('en-GB', { hour12: false });
+            document.getElementById('real-date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        function showGreeting() {
+            const hours = new Date().getHours();
+            const toast = document.getElementById('greeting-toast');
+            let msg = "";
+
+            if (hours >= 5 && hours < 11) msg = "Chào buổi sáng! Chúc bạn ngày mới tốt lành ☀️";
+            else if (hours >= 11 && hours < 14) msg = "Chào buổi trưa! Nhớ ăn uống và nghỉ ngơi nha 🍱";
+            else if (hours >= 14 && hours < 18) msg = "Chào buổi chiều! Làm việc thật hiệu quả nhé ☕";
+            else if (hours >= 18 && hours < 22) msg = "Chào buổi tối! Chúc bạn ấm áp bên người thân ✨";
+            else msg = "Đã khuya rồi! Chúc bạn ngủ thật ngon nha 🌙";
+
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 5000);
+        }
 
         function initSystem() {
             document.getElementById('overlay').style.opacity = "0";
@@ -218,28 +248,60 @@
             setTimeout(() => {
                 document.getElementById('overlay').style.display = "none";
                 document.getElementById('mainUI').classList.add('active');
+                document.getElementById('music-btn').style.display = "flex";
+                document.getElementById('music-btn').style.animation = "rotateCD 4s linear infinite";
+                document.getElementById('sysTime').style.display = "block";
+                updateSystemTime();
+                setInterval(updateSystemTime, 1000);
                 showGreeting();
                 startTypeWriter();
             }, 1000);
         }
 
-        function showGreeting() {
-            const hours = new Date().getHours();
-            const toast = document.getElementById('greeting-toast');
-            let msg = hours < 12 ? "Chào buổi sáng tốt lành! ☀️" : (hours < 18 ? "Chào buổi chiều vui vẻ! ☕" : "Chào buổi tối ấm áp! ✨");
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-
         function startTypeWriter() {
-            const text = "> cám ơn bạn trai xinh gái đẹp đã ghé thăm nha!";
+            const text = "> cám ơn bạn gì đó trai xinh gái đẹp đã ghé thăm nha!";
             let i = 0;
             const target = document.getElementById('typewriter');
+            target.innerHTML = "";
             function type() {
-                if (i < text.length) { target.innerHTML += text.charAt(i); i++; setTimeout(type, 50); }
+                if (i < text.length) { 
+                    target.innerHTML += text.charAt(i); 
+                    i++; setTimeout(type, 50); 
+                }
             }
             type();
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('music-btn');
+            if (audio.paused) { audio.play(); btn.style.animationPlayState = "running"; }
+            else { audio.pause(); btn.style.animationPlayState = "paused"; }
+        }
+
+        class SnowEngine {
+            constructor(canvasId, count, config) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.count = count; this.particles = []; this.config = config; this.init();
+            }
+            init() { this.resize(); window.addEventListener('resize', () => this.resize()); for (let i = 0; i < this.count; i++) this.particles.push(this.createParticle()); this.animate(); }
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
+            createParticle() { return { x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height, r: Math.random() * this.config.size + 1, v: Math.random() * this.config.speed + 0.5, o: Math.random() * 0.5 + this.config.opacity }; }
+            draw() { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.particles.forEach(p => { this.ctx.fillStyle = `rgba(255, 255, 255, ${p.o})`; this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); this.ctx.fill(); }); this.update(); }
+            update() { this.particles.forEach(p => { p.y += p.v; if (p.y > this.canvas.height) p.y = -10; }); }
+            animate() { this.draw(); requestAnimationFrame(() => this.animate()); }
+        }
+        new SnowEngine('canvas-bg', 60, { size: 1, speed: 0.3, opacity: 0.1 });
+        new SnowEngine('canvas-mid', 40, { size: 2, speed: 0.7, opacity: 0.2 });
+        new SnowEngine('canvas-foreground', 15, { size: 4, speed: 1.2, opacity: 0.4 });
+
+        const card = document.getElementById('tiltCard');
+        if (!/Android|iPhone/i.test(navigator.userAgent)) {
+            document.addEventListener('mousemove', (e) => {
+                let x = (window.innerWidth / 2 - e.clientX) / 35;
+                let y = (window.innerHeight / 2 - e.clientY) / 35;
+                card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            });
         }
     </script>
 </body>
