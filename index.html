@@ -36,6 +36,7 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
+        /* FIX LOADING ĐEN: Thêm fallback màu đen cho background-image */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; display: flex;
@@ -46,7 +47,7 @@
 
         .overlay-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('anh cho.jpg') no-repeat center center;
+            background: #000 url('anh cho.jpg') no-repeat center center;
             background-size: cover;
             filter: blur(25px) brightness(0.4);
             transform: scale(1.1);
@@ -114,28 +115,25 @@
         h1 { font-size: 26px; margin-bottom: 12px; }
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
         
-        /* CẬP NHẬT: PHÁT SÁNG MẶC ĐỊNH CHO CHỮ VÀ ICON */
+        /* PHÁT SÁNG MẶC ĐỊNH CHO CHỮ VÀ ICON */
         .link-item { 
             background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255, 77, 148, 0.3); /* Viền sáng nhẹ sẵn */
+            border: 1px solid rgba(255, 77, 148, 0.3);
             border-radius: 18px; padding: 16px 22px; 
-            color: #fff; /* Chữ trắng sáng sẵn */
+            color: #fff;
             text-decoration: none; display: flex; 
             justify-content: space-between; align-items: center; 
             margin-bottom: 15px; transition: 0.4s; 
-            /* Hiệu ứng phát sáng cho chữ mặc định */
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px var(--pink-glow); 
         }
 
         .link-item i { 
             font-size: 20px; 
-            color: #fff; /* Icon trắng sáng sẵn */
+            color: #fff;
             transition: 0.3s; 
-            /* Hiệu ứng phát sáng cho icon mặc định */
             filter: drop-shadow(0 0 8px var(--pink-glow)); 
         }
 
-        /* Hiệu ứng khi Hover (tăng cường độ sáng) */
         .link-item:hover { 
             background: rgba(255, 77, 148, 0.15); 
             border-color: var(--pink); 
