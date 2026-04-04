@@ -21,7 +21,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
+        /* Sử dụng 100dvh để tránh lỗi thanh địa chỉ trên trình duyệt di động */
+        body, html { height: 100dvh; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
 
         #bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -35,108 +36,100 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* --- LOADING OVERLAY FULL SCREEN IMAGE --- */
         #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; inset: 0;
             z-index: 99999; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #000; /* Nền dự phòng */
+            background: #000;
             overflow: hidden;
         }
 
-        /* Lớp nền ảnh Full Screen */
         .loading-bg-full {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; inset: 0;
             background: url('anhcho.jpg') no-repeat center center;
-            background-size: cover;
-            z-index: -1;
-            /* Thêm filter để chữ dễ đọc hơn */
+            background-size: cover; z-index: -1;
             filter: brightness(0.5); 
         }
 
         .loading-content { 
-            position: relative; 
-            z-index: 2; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            width: 100%; 
-            background: rgba(0,0,0,0.2); /* Tạo lớp phủ nhẹ quanh nội dung */
-            padding: 40px 0;
+            position: relative; z-index: 2; display: flex; 
+            flex-direction: column; align-items: center; width: 90%; 
+            background: rgba(0,0,0,0.2); padding: 40px 0; border-radius: 20px;
         }
 
-        /* Ẩn box cũ vì ảnh đã tràn nền */
         .loading-img-box { display: none; }
 
         .loading-name { 
             font-family: 'Fira Code', monospace; 
-            font-size: 32px; 
-            font-weight: 700; 
-            letter-spacing: 15px; 
-            text-shadow: 0 0 30px var(--pink-glow); 
-            margin-bottom: 25px; 
-            color: #fff; 
+            font-size: clamp(24px, 8vw, 32px); /* Tự động co giãn theo màn hình */
+            font-weight: 700; letter-spacing: 10px; 
+            text-shadow: 0 0 30px var(--pink-glow); margin-bottom: 25px; color: #fff; 
         }
 
-        .loader-container { width: 350px; transition: opacity 0.5s; }
+        .loader-container { width: 85%; max-width: 350px; transition: opacity 0.5s; }
         .progress-bar { height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
         .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.2s; }
-        .status-box { display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 11px; color: var(--pink); font-weight: bold; }
+        .status-box { display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 10px; color: var(--pink); font-weight: bold; }
 
         .enter-btn { 
             display: none; background: rgba(0,0,0,0.6); border: 2.5px solid var(--pink); 
-            color: var(--pink); padding: 18px 60px; font-family: 'Fira Code', monospace; 
-            font-weight: 700; font-size: 15px; letter-spacing: 5px; border-radius: 15px; 
+            color: var(--pink); padding: 15px 40px; font-family: 'Fira Code', monospace; 
+            font-weight: 700; font-size: 14px; letter-spacing: 3px; border-radius: 15px; 
             cursor: pointer; text-transform: uppercase; transition: all 0.4s; 
             margin-top: -10px; backdrop-filter: blur(5px);
         }
-        .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
 
-        /* CLOCK & MUSIC BTN */
-        .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
-        #real-clock { font-size: 24px; font-weight: 700; }
-        #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
+        .system-time { position: fixed; top: 15px; left: 15px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
+        #real-clock { font-size: 18px; font-weight: 700; }
+        #real-date { font-size: 10px; }
 
-        /* GREETING TOAST */
+        #music-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
+
         #greeting-toast {
-            position: fixed; top: 100px; left: 50%; transform: translateX(-50%) translateY(-20px);
-            background: rgba(255, 77, 148, 0.2); border: 1px solid var(--pink);
-            padding: 12px 25px; border-radius: 20px; backdrop-filter: blur(10px);
-            color: #fff; font-weight: 600; font-size: 14px; z-index: 10006;
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: rgba(255, 77, 148, 0.3); border: 1px solid var(--pink);
+            padding: 10px 20px; border-radius: 20px; backdrop-filter: blur(10px);
+            color: #fff; font-weight: 600; font-size: 12px; z-index: 10006;
             box-shadow: 0 0 20px var(--pink-glow); opacity: 0; visibility: hidden;
             transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center; white-space: nowrap;
+            text-align: center; width: 80%; max-width: 300px;
         }
         #greeting-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-        /* MAIN UI & CARD */
-        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
+        .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; padding: 20px; }
         .main-wrapper.active { opacity: 1; visibility: visible; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 45px 30px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        
+        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 40px; width: 100%; max-width: 360px; padding: 40px 25px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
-        .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
+        .card::after { content: ''; position: absolute; inset: 2px; background: #0a050a; border-radius: 38px; z-index: -1; }
         
-        .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
-        .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 20px var(--pink-glow); }
+        .avatar-box { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px var(--pink-glow); }
+        .avatar-box span { color: var(--pink); font-size: 45px; font-weight: 900; }
         
-        .waviy { position: relative; display: inline-flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-size: 24px; width: 100%; line-height: 1.8; font-weight: 700; }
-        .waviy span { position: relative; display: inline-block; animation: waviy 3s infinite; animation-delay: calc(.1s * var(--i)); color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow), 0 0 40px var(--pink-glow); }
+        .waviy { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; font-size: clamp(18px, 5vw, 22px); font-weight: 700; line-height: 1.4; }
+        .waviy span { position: relative; display: inline-block; animation: waviy 3s infinite; animation-delay: calc(.1s * var(--i)); color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); }
         
         @keyframes waviy { 0%, 40%, 100% { transform: translateY(0); } 20% { transform: translateY(-4px); } }
 
-        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; text-shadow: 0 0 10px var(--pink-glow); }
+        .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-        .link-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4) !important; border-radius: 15px; padding: 14px 20px; color: #fff !important; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; transition: 0.4s; text-shadow: 0 0 10px var(--pink-glow) !important; }
-        .link-item i { font-size: 18px; color: #fff !important; filter: drop-shadow(0 0 10px var(--pink-glow)) !important; }
-        .link-item:hover { background: rgba(255, 77, 148, 0.15); border-color: var(--pink); transform: translateX(5px); text-shadow: 0 0 15px #fff, 0 0 30px var(--pink-glow) !important; }
+        .link-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4); border-radius: 12px; padding: 12px 18px; color: #fff; text-decoration: none; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: 0.3s; font-size: 14px; }
+        .link-item:active { transform: scale(0.97); background: rgba(255, 77, 148, 0.2); }
 
-        .footer { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 9px; opacity: 0.3; font-family: 'Fira Code'; }
+        .footer { position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 8px; opacity: 0.4; font-family: 'Fira Code'; }
+        
         @keyframes rotateLED { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { box-shadow: 0 0 20px var(--pink-glow); } 50% { box-shadow: 0 0 40px var(--pink-glow); } 100% { box-shadow: 0 0 20px var(--pink-glow); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 15px var(--pink-glow); } 50% { box-shadow: 0 0 30px var(--pink-glow); } 100% { box-shadow: 0 0 15px var(--pink-glow); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Media query nhỏ để xử lý máy màn hình cực ngắn */
+        @media (max-height: 600px) {
+            .card { padding: 20px 20px; }
+            .avatar-box { width: 60px; height: 60px; }
+            .typewriter { margin-bottom: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -160,14 +153,14 @@
             <div class="loading-name">HUNG MADDING</div>
             <div id="loaderUI" class="loader-container">
                 <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-                <div class="status-box"><span id="loadStatus">Initializing UI...</span><span id="loadPercent">0%</span></div>
+                <div class="status-box"><span id="loadStatus">Initializing...</span><span id="loadPercent">0%</span></div>
             </div>
-            <button id="enterBtn" class="enter-btn" onclick="initSystem()">Bấm để vô nhoa:3</button>
+            <button id="enterBtn" class="enter-btn" onclick="initSystem()">Bấm để vô nhoa :3</button>
         </div>
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-compact-disc"></i></div>
-    <audio id="mainAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="mainAudio" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
 
     <main id="mainUI" class="main-wrapper">
         <div id="tiltCard" class="card">
@@ -187,7 +180,7 @@
         </div>
     </main>
 
-    <div class="footer">welcome:3</div>
+    <div class="footer">welcome :3</div>
 
     <script>
         const audio = document.getElementById('mainAudio');
@@ -211,19 +204,19 @@
                     }, 500);
                 }, 500);
             } else {
-                currentProgress += Math.random() * 2;
+                currentProgress += Math.random() * 3;
                 if (currentProgress > 100) currentProgress = 100;
                 fill.style.width = currentProgress + "%";
                 percentTxt.innerText = Math.floor(currentProgress) + "%";
                 if(currentProgress > 80) statusTxt.innerText = "System Ready!";
-                else if(currentProgress > 40) statusTxt.innerText = "Processing Data...";
+                else if(currentProgress > 40) statusTxt.innerText = "Processing...";
             }
         }, 40);
 
         function updateSystemTime() {
             const now = new Date();
             document.getElementById('real-clock').innerText = now.toLocaleTimeString('en-GB', { hour12: false });
-            document.getElementById('real-date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            document.getElementById('real-date').innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', month: 'long', day: 'numeric' });
         }
 
         function showGreeting() {
@@ -232,10 +225,10 @@
             let msg = "";
 
             if (hours >= 5 && hours < 11) msg = "Chào buổi sáng! Chúc bạn ngày mới tốt lành ☀️";
-            else if (hours >= 11 && hours < 14) msg = "Chào buổi trưa! Nhớ ăn uống và nghỉ ngơi nha 🍱";
-            else if (hours >= 14 && hours < 18) msg = "Chào buổi chiều! Làm việc thật hiệu quả nhé ☕";
-            else if (hours >= 18 && hours < 22) msg = "Chào buổi tối! Chúc bạn ấm áp bên người thân ✨";
-            else msg = "Đã khuya rồi! Chúc bạn ngủ thật ngon nha 🌙";
+            else if (hours >= 11 && hours < 14) msg = "Chào buổi trưa! Nhớ nghỉ ngơi nha 🍱";
+            else if (hours >= 14 && hours < 18) msg = "Chào buổi chiều! Làm việc hiệu quả nhé ☕";
+            else if (hours >= 18 && hours < 22) msg = "Chào buổi tối! Chúc bạn ấm áp ✨";
+            else msg = "Đã khuya rồi! Ngủ ngon nha bạn 🌙";
 
             toast.innerText = msg;
             toast.classList.add('show');
@@ -244,7 +237,9 @@
 
         function initSystem() {
             document.getElementById('overlay').style.opacity = "0";
-            audio.play().catch(() => {});
+            // Cố gắng chạy audio (trình duyệt di động yêu cầu tương tác người dùng)
+            audio.play().catch(e => console.log("Audio play blocked"));
+            
             setTimeout(() => {
                 document.getElementById('overlay').style.display = "none";
                 document.getElementById('mainUI').classList.add('active');
@@ -278,29 +273,76 @@
             else { audio.pause(); btn.style.animationPlayState = "paused"; }
         }
 
+        // Tối ưu SnowEngine cho hiệu năng di động
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
                 this.ctx = this.canvas.getContext('2d');
                 this.count = count; this.particles = []; this.config = config; this.init();
             }
-            init() { this.resize(); window.addEventListener('resize', () => this.resize()); for (let i = 0; i < this.count; i++) this.particles.push(this.createParticle()); this.animate(); }
-            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; }
-            createParticle() { return { x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height, r: Math.random() * this.config.size + 1, v: Math.random() * this.config.speed + 0.5, o: Math.random() * 0.5 + this.config.opacity }; }
-            draw() { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); this.particles.forEach(p => { this.ctx.fillStyle = `rgba(255, 255, 255, ${p.o})`; this.ctx.beginPath(); this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); this.ctx.fill(); }); this.update(); }
-            update() { this.particles.forEach(p => { p.y += p.v; if (p.y > this.canvas.height) p.y = -10; }); }
-            animate() { this.draw(); requestAnimationFrame(() => this.animate()); }
+            init() { 
+                this.resize(); 
+                window.addEventListener('resize', () => this.resize()); 
+                for (let i = 0; i < this.count; i++) this.particles.push(this.createParticle()); 
+                this.animate(); 
+            }
+            resize() { 
+                this.canvas.width = window.innerWidth; 
+                this.canvas.height = window.innerHeight; 
+            }
+            createParticle() { 
+                return { 
+                    x: Math.random() * this.canvas.width, 
+                    y: Math.random() * this.canvas.height, 
+                    r: Math.random() * this.config.size + 1, 
+                    v: Math.random() * this.config.speed + 0.3, 
+                    o: Math.random() * 0.5 + this.config.opacity 
+                }; 
+            }
+            draw() { 
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); 
+                this.ctx.fillStyle = "white";
+                this.particles.forEach(p => { 
+                    this.ctx.globalAlpha = p.o;
+                    this.ctx.beginPath(); 
+                    this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); 
+                    this.ctx.fill(); 
+                }); 
+                this.update(); 
+            }
+            update() { 
+                this.particles.forEach(p => { 
+                    p.y += p.v; 
+                    if (p.y > this.canvas.height) p.y = -10; 
+                }); 
+            }
+            animate() { 
+                this.draw(); 
+                requestAnimationFrame(() => this.animate()); 
+            }
         }
-        new SnowEngine('canvas-bg', 60, { size: 1, speed: 0.3, opacity: 0.1 });
-        new SnowEngine('canvas-mid', 40, { size: 2, speed: 0.7, opacity: 0.2 });
-        new SnowEngine('canvas-foreground', 15, { size: 4, speed: 1.2, opacity: 0.4 });
+        
+        // Giảm nhẹ số lượng hạt trên mobile để tránh nóng máy
+        const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+        new SnowEngine('canvas-bg', isMobile ? 30 : 60, { size: 1, speed: 0.3, opacity: 0.1 });
+        new SnowEngine('canvas-mid', isMobile ? 20 : 40, { size: 2, speed: 0.7, opacity: 0.2 });
+        new SnowEngine('canvas-foreground', isMobile ? 8 : 15, { size: 4, speed: 1.2, opacity: 0.4 });
 
+        // Chỉ kích hoạt Tilt Effect trên máy tính (Mousemove không tồn tại trên cảm ứng thông thường)
         const card = document.getElementById('tiltCard');
-        if (!/Android|iPhone/i.test(navigator.userAgent)) {
+        if (!isMobile) {
             document.addEventListener('mousemove', (e) => {
                 let x = (window.innerWidth / 2 - e.clientX) / 35;
                 let y = (window.innerHeight / 2 - e.clientY) / 35;
                 card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            });
+        } else {
+            // Tối ưu cho cảm ứng: Click vào card tạo hiệu ứng nhẹ
+            card.addEventListener('touchstart', () => {
+                card.style.transform = "scale(0.98)";
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = "scale(1)";
             });
         }
     </script>
