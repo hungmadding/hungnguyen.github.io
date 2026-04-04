@@ -24,7 +24,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
         body, html { height: 100%; width: 100%; font-family: 'Quicksand', sans-serif; background: var(--bg-dark); overflow: hidden; color: var(--text-main); }
 
-        /* --- BACKGROUND CHÍNH --- */
         #bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
@@ -32,13 +31,11 @@
             background-size: cover; z-index: 0; filter: brightness(0.8) contrast(1.1);
         }
 
-        /* --- SNOW SYSTEM --- */
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         #canvas-bg { z-index: 1; }
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* --- LOADING OVERLAY --- */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; display: flex;
@@ -58,13 +55,12 @@
 
         .loading-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; }
         
-        /* FIX: BỎ VIỀN HỒNG PHẦN LOADING */
         .loading-img-box {
             width: 320px; 
             height: 380px; 
             border-radius: 40px; 
-            border: none; /* Đã bỏ viền hồng */
-            box-shadow: none; /* Đã bỏ phát sáng viền */
+            border: none; 
+            box-shadow: none; 
             overflow: hidden; 
             margin-bottom: 30px; 
             animation: floatImage 5s ease-in-out infinite;
@@ -102,7 +98,6 @@
         }
         .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
 
-        /* --- MAIN UI --- */
         .system-time { position: fixed; top: 25px; left: 25px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 10px var(--pink-glow); display: none; }
         #real-clock { font-size: 24px; font-weight: 700; letter-spacing: 2px; }
         #real-date { font-size: 10px; text-transform: uppercase; opacity: 0.7; margin-top: 5px; }
@@ -113,34 +108,44 @@
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
         .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
         
-        /* AVATAR CHỮ H TỎA SÁNG */
         .avatar-box { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 55px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
         
         h1 { font-size: 26px; margin-bottom: 12px; }
         .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
         
-        /* FIX: THẮP SÁNG CHỮ VÀ ICON KHI HOVER */
+        /* CẬP NHẬT: PHÁT SÁNG MẶC ĐỊNH CHO CHỮ VÀ ICON */
         .link-item { 
             background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.08); 
+            border: 1px solid rgba(255, 77, 148, 0.3); /* Viền sáng nhẹ sẵn */
             border-radius: 18px; padding: 16px 22px; 
-            color: rgba(255, 255, 255, 0.7); 
+            color: #fff; /* Chữ trắng sáng sẵn */
             text-decoration: none; display: flex; 
             justify-content: space-between; align-items: center; 
             margin-bottom: 15px; transition: 0.4s; 
+            /* Hiệu ứng phát sáng cho chữ mặc định */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 15px var(--pink-glow); 
         }
+
+        .link-item i { 
+            font-size: 20px; 
+            color: #fff; /* Icon trắng sáng sẵn */
+            transition: 0.3s; 
+            /* Hiệu ứng phát sáng cho icon mặc định */
+            filter: drop-shadow(0 0 8px var(--pink-glow)); 
+        }
+
+        /* Hiệu ứng khi Hover (tăng cường độ sáng) */
         .link-item:hover { 
-            background: rgba(255, 77, 148, 0.12); 
+            background: rgba(255, 77, 148, 0.15); 
             border-color: var(--pink); 
             transform: translateX(5px); 
-            color: #fff;
-            text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); /* Chữ phát sáng */
+            text-shadow: 0 0 12px #fff, 0 0 25px var(--pink-glow);
         }
-        .link-item i { font-size: 20px; color: var(--pink); transition: 0.3s; }
+
         .link-item:hover i {
-            color: #fff;
-            filter: drop-shadow(0 0 10px var(--pink-glow)); /* Icon phát sáng */
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px var(--pink-glow));
         }
 
         #music-btn { position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; }
@@ -278,7 +283,6 @@
             else { audio.pause(); btn.style.animationPlayState = "paused"; }
         }
 
-        /* --- SNOW ENGINE --- */
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
