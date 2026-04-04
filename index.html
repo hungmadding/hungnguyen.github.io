@@ -35,27 +35,20 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* --- CẢI TIẾN OVERLAY --- */
         #overlay {
             position: fixed; inset: 0;
             z-index: 99999; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
             transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
-            background: #000;
-            overflow: hidden;
+            background: #000; overflow: hidden;
         }
 
-        #overlay.fade-out {
-            opacity: 0;
-            transform: scale(1.3);
-            pointer-events: none;
-        }
+        #overlay.fade-out { opacity: 0; transform: scale(1.3); pointer-events: none; }
 
         .loading-bg-full {
             position: absolute; inset: 0;
             background: url('anhcho.jpg') no-repeat center center;
-            background-size: cover; z-index: -1;
-            filter: brightness(0.5); 
+            background-size: cover; z-index: -1; filter: brightness(0.5); 
         }
 
         .loading-content { 
@@ -85,29 +78,20 @@
             margin-top: -10px; backdrop-filter: blur(5px);
         }
 
-        /* --- CẢI TIẾN MAIN UI --- */
         .main-wrapper { 
             position: relative; height: 100dvh; width: 100%; display: flex; 
             justify-content: center; align-items: center; z-index: 10; 
             opacity: 0; visibility: hidden; perspective: 2000px; padding: 20px; 
             transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-            transform: scale(0.8) translateY(30px); /* Bắt đầu từ nhỏ và thấp */
-            filter: blur(10px);
+            transform: scale(0.8) translateY(30px); filter: blur(10px);
         }
 
         .main-wrapper.active { 
             opacity: 1; visibility: visible; 
-            transform: scale(1) translateY(0);
-            filter: blur(0);
+            transform: scale(1) translateY(0); filter: blur(0);
         }
 
-        /* Xuất hiện tuần tự cho các phần tử bên trong */
-        .card > * {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
+        .card > * { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
         .main-wrapper.active .card > * { opacity: 1; transform: translateY(0); }
         .main-wrapper.active .avatar-box { transition-delay: 0.3s; }
         .main-wrapper.active .waviy { transition-delay: 0.5s; }
@@ -126,20 +110,37 @@
         
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
+        /* --- HIỆU ỨNG THẮP SÁNG ICON (GLOW EFFECT) --- */
         .link-item { 
             position: relative; overflow: hidden;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.4); 
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2); 
             border-radius: 12px; padding: 12px 18px; color: #fff; text-decoration: none; 
             display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 10px; transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1); font-size: 14px; 
+            margin-bottom: 12px; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); font-size: 14px; 
+            z-index: 1;
         }
 
-        .link-item:hover { 
-            background: rgba(255, 77, 148, 0.2); 
-            border-color: var(--pink);
-            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
-            transform: translateY(-2px);
+        /* Facebook Glow */
+        .link-item[href*="facebook"]:hover { 
+            box-shadow: 0 0 20px rgba(24, 119, 242, 0.5); border-color: #1877f2; background: rgba(24, 119, 242, 0.1);
         }
+        .link-item[href*="facebook"]:hover i { color: #1877f2; filter: drop-shadow(0 0 8px #1877f2); }
+
+        /* TikTok & Github Glow */
+        .link-item[href*="tiktok"]:hover, .link-item[href*="github"]:hover { 
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); border-color: #fff; background: rgba(255, 255, 255, 0.08);
+        }
+        .link-item[href*="tiktok"]:hover i, .link-item[href*="github"]:hover i { color: #fff; filter: drop-shadow(0 0 8px #fff); }
+
+        /* Work/Mail Glow */
+        .link-item[href*="mailto"]:hover { 
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.5); border-color: var(--pink); background: rgba(255, 77, 148, 0.1);
+        }
+        .link-item[href*="mailto"]:hover i { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); }
+
+        .link-item i { font-size: 18px; transition: all 0.4s ease; color: rgba(255,255,255,0.6); }
+        .link-item:hover span { transform: translateX(5px); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .link-item span { transition: all 0.4s ease; font-weight: 500; }
 
         .system-time { position: fixed; top: 15px; left: 15px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
         #music-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
@@ -162,7 +163,6 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ripple { 0% { width: 0; height: 0; opacity: 0.5; } 100% { width: 500px; height: 500px; opacity: 0; } }
-
     </style>
 </head>
 <body>
@@ -261,31 +261,23 @@
             setTimeout(() => { toast.classList.remove('show'); }, 5000);
         }
 
-        /* --- XỬ LÝ CHUYỂN CẢNH MƯỢT MÀ --- */
         function initSystem() {
             const overlay = document.getElementById('overlay');
             const mainUI = document.getElementById('mainUI');
-            
-            // 1. Kích hoạt hiệu ứng phóng to & mờ của overlay
             overlay.classList.add('fade-out');
             audio.play().catch(e => console.log("Audio play blocked"));
             
-            // 2. Kích hoạt Main UI sau 600ms (giữa quá trình biến mất của overlay)
             setTimeout(() => {
                 mainUI.classList.add('active'); 
                 document.getElementById('music-btn').style.display = "flex";
                 document.getElementById('music-btn').style.animation = "rotateCD 4s linear infinite";
                 document.getElementById('sysTime').style.display = "block";
-                
                 updateSystemTime();
                 setInterval(updateSystemTime, 1000);
                 showGreeting();
-                
-                // Chạy hiệu ứng gõ chữ sau khi Card đã hiện xong
                 setTimeout(startTypeWriter, 1200);
             }, 600);
 
-            // 3. Dọn dẹp DOM sau khi hoàn tất animation
             setTimeout(() => { overlay.style.display = "none"; }, 1500);
         }
 
@@ -309,7 +301,6 @@
             else { audio.pause(); btn.style.animationPlayState = "paused"; }
         }
 
-        /* --- SNOW ENGINE --- */
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
