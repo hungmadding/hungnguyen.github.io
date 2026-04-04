@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ditconememay</title>
+    <title>Hùng Madding - Profile</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -36,7 +36,6 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* SỬA LỖI NỀN ĐEN: Ép overlay nhận ảnh anhcho.jpg ngay lập tức */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 99999; display: flex;
@@ -48,7 +47,7 @@
 
         .overlay-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); /* Lớp phủ đen mờ thay vì ảnh lặp lại */
+            background: rgba(0,0,0,0.6); 
             backdrop-filter: blur(25px) brightness(0.4);
             -webkit-backdrop-filter: blur(25px) brightness(0.4);
             z-index: -1;
@@ -60,14 +59,11 @@
             width: 320px; 
             height: 380px; 
             border-radius: 40px; 
-            border: none; 
-            box-shadow: none; 
             overflow: hidden; 
             margin-bottom: 30px; 
             animation: floatImage 5s ease-in-out infinite;
             background: transparent;
         }
-        /* ĐỔI TÊN FILE: anh cho.jpg -> anhcho.jpg */
         .loading-img-box img { width: 100%; height: 100%; object-fit: cover; }
         
         .loading-name { 
@@ -106,30 +102,29 @@
 
         .main-wrapper { position: relative; height: 100dvh; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; opacity: 0; visibility: hidden; perspective: 2000px; }
         .main-wrapper.active { opacity: 1; visibility: visible; }
-        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 60px 35px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 50px; width: 90%; max-width: 380px; padding: 45px 30px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
         .card::after { content: ''; position: absolute; inset: 3px; background: #0a050a; border-radius: 47px; z-index: -1; }
         
-        .avatar-box { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
-        .avatar-box span { color: var(--pink); font-size: 55px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
+        .avatar-box { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px var(--pink-glow); }
+        .avatar-box span { color: var(--pink); font-size: 50px; font-weight: 900; text-shadow: 0 0 15px var(--pink-glow); }
         
-        h1 { font-size: 26px; margin-bottom: 12px; }
-        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 30px; line-height: 1.5; }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        .typewriter { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--pink); min-height: 40px; margin-bottom: 25px; line-height: 1.5; }
         
-        /* PHÁT SÁNG MẶC ĐỊNH MẠNH HƠN */
         .link-item { 
             background: rgba(255,255,255,0.03); 
             border: 1px solid rgba(255, 77, 148, 0.4) !important;
-            border-radius: 18px; padding: 16px 22px; 
+            border-radius: 15px; padding: 14px 20px; 
             color: #fff !important;
             text-decoration: none; display: flex; 
             justify-content: space-between; align-items: center; 
-            margin-bottom: 15px; transition: 0.4s; 
+            margin-bottom: 12px; transition: 0.4s; 
             text-shadow: 0 0 10px var(--pink-glow) !important; 
         }
 
         .link-item i { 
-            font-size: 20px; 
+            font-size: 18px; 
             color: #fff !important;
             filter: drop-shadow(0 0 10px var(--pink-glow)) !important; 
         }
@@ -167,7 +162,7 @@
         <div class="overlay-bg"></div> 
         <div class="loading-content">
             <div class="loading-img-box">
-                <img src="anhcho.jpg" onerror="this.src='https://via.placeholder.com/250x360?text=Error+Filename'">
+                <img src="anhcho.jpg" onerror="this.src='https://via.placeholder.com/250x360?text=Hùng+Madding'">
             </div>
             <div class="loading-name">HUNG MADDING</div>
             
@@ -191,14 +186,27 @@
             <div class="avatar-box"><span>H</span></div>
             <h1>Nguyễn Mạnh Hùng</h1>
             <div id="typewriter" class="typewriter"></div>
+            
             <div class="links-container">
                 <a href="https://www.facebook.com/hung.madding" target="_blank" class="link-item">
-                    <span>Facebook </span>
+                    <span>Facebook</span>
                     <i class="fab fa-facebook"></i>
                 </a>
-                <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>Github Projects</span><i class="fab fa-github"></i></a>
-                <a href="https://tiktok.com/@hung_madding" target="_blank" class="link-item"><span>Tiktok Channel</span><i class="fab fa-tiktok"></i></a>
-                <a href="mailto:contact@hungmadding.vn" class="link-item"><span>Work Inquiry</span><i class="fas fa-envelope"></i></a>
+                
+                <a href="https://www.tiktok.com/@hung_md3?lang=vi-VN" target="_blank" class="link-item">
+                    <span>TikTok Channel</span>
+                    <i class="fab fa-tiktok"></i>
+                </a>
+
+                <a href="https://github.com/hungmadding" target="_blank" class="link-item">
+                    <span>Github Projects</span>
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="mailto:contact@hungmadding.vn" class="link-item">
+                    <span>Work Inquiry</span>
+                    <i class="fas fa-envelope"></i>
+                </a>
             </div>
         </div>
     </main>
@@ -296,8 +304,8 @@
         const card = document.getElementById('tiltCard');
         if (!/Android|iPhone/i.test(navigator.userAgent)) {
             document.addEventListener('mousemove', (e) => {
-                let x = (window.innerWidth / 2 - e.clientX) / 30;
-                let y = (window.innerHeight / 2 - e.clientY) / 30;
+                let x = (window.innerWidth / 2 - e.clientX) / 35;
+                let y = (window.innerHeight / 2 - e.clientY) / 35;
                 card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
             });
         }
