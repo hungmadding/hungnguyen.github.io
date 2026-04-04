@@ -3,163 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 - Deep Madding</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/awesome/6.4.0/css/all.min.css">
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Deep Water</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --pink: #ff4d94; --pink-glow: #ff0077; --deep-dark: #000; }
+        :root { --pink: #ff4d94; --pink-glow: #ff0077; --bg-dark: #050505; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body, html { 
             height: 100%; font-family: 'Quicksand', sans-serif; 
-            background: var(--deep-dark); overflow: hidden; touch-action: none; 
+            background: var(--bg-dark); overflow: hidden; touch-action: none; 
         }
         
-        /* 1. NỀN GIF HOA ANH ĐÀO */
+        /* NỀN HOA ANH ĐÀO */
         #bg-image {
             position: fixed; inset: 0;
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
-                        url('https://raw.githubusercontent.com/hungmadding/hungnguyen.github.io/main/7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
+                        url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
             background-size: cover; z-index: 0;
         }
 
-        /* 2. TUYẾT RƠI 3 LỚP */
+        /* TUYẾT RƠI 3 LỚP NÂNG CAO */
         canvas { position: fixed; inset: 0; pointer-events: none; }
         #canvas-bg { z-index: 1; }
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* 3. MÀN HÌNH CHỜ (LOADING OVERLAY) */
+        /* MÀN HÌNH CHỜ (LOADING OVERLAY) */
         #overlay {
             position: fixed; inset: 0; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1); background: #000;
         }
         
-        .loading-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .loading-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 35px; }
         
-        /* --- NÂNG CẤP CHÍNH: KHUNG ẢNH CÓ HIỆU ỨNG MỜ ẢO ĐA LỚP --- */
+        /* ẢNH CHỜ MỜ ẢO ĐA TẦNG */
         .loading-img-box {
-            width: 250px; height: 350px; border-radius: 25px; 
-            overflow: visible; /* Cho phép bóng loang màu bay ra ngoài */
+            width: 240px; height: 320px; border-radius: 30px; 
             border: 2px solid var(--pink); 
-            
-            /* Bóng đổ ngoài màu hồng để tạo chiều sâu */
-            box-shadow: 0 0 50px rgba(255, 77, 148, 0.7); 
-            
+            box-shadow: 0 0 45px rgba(255, 77, 148, 0.6);
             animation: waterFloat 4s ease-in-out infinite, deepPulse 3s infinite;
+            overflow: hidden; position: relative;
         }
 
         .loading-img-box img { 
-            width: 100%; height: 100%; object-fit: cover; border-radius: 25px;
-            
-            /* KỸ THUẬT QUAN TRỌNG: MẶT NẠ MỜ ẢO LOANG MÀU (MASKING) */
-            /* Ép ảnh mờ dần ra ngoài, chỉ nét ở tâm */
-            -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 90%);
-                    mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 90%);
+            width: 100%; height: 100%; object-fit: cover;
+            /* Hiệu ứng mờ dần vào tâm */
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 95%);
+            mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0) 95%);
         }
 
-        /* Keyframe mới để tạo hiệu ứng loang màu mạch đập */
         @keyframes deepPulse {
-            0% { box-shadow: 0 0 40px rgba(255, 77, 148, 0.5); }
-            50% { box-shadow: 0 0 65px rgba(255, 77, 148, 1); }
-            100% { box-shadow: 0 0 40px rgba(255, 77, 148, 0.5); }
+            0% { box-shadow: 0 0 35px rgba(255, 77, 148, 0.4); }
+            50% { box-shadow: 0 0 60px rgba(255, 77, 148, 0.9); }
+            100% { box-shadow: 0 0 35px rgba(255, 77, 148, 0.4); }
         }
 
         .logo-enter { 
-            font-size: 2.6rem; font-weight: 700; font-family: 'Fira Code'; 
+            font-size: 2.7rem; font-weight: 700; font-family: 'Fira Code'; 
             color: var(--pink); text-shadow: 0 0 25px var(--pink);
-            letter-spacing: 6px; margin: 10px 0;
-            animation: waterFloat 3s ease-in-out infinite;
+            letter-spacing: 7px; animation: waterFloat 3s ease-in-out infinite;
         }
 
-        .loader-container { width: 300px; text-align: center; }
+        .loader-container { width: 320px; text-align: center; }
         .progress-bar {
             width: 100%; height: 6px; background: rgba(255, 77, 148, 0.1);
             border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 77, 148, 0.2);
         }
-        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.2s ease-out; }
-        .load-text { font-family: 'Fira Code'; font-size: 12px; margin-top: 15px; color: var(--pink); letter-spacing: 2px; font-weight: 500; text-transform: uppercase;}
+        .progress-fill { height: 100%; width: 0%; background: var(--pink); box-shadow: 0 0 20px var(--pink); transition: width 0.3s ease-out; }
+        .load-text { font-family: 'Fira Code'; font-size: 12px; margin-top: 15px; color: var(--pink); letter-spacing: 2px; font-weight: 500; }
 
+        /* NÚT ENTER SYSTEM GIẬT GIẬT */
         .enter-btn { 
-            display: none; border: 2px solid var(--pink); padding: 15px 45px; 
+            display: none; border: 2px solid var(--pink); padding: 16px 50px; 
             cursor: pointer; background: transparent; color: var(--pink); letter-spacing: 5px;
             font-weight: 700; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 15px var(--pink); 
+            box-shadow: 0 0 20px var(--pink); 
         }
         .enter-btn:hover { background: var(--pink); color: #000; box-shadow: 0 0 50px var(--pink); transform: scale(1.1); }
         .enter-btn:active { transform: scale(0.9); }
 
-        /* KEYFRAMES DẬP DÌU NGHỆ THUẬT */
+        /* KEYFRAMES DẬP DÌU MẶT NƯỚC */
         @keyframes waterFloat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1.5deg); }
+            50% { transform: translateY(-18px) rotate(1.2deg); }
         }
 
-        @keyframes liquidBorder {
-            0%, 100% { border-radius: 35px 45px 35px 45px; }
-            50% { border-radius: 50px 30px 50px 30px; }
-        }
-
-        /* 4. GIAO DIỆN CHÍNH */
+        /* GIAO DIỆN CHÍNH - CARD TRONG SUỐT ANH ĐÀO */
         .main-wrapper { 
             height: 100vh; width: 100%; display: flex; justify-content: center; align-items: center; 
-            opacity: 0; perspective: 1500px; transition: all 1.5s ease; z-index: 10; visibility: hidden;
+            opacity: 0; perspective: 1800px; transition: all 1.8s ease; z-index: 10; visibility: hidden;
         }
         .main-wrapper.active { opacity: 1; visibility: visible; }
 
         .card {
-            background: rgba(0, 0, 0, 0.5); 
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border-radius: 45px; padding: 50px 40px; width: 370px;
-            text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            transform-style: preserve-3d; transition: transform 0.15s ease-out;
+            background: rgba(15, 10, 15, 0.15); /* Trong suốt 15% */
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 45px; padding: 55px 45px; width: 380px;
+            text-align: center; border: 1px solid rgba(255, 77, 148, 0.25);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.6), 0 0 35px rgba(255, 77, 148, 0.1);
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
         }
 
         .avatar-box {
-            width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--pink); 
-            margin: 0 auto 25px; box-shadow: 0 0 35px var(--pink);
+            width: 115px; height: 115px; border-radius: 50%; border: 3px solid var(--pink); 
+            margin: 0 auto 30px; box-shadow: 0 0 40px var(--pink);
             display: flex; align-items: center; justify-content: center;
             background: #000; animation: waterFloat 5s ease-in-out infinite;
         }
-        .avatar-box span { color: var(--pink); font-size: 45px; font-weight: bold; text-shadow: 0 0 20px var(--pink); }
+        .avatar-box span { color: var(--pink); font-size: 48px; font-weight: bold; text-shadow: 0 0 25px var(--pink); }
 
-        h1 { 
-            color: #fff; font-size: 28px; font-weight: 700;
-            text-shadow: 0 0 20px var(--pink); margin-bottom: 12px;
-            animation: waterFloat 4s ease-in-out infinite; 
-        }
-        
-        .typewriter { 
-            height: 25px; color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 30px; 
-            font-family: 'Fira Code'; animation: waterFloat 6s ease-in-out infinite;
-        }
+        h1 { color: #fff; font-size: 30px; text-shadow: 0 0 25px var(--pink); margin-bottom: 15px; animation: waterFloat 4.5s ease-in-out infinite; }
+        .typewriter { height: 28px; color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 35px; font-family: 'Fira Code'; }
 
         .links { display: flex; flex-direction: column; gap: 15px; }
         .link-item {
             background: rgba(255, 255, 255, 0.06); padding: 16px 25px; color: #fff;
-            text-decoration: none; display: flex; justify-content: space-between; align-items: center;
+            text-decoration: none; border-radius: 20px; display: flex; justify-content: space-between; align-items: center;
             border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.4s;
-            animation: liquidBorder 6s linear infinite;
         }
-        .link-item i { color: var(--pink); font-size: 20px; filter: drop-shadow(0 0 8px var(--pink)); }
-        .link-item:hover { 
-            background: rgba(255, 77, 148, 0.25); transform: translateZ(30px) scale(1.05) !important; 
-            border-color: var(--pink); box-shadow: 0 0 25px var(--pink);
-        }
+        .link-item i { color: var(--pink); font-size: 22px; filter: drop-shadow(0 0 8px var(--pink)); }
+        .link-item:hover { background: rgba(255, 77, 148, 0.3); border-color: var(--pink); transform: translateZ(40px) scale(1.05); }
 
         #music-btn {
-            position: fixed; top: 30px; right: 30px; z-index: 10005;
-            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--pink);
+            position: fixed; top: 35px; right: 35px; z-index: 10005;
+            width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid var(--pink);
             color: var(--pink); display: none; justify-content: center; align-items: center;
             cursor: pointer; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            transition: 0.3s;
         }
-        #music-btn:hover { transform: rotate(360deg) scale(1.1); box-shadow: 0 0 20px var(--pink); }
 
-        .footer-info { position: fixed; bottom: 20px; right: 25px; font-size: 11px; color: rgba(255,255,255,0.2); font-family: 'Fira Code'; letter-spacing: 1px; }
+        .footer-info { position: fixed; bottom: 25px; right: 30px; font-size: 11px; color: rgba(255,255,255,0.2); font-family: 'Fira Code'; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -184,7 +159,7 @@
     </div>
 
     <div id="music-btn" onclick="toggleMusic()"><i class="fas fa-compact-disc"></i></div>
-    <audio id="bg-audio" loop preload="auto"><source src="https://raw.githubusercontent.com/hungmadding/hungnguyen.github.io/main/music.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-audio" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
 
     <div class="main-wrapper" id="mainContent">
         <div class="card" id="profileCard">
@@ -203,7 +178,7 @@
     <div class="footer-info">NHÌN CÁI DB</div>
 
     <script>
-        // Fix đường dẫn có dấu
+        // Fix đường dẫn file có dấu đúng chuẩn GitHub của Hùng
         document.getElementById('mainLoadImg').src = decodeURIComponent('%E1%BA%A3nh%20ch%E1%BB%9D.jpg');
 
         const audio = document.getElementById('bg-audio');
@@ -219,21 +194,23 @@
                 status.innerText = "SYSTEM READY!";
                 setTimeout(() => {
                     loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.display = 'none'; enterBtn.style.display = 'block'; }, 600);
+                    setTimeout(() => { 
+                        loader.style.display = 'none'; 
+                        enterBtn.style.display = 'block'; 
+                    }, 600);
                 }, 500);
             } else {
-                width += Math.random() * 1.5;
+                width += Math.random() * 1.8;
                 if(width > 100) width = 100;
                 fill.style.width = width + '%';
-                // Giữ nguyên câu 'load nè má'
                 status.innerText = `ĐANG LOAD NÈ MÁ... ${Math.floor(width)}%`;
             }
-        }, 35);
+        }, 40);
 
         function startExperience() {
-            document.getElementById('overlay').style.transform = 'scale(1.5) rotate(2deg)';
+            document.getElementById('overlay').style.transform = 'scale(1.6) rotate(3deg)';
             document.getElementById('overlay').style.opacity = '0';
-            audio.play().catch(() => console.log("Autoplay blocked"));
+            audio.play().catch(() => console.log("Audio Play Blocked"));
             
             setTimeout(() => {
                 document.getElementById('overlay').style.display = 'none';
@@ -246,12 +223,13 @@
         function typeWriter() {
             const text = "> Booting Bio-OS Terminal v3.22... Success!";
             let i = 0; const target = document.getElementById('typewriter');
-            function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 60); } }
+            function type() { if (i < text.length) { target.innerHTML += text.charAt(i++); setTimeout(type, 65); } }
             type();
         }
 
         function toggleMusic() { if (audio.paused) audio.play(); else audio.pause(); }
 
+        // HỆ THỐNG TUYẾT 3 TẦNG V2
         const canvases = [document.getElementById('canvas-bg'), document.getElementById('canvas-mid'), document.getElementById('canvas-foreground')];
         const ctxs = canvases.map(c => c.getContext('2d'));
         let particles = [[], [], []];
@@ -262,9 +240,9 @@
                 const c = canvases[this.idx];
                 this.x = Math.random() * c.width;
                 this.y = Math.random() * -c.height;
-                this.size = [1.5, 3, 4.5][this.idx];
-                this.speed = [0.5, 1.2, 2][this.idx];
-                this.opacity = [0.2, 0.4, 0.7][this.idx];
+                this.size = [1.8, 3.2, 4.8][this.idx];
+                this.speed = [0.6, 1.4, 2.2][this.idx];
+                this.opacity = [0.25, 0.45, 0.75][this.idx];
             }
             update() { this.y += this.speed; if (this.y > window.innerHeight) this.reset(); }
             draw() {
@@ -277,26 +255,28 @@
         function init() {
             canvases.forEach((c, i) => {
                 c.width = window.innerWidth; c.height = window.innerHeight;
-                particles[i] = Array.from({length: [60, 30, 15][i]}, () => new Snow(i));
+                particles[i] = Array.from({length: [70, 40, 20][i]}, () => new Snow(i));
             });
         }
 
-        function anim() {
+        function animate() {
             ctxs.forEach((ctx, i) => {
-                ctx.clearRect(0,0,canvases[i].width, canvases[i].height);
+                ctx.clearRect(0, 0, canvases[i].width, canvases[i].height);
                 particles[i].forEach(p => { p.update(); p.draw(); });
             });
-            requestAnimationFrame(anim);
+            requestAnimationFrame(animate);
         }
 
+        // 3D CARD TILT EFFECT ĐA CHIỀU
         window.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.clientX) / 30;
-            const y = (window.innerHeight / 2 - e.clientY) / 30;
-            document.getElementById('profileCard').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            const card = document.getElementById('profileCard');
+            if(card) card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
         window.addEventListener('resize', init);
-        init(); anim();
+        init(); animate();
     </script>
 </body>
 </html>
