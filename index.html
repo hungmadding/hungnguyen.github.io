@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Ultimate</title>
+    <title>Nguyễn Mạnh Hùng | Bio-OS v3.22 Deep Crystal</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. BIẾN HỆ THỐNG & RESET --- */
+        /* --- 1. CSS VARIABLES (HỆ THỐNG BIẾN TÙY CHỈNH) --- */
         :root { 
             --pink: #ff4d94; 
-            --pink-glow: rgba(255, 77, 148, 0.8);
-            --glass: rgba(15, 10, 15, 0.15);
-            --bg-dark: #000000;
+            --pink-glow: rgba(255, 77, 148, 0.7);
+            /* SIÊU TRONG SUỐT ĐÚNG Ý HÙNG (8%) */
+            --glass-bg: rgba(10, 5, 10, 0.08); 
+            --glass-border: rgba(255, 77, 148, 0.18);
+            --text-shadow: 0 0 20px rgba(255, 77, 148, 0.5);
         }
 
+        /* --- 2. RESET & BASE STYLES --- */
         * { 
             margin: 0; 
             padding: 0; 
@@ -25,23 +28,24 @@
         }
         
         body, html { 
-            height: 100%; 
+            height: 100vh; 
+            height: 100dvh; /* Fix chiều cao cho điện thoại */
             width: 100%;
             font-family: 'Quicksand', sans-serif; 
-            background: var(--bg-dark); 
+            background: #000; 
             overflow: hidden; 
-            touch-action: none; 
+            touch-action: manipulation;
         }
 
-        /* --- 2. NỀN & HIỆU ỨNG MÔI TRƯỜNG --- */
+        /* --- 3. BACKGROUND & CANVAS LAYERS --- */
         #bg-image {
             position: fixed; 
             inset: 0;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), 
                         url('7730f1dc01b225319269cbc655cc1998.gif') no-repeat center center;
             background-size: cover; 
             z-index: 0;
-            transition: transform 2s ease;
+            transition: transform 2s ease-in-out;
         }
 
         canvas { 
@@ -53,7 +57,7 @@
         #canvas-mid { z-index: 2; }
         #canvas-foreground { z-index: 10001; }
 
-        /* --- 3. MÀN HÌNH CHỜ (LOADING OVERLAY) --- */
+        /* --- 4. LOADING OVERLAY (MÀN HÌNH CHỜ) --- */
         #overlay {
             position: fixed; 
             inset: 0; 
@@ -64,92 +68,92 @@
             align-items: center;
             background: #000;
             transition: all 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+            padding: 20px;
         }
         
         .loading-content { 
-            position: relative; 
-            z-index: 2; 
+            position: relative;
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 40px; 
+            gap: 35px; 
+            width: 100%;
         }
         
-        /* ẢNH CHỜ MỜ ẢO ĐA LỚP (Ý ÔNG THÍCH) */
+        /* ẢNH CHỜ MỜ ẢO ĐA LỚP */
         .loading-img-box {
-            width: 250px; 
-            height: 350px; 
+            width: 220px; 
+            height: 300px; 
             border-radius: 30px; 
             border: 2px solid var(--pink); 
             box-shadow: 0 0 50px var(--pink-glow);
             overflow: hidden;
             position: relative;
-            animation: waterFloat 4s ease-in-out infinite, pulseGlow 3s infinite;
+            animation: waterFloat 4s ease-in-out infinite, deepPulse 3s infinite;
         }
 
         .loading-img-box img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover;
-            /* Mask loang màu mờ dần ra cạnh */
-            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 30%, rgba(0,0,0,0.6) 60%, transparent 95%);
-            mask-image: radial-gradient(circle at 50% 50%, black 30%, rgba(0,0,0,0.6) 60%, transparent 95%);
+            /* Hiệu ứng Masking tan biến vào hư không */
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, rgba(0,0,0,0.5) 60%, transparent 95%);
+            mask-image: radial-gradient(circle at 50% 50%, black 20%, rgba(0,0,0,0.5) 60%, transparent 95%);
         }
 
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 30px rgba(255, 77, 148, 0.4); }
-            50% { box-shadow: 0 0 60px rgba(255, 77, 148, 0.8); }
+        @keyframes deepPulse {
+            0%, 100% { box-shadow: 0 0 35px rgba(255, 77, 148, 0.3); }
+            50% { box-shadow: 0 0 70px rgba(255, 77, 148, 0.7); }
         }
 
         .logo-enter { 
-            font-size: 2.8rem; 
+            font-size: 2.2rem; 
             font-weight: 700; 
             font-family: 'Fira Code'; 
             color: var(--pink); 
             text-shadow: 0 0 30px var(--pink);
-            letter-spacing: 8px; 
+            letter-spacing: 7px; 
+            text-align: center;
             animation: waterFloat 3s ease-in-out infinite;
         }
 
-        .loader-container { width: 320px; text-align: center; }
+        .loader-container { width: 280px; text-align: center; }
         .progress-bar {
             width: 100%; 
             height: 6px; 
-            background: rgba(255, 77, 148, 0.1);
+            background: rgba(255, 77, 148, 0.05);
             border-radius: 20px; 
             overflow: hidden; 
             border: 1px solid rgba(255, 77, 148, 0.2);
-            position: relative;
         }
         .progress-fill { 
             height: 100%; 
             width: 0%; 
             background: var(--pink); 
-            box-shadow: 0 0 20px var(--pink); 
-            transition: width 0.4s ease-out; 
+            box-shadow: 0 0 25px var(--pink); 
+            transition: width 0.4s ease; 
         }
         .load-text { 
             font-family: 'Fira Code'; 
-            font-size: 13px; 
+            font-size: 12px; 
             margin-top: 15px; 
             color: var(--pink); 
-            letter-spacing: 2px; 
-            font-weight: 500;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         .enter-btn { 
             display: none; 
             border: 2px solid var(--pink); 
-            padding: 18px 55px; 
+            padding: 16px 50px; 
             cursor: pointer; 
             background: transparent; 
             color: var(--pink); 
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             font-weight: 700; 
             font-family: 'Fira Code';
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 20px var(--pink); 
+            box-shadow: 0 0 25px var(--pink); 
         }
         .enter-btn:hover { 
             background: var(--pink); 
@@ -158,70 +162,72 @@
             transform: scale(1.1); 
         }
 
-        /* --- 4. GIAO DIỆN CHÍNH - CARD KÍNH ANH ĐÀO --- */
+        /* --- 5. GIAO DIỆN CHÍNH (MAIN UI) --- */
         .main-wrapper { 
-            height: 100vh; 
+            height: 100dvh; 
             width: 100%; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             opacity: 0; 
-            perspective: 2000px; 
+            perspective: 1500px; 
             transition: all 2s ease; 
             z-index: 10; 
             visibility: hidden;
+            padding: 20px;
+            overflow-y: auto; /* Cho phép cuộn trên mobile */
         }
         .main-wrapper.active { opacity: 1; visibility: visible; }
 
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 50px; 
-            padding: 60px 45px; 
-            width: 380px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(14px); 
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 45px; 
+            padding: 50px 35px; 
+            width: 100%;
+            max-width: 390px;
             text-align: center; 
-            border: 1px solid rgba(255, 77, 148, 0.25);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.7), 
-                        0 0 40px rgba(255, 77, 148, 0.1);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.5), 0 0 30px rgba(255, 77, 148, 0.05);
             transform-style: preserve-3d; 
             transition: transform 0.1s ease-out;
+            margin: auto;
         }
 
         .avatar-box {
-            width: 120px; 
-            height: 120px; 
+            width: 110px; 
+            height: 110px; 
             border-radius: 50%; 
             border: 3px solid var(--pink); 
-            margin: 0 auto 30px; 
-            box-shadow: 0 0 45px var(--pink);
+            margin: 0 auto 25px; 
+            box-shadow: 0 0 40px var(--pink);
             display: flex; 
             align-items: center; 
             justify-content: center;
-            background: #000; 
+            background: rgba(0,0,0,0.4); 
             animation: waterFloat 5s ease-in-out infinite;
         }
         .avatar-box span { 
             color: var(--pink); 
-            font-size: 50px; 
+            font-size: 45px; 
             font-weight: 900; 
-            text-shadow: 0 0 25px var(--pink); 
+            text-shadow: 0 0 20px var(--pink); 
         }
 
         h1 { 
             color: #fff; 
-            font-size: 32px; 
-            font-weight: 700;
+            font-size: 28px; 
             text-shadow: 0 0 25px var(--pink); 
-            margin-bottom: 15px; 
+            margin-bottom: 12px; 
             animation: waterFloat 4s ease-in-out infinite; 
         }
         
         .typewriter { 
-            height: 30px; 
-            color: rgba(255,255,255,0.85); 
+            height: 26px; 
+            color: rgba(255,255,255,0.9); 
             font-size: 14px; 
-            margin-bottom: 40px; 
+            margin-bottom: 35px; 
             font-family: 'Fira Code';
         }
 
@@ -231,36 +237,35 @@
             gap: 18px; 
         }
         .link-item {
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 18px 30px; 
+            background: rgba(255, 255, 255, 0.04); 
+            padding: 16px 25px; 
             color: #fff;
             text-decoration: none; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
             border-radius: 20px;
             transition: all 0.4s ease;
         }
         .link-item i { 
             color: var(--pink); 
-            font-size: 24px; 
-            filter: drop-shadow(0 0 10px var(--pink)); 
+            font-size: 22px; 
+            filter: drop-shadow(0 0 8px var(--pink)); 
         }
         .link-item:hover { 
             background: rgba(255, 77, 148, 0.3); 
-            transform: translateZ(50px) scale(1.05); 
+            transform: translateZ(40px) scale(1.05); 
             border-color: var(--pink);
-            box-shadow: 0 10px 30px rgba(255, 77, 148, 0.3);
         }
 
         #music-btn {
             position: fixed; 
-            top: 40px; 
-            right: 40px; 
+            top: 25px; 
+            right: 25px; 
             z-index: 10005;
-            width: 60px; 
-            height: 60px; 
+            width: 50px; 
+            height: 50px; 
             border-radius: 50%; 
             border: 2px solid var(--pink);
             color: var(--pink); 
@@ -268,25 +273,32 @@
             justify-content: center; 
             align-items: center;
             cursor: pointer; 
-            background: rgba(0,0,0,0.6); 
-            backdrop-filter: blur(10px);
-            transition: 0.5s;
+            background: rgba(0,0,0,0.5); 
+            backdrop-filter: blur(8px);
         }
-        #music-btn:hover { transform: rotate(360deg) scale(1.1); box-shadow: 0 0 30px var(--pink); }
 
         @keyframes waterFloat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(1.5deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
         }
 
         .footer-info { 
             position: fixed; 
-            bottom: 25px; 
-            right: 35px; 
-            font-size: 12px; 
-            color: rgba(255,255,255,0.2); 
+            bottom: 20px; 
+            right: 25px; 
+            font-size: 11px; 
+            color: rgba(255,255,255,0.1); 
             font-family: 'Fira Code'; 
             letter-spacing: 2px; 
+        }
+
+        /* --- 6. MOBILE OPTIMIZATION --- */
+        @media (max-height: 700px) {
+            .loading-img-box { width: 170px; height: 240px; }
+            .logo-enter { font-size: 1.6rem; }
+            .card { padding: 35px 25px; }
+            .avatar-box { width: 85px; height: 85px; }
+            h1 { font-size: 22px; }
         }
     </style>
 </head>
@@ -303,13 +315,13 @@
                 <img id="mainLoadImg" src="" alt="Madding">
             </div>
             <div class="logo-enter">HUNG MADDING</div>
-            <div class="loader-container" id="loader">
+            <div id="loader" class="loader-container">
                 <div class="progress-bar">
-                    <div class="progress-fill" id="fill"></div>
+                    <div id="fill" class="progress-fill"></div>
                 </div>
-                <div class="load-text" id="status">ĐANG LOAD NÈ MÁ... 0%</div>
+                <div id="status" class="load-text">ĐANG LOAD NÈ MÁ... 0%</div>
             </div>
-            <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER SYSTEM</button>
+            <button id="enterBtn" class="enter-btn" onclick="startExperience()">ENTER SYSTEM</button>
         </div>
     </div>
 
@@ -318,11 +330,11 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="main-wrapper" id="mainContent">
-        <div class="card" id="profileCard">
+    <div id="mainContent" class="main-wrapper">
+        <div id="profileCard" class="card">
             <div class="avatar-box"><span>H</span></div>
             <h1>Nguyễn Mạnh Hùng</h1>
-            <div class="typewriter" id="typewriter"></div>
+            <div id="typewriter" class="typewriter"></div>
             <div class="links">
                 <a href="https://facebook.com/m.hung.11.02" class="link-item">
                     <span>Facebook</span><i class="fab fa-facebook-f"></i>
@@ -343,7 +355,7 @@
     <div class="footer-info">NHÌN CÁI DB</div>
 
     <script>
-        // Fix đường dẫn file ảnh chờ có dấu
+        // Xử lý nạp ảnh chờ tiếng Việt có dấu
         document.getElementById('mainLoadImg').src = decodeURIComponent('%E1%BA%A3nh%20ch%E1%BB%9D.jpg');
 
         const audio = document.getElementById('bg-audio');
@@ -352,26 +364,24 @@
         const enterBtn = document.getElementById('enterBtn');
         const loader = document.getElementById('loader');
 
-        // Logic Loading mượt mà
+        // Logic Loading mượt mà không lược bớt
         let progress = 0;
         const loadingInterval = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(loadingInterval);
                 status.innerText = "SYSTEM READY!";
-                status.style.color = "#fff";
                 status.style.textShadow = "0 0 10px var(--pink)";
                 
                 setTimeout(() => {
                     loader.style.opacity = '0';
-                    loader.style.transform = 'translateY(20px)';
+                    loader.style.transform = 'translateY(15px)';
                     setTimeout(() => { 
                         loader.style.display = 'none'; 
                         enterBtn.style.display = 'block'; 
-                        enterBtn.style.animation = 'waterFloat 2s infinite';
-                    }, 600);
-                }, 500);
+                    }, 500);
+                }, 400);
             } else {
-                let step = Math.random() * 2.5;
+                let step = Math.random() * 2.2;
                 progress += step;
                 if(progress > 100) progress = 100;
                 fill.style.width = progress + '%';
@@ -379,12 +389,12 @@
             }
         }, 45);
 
-        // Khởi tạo hệ thống chính
+        // Khởi động giao diện chính
         function startExperience() {
             const overlay = document.getElementById('overlay');
-            overlay.style.transform = 'scale(2) rotate(5deg)';
+            overlay.style.transform = 'scale(2.5) rotate(5deg)';
             overlay.style.opacity = '0';
-            overlay.style.filter = 'blur(20px)';
+            overlay.style.filter = 'blur(30px)';
             
             audio.play().catch(e => console.log("Audio Error: ", e));
             
@@ -394,9 +404,10 @@
                 document.getElementById('music-btn').style.display = 'flex';
                 document.getElementById('bg-image').style.transform = 'scale(1.1)';
                 startTypewriter();
-            }, 1200);
+            }, 1000);
         }
 
+        // Hiệu ứng máy chữ chi tiết
         function startTypewriter() {
             const text = "> Booting Bio-OS Terminal v3.22... Success!";
             let index = 0;
@@ -410,17 +421,18 @@
             type();
         }
 
+        // Điều khiển nhạc
         function toggleMusic() {
             if (audio.paused) {
                 audio.play();
-                document.getElementById('music-btn').style.animation = 'rotate 2s linear infinite';
+                document.getElementById('music-btn').style.animation = 'rotateCD 3s linear infinite';
             } else {
                 audio.pause();
                 document.getElementById('music-btn').style.animation = 'none';
             }
         }
 
-        // HỆ THỐNG TUYẾT RƠI ĐA TẦNG (DETAILED SNOW)
+        // --- HỆ THỐNG TUYẾT RƠI 3 TẦNG V2 (CLASS-BASED) ---
         const canvases = [
             document.getElementById('canvas-bg'), 
             document.getElementById('canvas-mid'), 
@@ -429,7 +441,7 @@
         const ctxs = canvases.map(c => c.getContext('2d'));
         let snowParticles = [[], [], []];
 
-        class Particle {
+        class SnowFlake {
             constructor(stage) {
                 this.stage = stage;
                 this.reset();
@@ -438,14 +450,15 @@
                 const canvas = canvases[this.stage];
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * -canvas.height;
-                this.size = [1.5, 3.5, 5.5][this.stage];
-                this.velocity = [0.7, 1.5, 2.5][this.stage];
-                this.opacity = [0.2, 0.45, 0.75][this.stage];
-                this.wind = Math.random() * 1 - 0.5;
+                this.size = [1.5, 3.2, 5.0][this.stage];
+                this.velocity = [0.6, 1.3, 2.2][this.stage];
+                this.opacity = [0.25, 0.45, 0.7][this.stage];
+                this.swing = Math.random() * 2;
             }
             update() {
                 this.y += this.velocity;
-                this.x += this.wind;
+                this.x += Math.sin(this.swing) * 0.5;
+                this.swing += 0.02;
                 if (this.y > window.innerHeight) this.reset();
             }
             draw() {
@@ -461,12 +474,12 @@
             canvases.forEach((c, i) => {
                 c.width = window.innerWidth;
                 c.height = window.innerHeight;
-                const count = [80, 40, 20][i];
-                snowParticles[i] = Array.from({length: count}, () => new Particle(i));
+                const count = [70, 40, 15][i];
+                snowParticles[i] = Array.from({length: count}, () => new SnowFlake(i));
             });
         }
 
-        function runAnimation() {
+        function runAnimationLoop() {
             ctxs.forEach((ctx, i) => {
                 ctx.clearRect(0, 0, canvases[i].width, canvases[i].height);
                 snowParticles[i].forEach(p => {
@@ -474,24 +487,31 @@
                     p.draw();
                 });
             });
-            requestAnimationFrame(runAnimation);
+            requestAnimationFrame(runAnimationLoop);
         }
 
-        // HIỆU ỨNG CARD 3D THEO CHUỘT
-        window.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.clientX) / 20;
-            const y = (window.innerHeight / 2 - e.clientY) / 20;
-            const card = document.getElementById('profileCard');
-            if(card) {
-                card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-            }
-        });
+        // Hiệu ứng 3D Card (Chỉ chạy trên Desktop)
+        if (!/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+            window.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth / 2 - e.clientX) / 25;
+                const y = (window.innerHeight / 2 - e.clientY) / 25;
+                const card = document.getElementById('profileCard');
+                if(card) {
+                    card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+                }
+            });
+        }
 
+        // Khởi tạo toàn bộ hệ thống
         window.addEventListener('resize', initEnvironment);
         initEnvironment();
-        runAnimation();
+        runAnimationLoop();
 
-        console.log("Bio-OS v3.22 Fully Loaded - Developed for Hung Madding");
+        console.log("Bio-OS v3.22 Fully Loaded - Author: Gemini x Hung Madding");
     </script>
+    
+    <style>
+        @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
 </body>
 </html>
