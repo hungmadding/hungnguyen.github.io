@@ -116,7 +116,7 @@
         
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-        /* --- HIỆU ỨNG ICON LUÔN PHÁT SÁNG (ALWAYS GLOW) --- */
+        /* --- HIỆU ỨNG CHỮ VÀ ICON LUÔN PHÁT SÁNG (GLOW EFFECT) --- */
         .link-item { 
             position: relative; overflow: hidden;
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2); 
@@ -126,36 +126,50 @@
             z-index: 1;
         }
 
-        /* 1. Facebook - Luôn sáng xanh dương */
+        /* 1. Facebook - Chữ và Icon sáng xanh dương */
+        .link-item[href*="facebook"] span { text-shadow: 0 0 8px #1877f2; }
         .link-item[href*="facebook"] i { 
             color: #1877f2; 
             animation: glowPulseBlue 3s infinite ease-in-out;
         }
 
-        /* 2. TikTok & Github - Luôn sáng trắng Neon */
+        /* 2. TikTok & Github - Chữ và Icon sáng trắng Neon */
+        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { text-shadow: 0 0 8px #fff; }
         .link-item[href*="tiktok"] i, .link-item[href*="github"] i { 
             color: #fff; 
             animation: glowPulseWhite 3s infinite ease-in-out;
         }
 
-        /* 3. Work/Mail - Luôn sáng hồng */
+        /* 3. Work/Mail - Chữ và Icon sáng hồng */
+        .link-item[href*="mailto"] span { text-shadow: 0 0 8px var(--pink); }
         .link-item[href*="mailto"] i { 
             color: var(--pink); 
             animation: glowPulsePink 3s infinite ease-in-out;
         }
 
-        /* Keyframes phát sáng nhịp thở (Dùng filter drop-shadow) */
+        /* Keyframes phát sáng nhịp thở cho Icon */
         @keyframes glowPulseBlue { 
-            0%, 100% { filter: drop-shadow(0 0 3px #1877f2); } 
-            50% { filter: drop-shadow(0 0 12px #1877f2); } 
+            0%, 100% { filter: drop-shadow(0 0 2px #1877f2); } 
+            50% { filter: drop-shadow(0 0 10px #1877f2); } 
         }
         @keyframes glowPulseWhite { 
-            0%, 100% { filter: drop-shadow(0 0 3px #fff); } 
-            50% { filter: drop-shadow(0 0 12px #fff); } 
+            0%, 100% { filter: drop-shadow(0 0 2px #fff); } 
+            50% { filter: drop-shadow(0 0 10px #fff); } 
         }
         @keyframes glowPulsePink { 
-            0%, 100% { filter: drop-shadow(0 0 3px var(--pink)); } 
-            50% { filter: drop-shadow(0 0 12px var(--pink)); } 
+            0%, 100% { filter: drop-shadow(0 0 2px var(--pink)); } 
+            50% { filter: drop-shadow(0 0 10px var(--pink)); } 
+        }
+
+        /* Hiệu ứng khi Hover (Rê chuột/Chạm vào) */
+        .link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: translateY(-2px);
+        }
+        .link-item:hover span {
+            text-shadow: 0 0 15px currentColor;
+            transform: translateX(5px);
         }
 
         .link-item:hover {
