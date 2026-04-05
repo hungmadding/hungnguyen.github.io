@@ -294,13 +294,13 @@
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
-            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha Hùng ☀️" :
-                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha Hùng 🍱" :
-                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Làm việc hiệu quả nhé Hùng ☕" :
-                      (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha Hùng 🌙";
+            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha  ☀️" :
+                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha  🍱" :
+                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Chúc cậu có một buổi chiều vui vẻ nha ☕" :
+                      (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn iu<3 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 7000); 
+            setTimeout(() => { toast.classList.remove('show'); }, 8000); 
         }
 
         function initSystem() {
