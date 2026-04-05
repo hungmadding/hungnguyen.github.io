@@ -18,7 +18,7 @@
             --glass-border: rgba(255, 77, 148, 0.25);
             --bg-dark: #050505;
             --text-main: #ffffff;
-            --verified-color: #ff5ca1; /* Màu tích hồng chuẩn */
+            --verified-color: #ff5ca1;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -105,7 +105,7 @@
             background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-radius: 40px; width: 100%; max-width: 360px; padding: 40px 25px; 
             text-align: center; border: 1px solid var(--glass-border); position: relative; 
-            overflow: hidden; will-change: transform;
+            overflow: hidden; z-index: 1;
         }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
         .card::after { content: ''; position: absolute; inset: 2px; background: #0a050a; border-radius: 38px; z-index: -1; }
@@ -123,14 +123,13 @@
             box-shadow: 0 0 10px var(--verified-color); position: relative; top: -2px;
         }
 
-        /* --- PHẦN THÔNG TIN ONLINE/LOCAL/LEVEL - ĐÃ CẬP NHẬT --- */
         .info-status { 
             display: flex; 
             justify-content: center; 
             gap: 15px; 
             margin-bottom: 15px; 
             font-family: 'Fira Code', monospace; 
-            font-size: 12px; /* Tăng kích thước font */
+            font-size: 12px; 
             color: #ccc; 
         }
         .info-status span { display: flex; align-items: center; gap: 6px; }
@@ -155,20 +154,55 @@
         .link-item span { transition: all 0.3s ease; font-weight: 600; color: #fff; }
         .link-item i { font-size: 18px; transition: all 0.3s ease; }
 
-        .link-item[href*="facebook"] span { text-shadow: 0 0 5px #fff, 0 0 10px #1877f2, 0 0 20px #1877f2; }
-        .link-item[href*="facebook"] i { color: #1877f2; filter: drop-shadow(0 0 8px #1877f2); animation: glowPulseBlue 2s infinite; }
+        /* --- PHẦN FIX ĐỒNG BỘ ANIMATION --- */
+        @keyframes glowPulseBlue { 
+            0%, 100% { filter: drop-shadow(0 0 2px #1877f2) brightness(1); } 
+            50% { filter: drop-shadow(0 0 12px #1877f2) brightness(1.6); } 
+        }
+        @keyframes glowPulseWhite { 
+            0%, 100% { filter: drop-shadow(0 0 2px #fff) brightness(1); } 
+            50% { filter: drop-shadow(0 0 12px #fff) brightness(1.6); } 
+        }
+        @keyframes glowPulsePink { 
+            0%, 100% { filter: drop-shadow(0 0 2px var(--pink)) brightness(1); } 
+            50% { filter: drop-shadow(0 0 12px var(--pink)) brightness(1.6); } 
+        }
+        @keyframes glowPulseTikTok {
+            0%, 100% { 
+                filter: drop-shadow(-1.5px 0 0 #00f2ea) drop-shadow(1.5px 0 0 #ff0050) brightness(1); 
+            }
+            50% { 
+                filter: drop-shadow(-2.5px 0 0 #00f2ea) drop-shadow(2.5px 0 0 #ff0050) drop-shadow(0 0 8px #fff) brightness(1.6); 
+            }
+        }
 
-        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { text-shadow: 0 0 5px #fff, 0 0 15px #fff; }
-        .link-item[href*="tiktok"] i, .link-item[href*="github"] i { color: #fff; filter: drop-shadow(0 0 8px #fff); animation: glowPulseWhite 2s infinite; }
+        .link-item i { animation-duration: 2s !important; animation-iteration-count: infinite !important; animation-timing-function: ease-in-out !important; }
 
-        .link-item[href*="mailto"] span { text-shadow: 0 0 5px #fff, 0 0 10px var(--pink), 0 0 20px var(--pink); }
-        .link-item[href*="mailto"] i { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); animation: glowPulsePink 2s infinite; }
+        .link-item[href*="facebook"] i { color: #1877f2; animation: glowPulseBlue 2s infinite ease-in-out; }
+        .link-item[href*="facebook"] span { text-shadow: 0 0 5px #fff, 0 0 10px #1877f2; }
 
-        @keyframes glowPulseBlue { 0%, 100% { filter: drop-shadow(0 0 5px #1877f2) brightness(1); } 50% { filter: drop-shadow(0 0 15px #1877f2) brightness(1.5); } }
-        @keyframes glowPulseWhite { 0%, 100% { filter: drop-shadow(0 0 5px #fff) brightness(1); } 50% { filter: drop-shadow(0 0 15px #fff) brightness(1.5); } }
-        @keyframes glowPulsePink { 0%, 100% { filter: drop-shadow(0 0 5px var(--pink)) brightness(1); } 50% { filter: drop-shadow(0 0 15px var(--pink)) brightness(1.5); } }
+        .link-item[href*="tiktok"] i { 
+            color: #fff; 
+            animation: glowPulseTikTok 2s infinite ease-in-out;
+            font-size: 19px;
+        }
+        .link-item[href*="tiktok"] span { 
+            color: #fff; 
+            text-shadow: 0 0 5px #fff, -1px 0 2px #00f2ea, 1px 0 2px #ff0050; 
+        }
 
-        .link-item:hover { background: rgba(255, 255, 255, 0.08); border-color: #fff; transform: translateY(-2px); }
+        .link-item[href*="github"] i { color: #fff; animation: glowPulseWhite 2s infinite ease-in-out; }
+        .link-item[href*="github"] span { text-shadow: 0 0 5px #fff, 0 0 10px #fff; }
+
+        .link-item.about-me i { 
+            color: var(--pink); 
+            animation: glowPulsePink 2s infinite ease-in-out;
+            font-size: 19px;
+        }
+        .link-item.about-me span { text-shadow: 0 0 5px #fff, 0 0 10px var(--pink); }
+        /* --- KẾT THÚC PHẦN FIX --- */
+
+        .link-item:hover { background: rgba(255, 255, 255, 0.08); border-color: #fff; transform: translateY(-2px); cursor: pointer; }
         .link-item:hover span { transform: translateX(5px); }
         .link-item:hover i { transform: scale(1.2); filter: brightness(1.5) !important; }
 
@@ -247,7 +281,11 @@
                 <a href="https://www.facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
                 <a href="https://www.tiktok.com/@hung_md3" target="_blank" class="link-item"><span>TikTok Channel</span><i class="fab fa-tiktok"></i></a>
                 <a href="https://github.com/hungmadding" target="_blank" class="link-item"><span>Github Projects</span><i class="fab fa-github"></i></a>
-                <a href="mailto:contact@hungmadding.vn" class="link-item"><span>Work Inquiry</span><i class="fas fa-envelope"></i></a>
+                
+                <div onclick="alert('Cảm ơn bạn đã quan tâm đến mìn<3')" class="link-item about-me">
+                    <span>About me</span>
+                    <i class="fas fa-heart"></i>
+                </div>
             </div>
         </div>
     </main>
@@ -294,9 +332,9 @@
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
-            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha  ☀️" :
-                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha  🍱" :
-                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Chúc cậu có một buổi chiều vui vẻ nha ☕" :
+            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha bạn☀️" :
+                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha bạn🍱" :
+                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Chúc cậu có một buổi chiều vui vẻ nha cậu☕" :
                       (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn iu<3 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
