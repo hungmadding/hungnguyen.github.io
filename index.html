@@ -84,6 +84,7 @@
             opacity: 0; visibility: hidden; perspective: 2000px; padding: 20px; 
             transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
             transform: scale(0.8) translateY(30px); filter: blur(10px);
+            will-change: transform, opacity; /* Tối ưu GPU */
         }
 
         .main-wrapper.active { 
@@ -98,7 +99,12 @@
         .main-wrapper.active .typewriter { transition-delay: 0.7s; }
         .main-wrapper.active .links-container { transition-delay: 0.9s; }
 
-        .card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 40px; width: 100%; max-width: 360px; padding: 40px 25px; text-align: center; border: 1px solid var(--glass-border); position: relative; overflow: hidden; }
+        .card { 
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+            border-radius: 40px; width: 100%; max-width: 360px; padding: 40px 25px; 
+            text-align: center; border: 1px solid var(--glass-border); position: relative; 
+            overflow: hidden; will-change: transform;
+        }
         .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, var(--pink), transparent, transparent); animation: rotateLED 4s linear infinite; z-index: -1; }
         .card::after { content: ''; position: absolute; inset: 2px; background: #0a050a; border-radius: 38px; z-index: -1; }
         
@@ -123,39 +129,35 @@
         /* 1. Facebook - Luôn sáng xanh dương */
         .link-item[href*="facebook"] i { 
             color: #1877f2; 
-            filter: drop-shadow(0 0 5px #1877f2); 
             animation: glowPulseBlue 3s infinite ease-in-out;
         }
 
         /* 2. TikTok & Github - Luôn sáng trắng Neon */
         .link-item[href*="tiktok"] i, .link-item[href*="github"] i { 
             color: #fff; 
-            filter: drop-shadow(0 0 5px #fff); 
             animation: glowPulseWhite 3s infinite ease-in-out;
         }
 
         /* 3. Work/Mail - Luôn sáng hồng */
         .link-item[href*="mailto"] i { 
             color: var(--pink); 
-            filter: drop-shadow(0 0 5px var(--pink)); 
             animation: glowPulsePink 3s infinite ease-in-out;
         }
 
-        /* Keyframes cho hiệu ứng nhịp thở ánh sáng */
+        /* Keyframes phát sáng nhịp thở (Dùng filter drop-shadow) */
         @keyframes glowPulseBlue { 
-            0%, 100% { filter: drop-shadow(0 0 3px #1877f2); opacity: 0.8; } 
-            50% { filter: drop-shadow(0 0 12px #1877f2); opacity: 1; } 
+            0%, 100% { filter: drop-shadow(0 0 3px #1877f2); } 
+            50% { filter: drop-shadow(0 0 12px #1877f2); } 
         }
         @keyframes glowPulseWhite { 
-            0%, 100% { filter: drop-shadow(0 0 3px #fff); opacity: 0.8; } 
-            50% { filter: drop-shadow(0 0 12px #fff); opacity: 1; } 
+            0%, 100% { filter: drop-shadow(0 0 3px #fff); } 
+            50% { filter: drop-shadow(0 0 12px #fff); } 
         }
         @keyframes glowPulsePink { 
-            0%, 100% { filter: drop-shadow(0 0 3px var(--pink)); opacity: 0.8; } 
-            50% { filter: drop-shadow(0 0 12px var(--pink)); opacity: 1; } 
+            0%, 100% { filter: drop-shadow(0 0 3px var(--pink)); } 
+            50% { filter: drop-shadow(0 0 12px var(--pink)); } 
         }
 
-        /* Khi di chuột vào (Hover) rực rỡ hơn */
         .link-item:hover {
             background: rgba(255, 255, 255, 0.08);
             border-color: #fff;
@@ -191,6 +193,12 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ripple { 0% { width: 0; height: 0; opacity: 0.5; } 100% { width: 500px; height: 500px; opacity: 0; } }
+
+        /* Tối ưu Mobile sâu hơn */
+        @media (max-width: 768px) {
+            .card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+            .card::before { animation-duration: 6s; } /* Giảm tốc độ quay để mượt hơn */
+        }
     </style>
 </head>
 <body>
@@ -377,10 +385,11 @@
             }
         }
         
-        const isMobile = /Android|iPhone/i.test(navigator.userAgent);
-        new SnowEngine('canvas-bg', isMobile ? 30 : 60, { size: 1, speed: 0.3, opacity: 0.1 });
-        new SnowEngine('canvas-mid', isMobile ? 20 : 40, { size: 2, speed: 0.7, opacity: 0.2 });
-        new SnowEngine('canvas-foreground', isMobile ? 8 : 15, { size: 4, speed: 1.2, opacity: 0.4 });
+        const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+        // GIẢM SỐ LƯỢNG HẠT ĐỂ MOBILE MƯỢT HƠN
+        new SnowEngine('canvas-bg', isMobile ? 15 : 60, { size: 1, speed: 0.3, opacity: 0.1 });
+        new SnowEngine('canvas-mid', isMobile ? 10 : 40, { size: 2, speed: 0.7, opacity: 0.2 });
+        new SnowEngine('canvas-foreground', isMobile ? 5 : 15, { size: 4, speed: 1.2, opacity: 0.4 });
 
         const card = document.getElementById('tiltCard');
         if (!isMobile) {
