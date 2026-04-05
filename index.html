@@ -18,6 +18,7 @@
             --glass-border: rgba(255, 77, 148, 0.25);
             --bg-dark: #050505;
             --text-main: #ffffff;
+            --verified-color: #ff5ca1; /* Màu tích hồng chuẩn */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -84,7 +85,7 @@
             opacity: 0; visibility: hidden; perspective: 2000px; padding: 20px; 
             transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
             transform: scale(0.8) translateY(30px); filter: blur(10px);
-            will-change: transform, opacity; /* Tối ưu GPU */
+            will-change: transform, opacity;
         }
 
         .main-wrapper.active { 
@@ -96,6 +97,7 @@
         .main-wrapper.active .card > * { opacity: 1; transform: translateY(0); }
         .main-wrapper.active .avatar-box { transition-delay: 0.3s; }
         .main-wrapper.active .waviy { transition-delay: 0.5s; }
+        .main-wrapper.active .info-status { transition-delay: 0.6s; }
         .main-wrapper.active .typewriter { transition-delay: 0.7s; }
         .main-wrapper.active .links-container { transition-delay: 0.9s; }
 
@@ -111,12 +113,36 @@
         .avatar-box { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--pink); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px var(--pink-glow); }
         .avatar-box span { color: var(--pink); font-size: 45px; font-weight: 900; }
         
-        .waviy { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; font-size: clamp(18px, 5vw, 22px); font-weight: 700; line-height: 1.4; }
+        .waviy { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin-bottom: 5px; font-size: clamp(18px, 5vw, 22px); font-weight: 700; line-height: 1.4; }
         .waviy span { position: relative; display: inline-block; animation: waviy 3s infinite; animation-delay: calc(.1s * var(--i)); color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px var(--pink-glow); }
-        
+
+        .verified-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 17px; height: 17px; background: var(--verified-color);
+            border-radius: 50%; color: #fff; font-size: 9px; margin-left: 6px;
+            box-shadow: 0 0 10px var(--verified-color); position: relative; top: -2px;
+        }
+
+        /* --- PHẦN THÔNG TIN ONLINE/LOCAL/LEVEL - ĐÃ CẬP NHẬT --- */
+        .info-status { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+            font-family: 'Fira Code', monospace; 
+            font-size: 12px; /* Tăng kích thước font */
+            color: #ccc; 
+        }
+        .info-status span { display: flex; align-items: center; gap: 6px; }
+        .info-status b { color: var(--pink); text-shadow: 0 0 8px var(--pink-glow); }
+        .online-dot { animation: statusPulse 1.5s infinite; }
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-       /* --- HIỆU ỨNG NEON SIÊU ĐẬM CHO CHỮ VÀ ICON --- */
         .link-item { 
             position: relative; overflow: hidden;
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2); 
@@ -129,74 +155,22 @@
         .link-item span { transition: all 0.3s ease; font-weight: 600; color: #fff; }
         .link-item i { font-size: 18px; transition: all 0.3s ease; }
 
-        /* 1. Facebook - Xanh dương Neon */
-        .link-item[href*="facebook"] span { 
-            text-shadow: 0 0 5px #fff, 0 0 10px #1877f2, 0 0 20px #1877f2, 0 0 30px #1877f2; 
-        }
-        .link-item[href*="facebook"] i { 
-            color: #1877f2; 
-            filter: drop-shadow(0 0 8px #1877f2) drop-shadow(0 0 15px #1877f2);
-            animation: glowPulseBlue 2s infinite; 
-        }
+        .link-item[href*="facebook"] span { text-shadow: 0 0 5px #fff, 0 0 10px #1877f2, 0 0 20px #1877f2; }
+        .link-item[href*="facebook"] i { color: #1877f2; filter: drop-shadow(0 0 8px #1877f2); animation: glowPulseBlue 2s infinite; }
 
-        /* 2. TikTok & Github - Trắng Neon rực rỡ */
-        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { 
-            text-shadow: 0 0 5px #fff, 0 0 15px #fff, 0 0 25px #fff; 
-        }
-        .link-item[href*="tiktok"] i, .link-item[href*="github"] i { 
-            color: #fff; 
-            filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 15px #fff);
-            animation: glowPulseWhite 2s infinite; 
-        }
+        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { text-shadow: 0 0 5px #fff, 0 0 15px #fff; }
+        .link-item[href*="tiktok"] i, .link-item[href*="github"] i { color: #fff; filter: drop-shadow(0 0 8px #fff); animation: glowPulseWhite 2s infinite; }
 
-        /* 3. Work/Mail - Hồng Neon */
-        .link-item[href*="mailto"] span { 
-            text-shadow: 0 0 5px #fff, 0 0 10px var(--pink), 0 0 20px var(--pink), 0 0 30px var(--pink); 
-        }
-        .link-item[href*="mailto"] i { 
-            color: var(--pink); 
-            filter: drop-shadow(0 0 8px var(--pink)) drop-shadow(0 0 15px var(--pink));
-            animation: glowPulsePink 2s infinite; 
-        }
+        .link-item[href*="mailto"] span { text-shadow: 0 0 5px #fff, 0 0 10px var(--pink), 0 0 20px var(--pink); }
+        .link-item[href*="mailto"] i { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); animation: glowPulsePink 2s infinite; }
 
-        /* Keyframes phát sáng nhịp thở (giúp hiệu ứng động đậy) */
-        @keyframes glowPulseBlue { 
-            0%, 100% { filter: drop-shadow(0 0 5px #1877f2) brightness(1); } 
-            50% { filter: drop-shadow(0 0 15px #1877f2) brightness(1.5); } 
-        }
-        @keyframes glowPulseWhite { 
-            0%, 100% { filter: drop-shadow(0 0 5px #fff) brightness(1); } 
-            50% { filter: drop-shadow(0 0 15px #fff) brightness(1.5); } 
-        }
-        @keyframes glowPulsePink { 
-            0%, 100% { filter: drop-shadow(0 0 5px var(--pink)) brightness(1); } 
-            50% { filter: drop-shadow(0 0 15px var(--pink)) brightness(1.5); } 
-        }
+        @keyframes glowPulseBlue { 0%, 100% { filter: drop-shadow(0 0 5px #1877f2) brightness(1); } 50% { filter: drop-shadow(0 0 15px #1877f2) brightness(1.5); } }
+        @keyframes glowPulseWhite { 0%, 100% { filter: drop-shadow(0 0 5px #fff) brightness(1); } 50% { filter: drop-shadow(0 0 15px #fff) brightness(1.5); } }
+        @keyframes glowPulsePink { 0%, 100% { filter: drop-shadow(0 0 5px var(--pink)) brightness(1); } 50% { filter: drop-shadow(0 0 15px var(--pink)) brightness(1.5); } }
 
-        /* Hiệu ứng khi Hover (Rê chuột/Chạm vào) */
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #fff;
-            transform: translateY(-2px);
-        }
-        .link-item:hover span {
-            text-shadow: 0 0 15px currentColor;
-            transform: translateX(5px);
-        }
-
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-        .link-item:hover i {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 15px currentColor) brightness(1.5) !important;
-        }
-
-        .link-item i { font-size: 18px; transition: all 0.4s ease; }
-        .link-item span { transition: all 0.4s ease; font-weight: 500; }
-        .link-item:hover span { transform: translateX(5px); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .link-item:hover { background: rgba(255, 255, 255, 0.08); border-color: #fff; transform: translateY(-2px); }
+        .link-item:hover span { transform: translateX(5px); }
+        .link-item:hover i { transform: scale(1.2); filter: brightness(1.5) !important; }
 
         .system-time { position: fixed; top: 15px; left: 15px; z-index: 10005; font-family: 'Fira Code', monospace; color: var(--pink); text-shadow: 0 0 15px var(--pink-glow); display: none; }
         #music-btn { position: fixed; top: 15px; right: 15px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--pink); background: rgba(0,0,0,0.5); color: var(--pink); display: none; justify-content: center; align-items: center; cursor: pointer; z-index: 10005; box-shadow: 0 0 15px var(--pink-glow); }
@@ -220,10 +194,8 @@
         @keyframes rotateCD { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ripple { 0% { width: 0; height: 0; opacity: 0.5; } 100% { width: 500px; height: 500px; opacity: 0; } }
 
-        /* Tối ưu Mobile sâu hơn */
         @media (max-width: 768px) {
             .card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-            .card::before { animation-duration: 6s; } /* Giảm tốc độ quay để mượt hơn */
         }
     </style>
 </head>
@@ -261,7 +233,15 @@
             <div class="avatar-box"><span>H</span></div>
             <h1 class="waviy">
                 <span style="--i:1">N</span><span style="--i:2">g</span><span style="--i:3">u</span><span style="--i:4">y</span><span style="--i:5">ễ</span><span style="--i:6">n</span><span>&nbsp;</span><span style="--i:7">M</span><span style="--i:8">ạ</span><span style="--i:9">n</span><span style="--i:10">h</span><span>&nbsp;</span><span style="--i:11">H</span><span style="--i:12">ù</span><span style="--i:13">n</span><span style="--i:14">g</span>
+                <div class="verified-badge"><i class="fas fa-check"></i></div>
             </h1>
+
+            <div class="info-status">
+                <span><i class="fas fa-location-dot"></i> <b>TAM DƯƠNG</b></span>
+                <span><i class="fas fa-bolt"></i> <b>Lvl: NONE</b></span>
+                <span><i class="fas fa-circle online-dot" style="color: #00ff00; font-size: 8px;"></i> <b>Online</b></span>
+            </div>
+
             <div id="typewriter" class="typewriter"></div>
             <div class="links-container">
                 <a href="https://www.facebook.com/hung.madding" target="_blank" class="link-item"><span>Facebook</span><i class="fab fa-facebook"></i></a>
@@ -314,14 +294,12 @@
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
-            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha bạn ☀️" :
-                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha cậu 🍱" :
-                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Làm việc hiệu quả nhé cậu ☕" :
-                      (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn 🌙";
+            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha Hùng ☀️" :
+                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha Hùng 🍱" :
+                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Làm việc hiệu quả nhé Hùng ☕" :
+                      (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha Hùng 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
-            
-            // THAY ĐỔI: Tăng lên 7000ms (7 giây)
             setTimeout(() => { toast.classList.remove('show'); }, 7000); 
         }
 
@@ -338,30 +316,7 @@
                 document.getElementById('sysTime').style.display = "block";
                 updateSystemTime();
                 setInterval(updateSystemTime, 1000);
-                
-                // THAY ĐỔI: Đợi 2000ms (2 giây) sau khi card hiện lên mới chào
                 setTimeout(showGreeting, 2000); 
-                
-                setTimeout(startTypeWriter, 1200);
-            }, 600);
-
-            setTimeout(() => { overlay.style.display = "none"; }, 1500);
-        }
-
-        function initSystem() {
-            const overlay = document.getElementById('overlay');
-            const mainUI = document.getElementById('mainUI');
-            overlay.classList.add('fade-out');
-            audio.play().catch(e => console.log("Audio play blocked"));
-            
-            setTimeout(() => {
-                mainUI.classList.add('active'); 
-                document.getElementById('music-btn').style.display = "flex";
-                document.getElementById('music-btn').style.animation = "rotateCD 4s linear infinite";
-                document.getElementById('sysTime').style.display = "block";
-                updateSystemTime();
-                setInterval(updateSystemTime, 1000);
-                showGreeting();
                 setTimeout(startTypeWriter, 1200);
             }, 600);
 
@@ -437,7 +392,6 @@
         }
         
         const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
-        // GIẢM SỐ LƯỢNG HẠT ĐỂ MOBILE MƯỢT HƠN
         new SnowEngine('canvas-bg', isMobile ? 15 : 60, { size: 1, speed: 0.3, opacity: 0.1 });
         new SnowEngine('canvas-mid', isMobile ? 10 : 40, { size: 2, speed: 0.7, opacity: 0.2 });
         new SnowEngine('canvas-foreground', isMobile ? 5 : 15, { size: 4, speed: 1.2, opacity: 0.4 });
