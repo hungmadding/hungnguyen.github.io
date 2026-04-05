@@ -116,7 +116,7 @@
         
         .typewriter { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--pink); min-height: 35px; margin-bottom: 20px; line-height: 1.4; }
         
-        /* --- HIỆU ỨNG CHỮ VÀ ICON LUÔN PHÁT SÁNG (GLOW EFFECT) --- */
+       /* --- HIỆU ỨNG NEON SIÊU ĐẬM CHO CHỮ VÀ ICON --- */
         .link-item { 
             position: relative; overflow: hidden;
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 77, 148, 0.2); 
@@ -126,39 +126,51 @@
             z-index: 1;
         }
 
-        /* 1. Facebook - Chữ và Icon sáng xanh dương */
-        .link-item[href*="facebook"] span { text-shadow: 0 0 8px #1877f2; }
+        .link-item span { transition: all 0.3s ease; font-weight: 600; color: #fff; }
+        .link-item i { font-size: 18px; transition: all 0.3s ease; }
+
+        /* 1. Facebook - Xanh dương Neon */
+        .link-item[href*="facebook"] span { 
+            text-shadow: 0 0 5px #fff, 0 0 10px #1877f2, 0 0 20px #1877f2, 0 0 30px #1877f2; 
+        }
         .link-item[href*="facebook"] i { 
             color: #1877f2; 
-            animation: glowPulseBlue 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 8px #1877f2) drop-shadow(0 0 15px #1877f2);
+            animation: glowPulseBlue 2s infinite; 
         }
 
-        /* 2. TikTok & Github - Chữ và Icon sáng trắng Neon */
-        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { text-shadow: 0 0 8px #fff; }
+        /* 2. TikTok & Github - Trắng Neon rực rỡ */
+        .link-item[href*="tiktok"] span, .link-item[href*="github"] span { 
+            text-shadow: 0 0 5px #fff, 0 0 15px #fff, 0 0 25px #fff; 
+        }
         .link-item[href*="tiktok"] i, .link-item[href*="github"] i { 
             color: #fff; 
-            animation: glowPulseWhite 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 15px #fff);
+            animation: glowPulseWhite 2s infinite; 
         }
 
-        /* 3. Work/Mail - Chữ và Icon sáng hồng */
-        .link-item[href*="mailto"] span { text-shadow: 0 0 8px var(--pink); }
+        /* 3. Work/Mail - Hồng Neon */
+        .link-item[href*="mailto"] span { 
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--pink), 0 0 20px var(--pink), 0 0 30px var(--pink); 
+        }
         .link-item[href*="mailto"] i { 
             color: var(--pink); 
-            animation: glowPulsePink 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 8px var(--pink)) drop-shadow(0 0 15px var(--pink));
+            animation: glowPulsePink 2s infinite; 
         }
 
-        /* Keyframes phát sáng nhịp thở cho Icon */
+        /* Keyframes phát sáng nhịp thở (giúp hiệu ứng động đậy) */
         @keyframes glowPulseBlue { 
-            0%, 100% { filter: drop-shadow(0 0 2px #1877f2); } 
-            50% { filter: drop-shadow(0 0 10px #1877f2); } 
+            0%, 100% { filter: drop-shadow(0 0 5px #1877f2) brightness(1); } 
+            50% { filter: drop-shadow(0 0 15px #1877f2) brightness(1.5); } 
         }
         @keyframes glowPulseWhite { 
-            0%, 100% { filter: drop-shadow(0 0 2px #fff); } 
-            50% { filter: drop-shadow(0 0 10px #fff); } 
+            0%, 100% { filter: drop-shadow(0 0 5px #fff) brightness(1); } 
+            50% { filter: drop-shadow(0 0 15px #fff) brightness(1.5); } 
         }
         @keyframes glowPulsePink { 
-            0%, 100% { filter: drop-shadow(0 0 2px var(--pink)); } 
-            50% { filter: drop-shadow(0 0 10px var(--pink)); } 
+            0%, 100% { filter: drop-shadow(0 0 5px var(--pink)) brightness(1); } 
+            50% { filter: drop-shadow(0 0 15px var(--pink)) brightness(1.5); } 
         }
 
         /* Hiệu ứng khi Hover (Rê chuột/Chạm vào) */
