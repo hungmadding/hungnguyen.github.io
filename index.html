@@ -320,7 +320,32 @@
                       (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 5000);
+            
+            // THAY ĐỔI: Tăng lên 7000ms (7 giây)
+            setTimeout(() => { toast.classList.remove('show'); }, 7000); 
+        }
+
+        function initSystem() {
+            const overlay = document.getElementById('overlay');
+            const mainUI = document.getElementById('mainUI');
+            overlay.classList.add('fade-out');
+            audio.play().catch(e => console.log("Audio play blocked"));
+            
+            setTimeout(() => {
+                mainUI.classList.add('active'); 
+                document.getElementById('music-btn').style.display = "flex";
+                document.getElementById('music-btn').style.animation = "rotateCD 4s linear infinite";
+                document.getElementById('sysTime').style.display = "block";
+                updateSystemTime();
+                setInterval(updateSystemTime, 1000);
+                
+                // THAY ĐỔI: Đợi 2000ms (2 giây) sau khi card hiện lên mới chào
+                setTimeout(showGreeting, 2000); 
+                
+                setTimeout(startTypeWriter, 1200);
+            }, 600);
+
+            setTimeout(() => { overlay.style.display = "none"; }, 1500);
         }
 
         function initSystem() {
