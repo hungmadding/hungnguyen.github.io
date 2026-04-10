@@ -182,6 +182,15 @@
             display: flex; justify-content: center; align-items: center;
             font-size: 12px; box-shadow: 0 0 10px var(--pink-glow);
         }
+
+        /* Playlist Menu Styles */
+        #playlist-menu { display: none; max-height: 150px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px; }
+        #playlist-menu::-webkit-scrollbar { width: 3px; }
+        #playlist-menu::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
+        .track-item { padding: 8px; margin-bottom: 5px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; color: #ccc; }
+        .track-item:hover { background: rgba(255, 77, 148, 0.1); border-color: var(--pink); color: #fff; }
+        .track-item.active { background: rgba(255, 77, 148, 0.2); color: var(--pink); border-color: var(--pink); font-weight: bold; }
+
         .song-info { margin-bottom: 12px; }
         .song-title { color: var(--pink); font-size: 13px; font-weight: bold; text-shadow: 0 0 10px var(--pink-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .artist-name { color: #888; font-size: 10px; margin-top: 4px; }
@@ -247,28 +256,36 @@
 
     <div id="music-player" class="music-player">
         <div class="music-icon-floating" id="disc-icon"><i class="fas fa-compact-disc"></i></div>
-        <div class="song-info">
-            <div class="song-title">one of the girls</div>
-            <div class="artist-name">Hưng Madding Edition</div>
+        
+        <div id="player-main-view">
+            <div class="song-info">
+                <div class="song-title" id="display-title">one of the girls</div>
+                <div class="artist-name" id="display-artist">Hưng Madding Edition</div>
+            </div>
+            <div class="progress-container" onclick="seek(event)">
+                <div class="progress-bar-music" id="musicProgress"></div>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
         </div>
-        <div class="progress-container" onclick="seek(event)">
-            <div class="progress-bar-music" id="musicProgress"></div>
-        </div>
-        <div class="time-display">
-            <span id="currentTime">0:00</span>
-            <span id="duration">0:00</span>
-        </div>
+
+        <div id="playlist-menu">
+            </div>
+
         <div class="player-controls">
             <div class="play-btns">
-                <i class="fas fa-backward"></i>
+                <i class="fas fa-bars" id="menuBtn" onclick="toggleMenu()" style="color: var(--pink); font-size: 12px; margin-right: 5px;"></i>
+                <i class="fas fa-backward" onclick="prevTrack()"></i>
                 <i class="fas fa-play" id="mainPlayBtn" onclick="toggleMusic()"></i>
-                <i class="fas fa-forward"></i>
+                <i class="fas fa-forward" onclick="nextTrack()"></i>
             </div>
             <i class="fas fa-volume-up" style="font-size: 10px; color: var(--pink);"></i>
         </div>
     </div>
 
-    <audio id="mainAudio" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="mainAudio" loop preload="auto"><source id="audioSource" src="music.mp3" type="audio/mpeg"></audio>
 
     <main id="mainUI" class="main-wrapper">
         <div id="tiltCard" class="card">
@@ -308,6 +325,14 @@
         const enterBtn = document.getElementById('enterBtn');
         const loaderUI = document.getElementById('loaderUI');
         
+        // --- DATA PLAYLIST ---
+        const playlist = [
+            { title: "one of the girls", artist: "Hưng Madding Edition", src: "music.mp3" },
+            { title: "Người Đầu Tiên", artist: "Anh Tú", src: "nguoidautien.mp3" },
+            { title: "Tháng Mấy Em Nhớ Anh", artist: "Hà Anh Tuấn", src: "track3.mp3" }
+        ];
+        let currentTrackIndex = 0;
+
         let currentProgress = 0;
         const loaderTask = setInterval(() => {
             if (currentProgress >= 100) {
@@ -340,9 +365,9 @@
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
-            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha bạn☀️" :
-                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha bạn🍱" :
-                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Chúc cậu có một buổi chiều vui vẻ nha cậu☕" :
+            let msg = (hours >= 5 && hours < 11) ? "Chào buổi sáng! Chúc bạn ngày mới tốt lành nha☀️" :
+                      (hours >= 11 && hours < 14) ? "Chào buổi trưa! Nhớ nghỉ ngơi nha🍱" :
+                      (hours >= 14 && hours < 18) ? "Chào buổi chiều! Chúc cậu vui vẻ nha☕" :
                       (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn iu<3 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
@@ -354,16 +379,17 @@
             const mainUI = document.getElementById('mainUI');
             overlay.classList.add('fade-out');
             
-            // Tự động chạy nhạc
-            audio.play().then(() => {
-                document.getElementById('mainPlayBtn').classList.replace('fa-play', 'fa-pause');
-                document.getElementById('disc-icon').style.animation = "rotateCD 3s linear infinite";
-            }).catch(e => console.log("Audio play blocked"));
-            
+            // Khởi tạo danh sách bài hát trước
+            renderPlaylist();
+
             setTimeout(() => {
                 mainUI.classList.add('active'); 
                 document.getElementById('music-player').style.display = "block";
                 document.getElementById('sysTime').style.display = "block";
+                
+                // MỞ MENU CHỌN NHẠC NGAY KHI VÀO
+                toggleMenu();
+
                 updateSystemTime();
                 setInterval(updateSystemTime, 1000);
                 setTimeout(showGreeting, 2000); 
@@ -387,7 +413,63 @@
             type();
         }
 
-        // --- ĐIỀU KHIỂN NHẠC ---
+        // --- QUẢN LÝ PLAYLIST ---
+        function renderPlaylist() {
+            const menu = document.getElementById('playlist-menu');
+            menu.innerHTML = "";
+            playlist.forEach((track, index) => {
+                const item = document.createElement('div');
+                item.className = `track-item ${index === currentTrackIndex ? 'active' : ''}`;
+                item.innerHTML = `${index + 1}. ${track.title}`;
+                item.onclick = () => selectTrack(index);
+                menu.appendChild(item);
+            });
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('playlist-menu');
+            const mainView = document.getElementById('player-main-view');
+            const btn = document.getElementById('menuBtn');
+
+            if (menu.style.display === "none" || menu.style.display === "") {
+                menu.style.display = "block";
+                mainView.style.display = "none";
+                btn.classList.replace('fa-bars', 'fa-times');
+            } else {
+                menu.style.display = "none";
+                mainView.style.display = "block";
+                btn.classList.replace('fa-times', 'fa-bars');
+            }
+        }
+
+        function selectTrack(index) {
+            currentTrackIndex = index;
+            const track = playlist[index];
+            
+            document.getElementById('display-title').innerText = track.title;
+            document.getElementById('display-artist').innerText = track.artist;
+            audio.src = track.src;
+            
+            renderPlaylist(); // Cập nhật trạng thái active
+            audio.play();
+            document.getElementById('mainPlayBtn').classList.replace('fa-play', 'fa-pause');
+            document.getElementById('disc-icon').style.animation = "rotateCD 3s linear infinite";
+            
+            toggleMenu(); // Đóng menu sau khi chọn bài
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            selectTrack(currentTrackIndex);
+            toggleMenu(); // Giữ lại view chính sau khi bấm next
+        }
+
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            selectTrack(currentTrackIndex);
+            toggleMenu(); 
+        }
+
         function toggleMusic() {
             const btn = document.getElementById('mainPlayBtn');
             const disc = document.getElementById('disc-icon');
@@ -428,6 +510,7 @@
             audio.currentTime = (clickX / width) * audio.duration;
         }
 
+        // SNOW ENGINE & TILT CARD (Không đổi)
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
