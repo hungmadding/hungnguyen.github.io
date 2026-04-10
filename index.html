@@ -212,6 +212,25 @@
         }
         #greeting-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
+        /* CSS MỚI CHO THÔNG BÁO NHẮC NHỞ */
+        #instruction-toast {
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: rgba(255, 77, 148, 0.3); border: 1px solid var(--pink);
+            padding: 15px 25px; border-radius: 20px; backdrop-filter: blur(15px);
+            color: #fff; font-weight: 600; font-size: 13px; z-index: 100000;
+            opacity: 0; visibility: hidden; transition: all 0.8s;
+            text-align: center; width: 85%; max-width: 320px;
+            box-shadow: 0 0 20px rgba(255, 77, 148, 0.4);
+        }
+        #instruction-toast.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .ok-btn {
+            margin-top: 12px; background: var(--pink); border: none; color: #000;
+            padding: 6px 20px; border-radius: 10px; font-family: 'Fira Code';
+            font-weight: bold; cursor: pointer; font-size: 11px;
+            transition: 0.3s; box-shadow: 0 0 10px var(--pink-glow);
+        }
+        .ok-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
+
         .footer { position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 8px; opacity: 0.4; font-family: 'Fira Code'; }
         
         @keyframes waviy { 0%, 40%, 100% { transform: translateY(0); } 20% { transform: translateY(-4px); } }
@@ -236,6 +255,11 @@
     </div>
 
     <div id="greeting-toast">Chào mừng bạn!</div>
+
+    <div id="instruction-toast">
+        <div>bấm vào bài nhạc bạn thích để nghe nhạc nha!</div>
+        <button class="ok-btn" onclick="closeInstruction()">OK</button>
+    </div>
     
     <canvas id="canvas-bg"></canvas>
     <canvas id="canvas-mid"></canvas>
@@ -323,7 +347,7 @@
         const enterBtn = document.getElementById('enterBtn');
         const loaderUI = document.getElementById('loaderUI');
         
-        // --- DATA PLAYLIST: "Người Đầu Tiên" đã lên đầu ---
+        // --- DATA PLAYLIST ---
         const playlist = [
             { title: "Người Đầu Tiên", artist: "Anh Tú", src: "nguoidautien.mp3" },
             { title: "one of the girls", artist: "Hưng Madding Edition", src: "music.mp3" },
@@ -360,6 +384,12 @@
             document.getElementById('real-date').innerText = now.toLocaleDateString('vi-VN', { weekday: 'long', month: 'long', day: 'numeric' });
         }
 
+        // HÀM ĐÓNG NHẮC NHỞ
+        function closeInstruction() {
+            document.getElementById('instruction-toast').classList.remove('show');
+        }
+
+        // CẬP NHẬT HÀM SHOW GREETING ĐỂ HIỆN NHẮC NHỞ
         function showGreeting() {
             const hours = new Date().getHours();
             const toast = document.getElementById('greeting-toast');
@@ -369,7 +399,14 @@
                       (hours >= 18 && hours < 22) ? "Chào buổi tối! Chúc bạn ấm áp ✨" : "Đã khuya rồi! Ngủ ngon nha bạn iu<3 🌙";
             toast.innerText = msg;
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 8000); 
+            
+            // Sau 4 giây lời chúc ẩn đi, hiện nhắc nhở âm nhạc
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => {
+                    document.getElementById('instruction-toast').classList.add('show');
+                }, 800);
+            }, 4000); 
         }
 
         function initSystem() {
@@ -384,7 +421,6 @@
                 document.getElementById('music-player').style.display = "block";
                 document.getElementById('sysTime').style.display = "block";
                 
-                // MỞ MENU CHỌN NHẠC NGAY KHI VÀO
                 toggleMenu();
 
                 updateSystemTime();
@@ -410,7 +446,6 @@
             type();
         }
 
-        // --- QUẢN LÝ PLAYLIST ---
         function renderPlaylist() {
             const menu = document.getElementById('playlist-menu');
             menu.innerHTML = "";
@@ -447,18 +482,18 @@
             document.getElementById('display-artist').innerText = track.artist;
             audio.src = track.src;
             
-            renderPlaylist(); // Cập nhật trạng thái active
+            renderPlaylist();
             audio.play();
             document.getElementById('mainPlayBtn').classList.replace('fa-play', 'fa-pause');
             document.getElementById('disc-icon').style.animation = "rotateCD 3s linear infinite";
             
-            toggleMenu(); // Đóng menu sau khi chọn bài
+            toggleMenu(); 
         }
 
         function nextTrack() {
             currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
             selectTrack(currentTrackIndex);
-            toggleMenu(); // Giữ lại view chính sau khi bấm next
+            toggleMenu(); 
         }
 
         function prevTrack() {
@@ -507,7 +542,6 @@
             audio.currentTime = (clickX / width) * audio.duration;
         }
 
-        // --- SNOW ENGINE & TILT CARD ---
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
