@@ -183,7 +183,6 @@
             font-size: 12px; box-shadow: 0 0 10px var(--pink-glow);
         }
 
-        /* Playlist Menu Styles */
         #playlist-menu { display: none; max-height: 150px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px; }
         #playlist-menu::-webkit-scrollbar { width: 3px; }
         #playlist-menu::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
@@ -259,8 +258,8 @@
         
         <div id="player-main-view">
             <div class="song-info">
-                <div class="song-title" id="display-title">one of the girls</div>
-                <div class="artist-name" id="display-artist">Hưng Madding Edition</div>
+                <div class="song-title" id="display-title">Người Đầu Tiên</div>
+                <div class="artist-name" id="display-artist">Anh Tú</div>
             </div>
             <div class="progress-container" onclick="seek(event)">
                 <div class="progress-bar-music" id="musicProgress"></div>
@@ -271,8 +270,7 @@
             </div>
         </div>
 
-        <div id="playlist-menu">
-            </div>
+        <div id="playlist-menu"></div>
 
         <div class="player-controls">
             <div class="play-btns">
@@ -285,7 +283,7 @@
         </div>
     </div>
 
-    <audio id="mainAudio" loop preload="auto"><source id="audioSource" src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="mainAudio" loop preload="auto"><source id="audioSource" src="nguoidautien.mp3" type="audio/mpeg"></audio>
 
     <main id="mainUI" class="main-wrapper">
         <div id="tiltCard" class="card">
@@ -325,10 +323,10 @@
         const enterBtn = document.getElementById('enterBtn');
         const loaderUI = document.getElementById('loaderUI');
         
-        // --- DATA PLAYLIST ---
+        // --- DATA PLAYLIST: "Người Đầu Tiên" đã lên đầu ---
         const playlist = [
-            { title: "one of the girls", artist: "Hưng Madding Edition", src: "music.mp3" },
             { title: "Người Đầu Tiên", artist: "Anh Tú", src: "nguoidautien.mp3" },
+            { title: "one of the girls", artist: "Hưng Madding Edition", src: "music.mp3" },
             { title: "Tháng Mấy Em Nhớ Anh", artist: "Hà Anh Tuấn", src: "track3.mp3" }
         ];
         let currentTrackIndex = 0;
@@ -379,7 +377,6 @@
             const mainUI = document.getElementById('mainUI');
             overlay.classList.add('fade-out');
             
-            // Khởi tạo danh sách bài hát trước
             renderPlaylist();
 
             setTimeout(() => {
@@ -387,8 +384,10 @@
                 document.getElementById('music-player').style.display = "block";
                 document.getElementById('sysTime').style.display = "block";
                 
-                // MỞ MENU CHỌN NHẠC NGAY KHI VÀO
-                toggleMenu();
+                // PHÁT NHẠC NGAY KHI CLICK
+                audio.play();
+                document.getElementById('mainPlayBtn').classList.replace('fa-play', 'fa-pause');
+                document.getElementById('disc-icon').style.animation = "rotateCD 3s linear infinite";
 
                 updateSystemTime();
                 setInterval(updateSystemTime, 1000);
@@ -413,7 +412,6 @@
             type();
         }
 
-        // --- QUẢN LÝ PLAYLIST ---
         function renderPlaylist() {
             const menu = document.getElementById('playlist-menu');
             menu.innerHTML = "";
@@ -450,24 +448,24 @@
             document.getElementById('display-artist').innerText = track.artist;
             audio.src = track.src;
             
-            renderPlaylist(); // Cập nhật trạng thái active
+            renderPlaylist(); 
             audio.play();
             document.getElementById('mainPlayBtn').classList.replace('fa-play', 'fa-pause');
             document.getElementById('disc-icon').style.animation = "rotateCD 3s linear infinite";
             
-            toggleMenu(); // Đóng menu sau khi chọn bài
+            if (document.getElementById('playlist-menu').style.display === "block") {
+                toggleMenu(); 
+            }
         }
 
         function nextTrack() {
             currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
             selectTrack(currentTrackIndex);
-            toggleMenu(); // Giữ lại view chính sau khi bấm next
         }
 
         function prevTrack() {
             currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
             selectTrack(currentTrackIndex);
-            toggleMenu(); 
         }
 
         function toggleMusic() {
@@ -510,7 +508,7 @@
             audio.currentTime = (clickX / width) * audio.duration;
         }
 
-        // SNOW ENGINE & TILT CARD (Không đổi)
+        // --- SNOW ENGINE & TILT CARD ---
         class SnowEngine {
             constructor(canvasId, count, config) {
                 this.canvas = document.getElementById(canvasId);
