@@ -9,25 +9,73 @@ const audio = document.getElementById("mainAudio"),
       lyricsDiv = document.getElementById("lyrics-display"),
       playerEl = document.getElementById("music-player");
 
-// --- PHẦN BẠN CẦN SỬA LYRICS Ở ĐÂY ---
+// --- PHẦN PLAYLIST CẬP NHẬT LYRICS TIẾNG TRUNG - SUB TIẾNG VIỆT ---
 const playlist = [
     {
         title: "Người Đầu Tiên",
         artist: "Anh Tú",
         src: "nguoidautien.mp3",
-        lyrics: []
+        lyrics: [
+            { t: 0,  l: "--- ♪ ---", s: "" },
+            { t: 0.5, l: "Là người đầu tiên nắm tay", s: "The first one to hold my hand" },
+            { t: 4.5, l: "Là người đầu tiên ôm em dưới bầu trời này", s: "The first one to hold you under this sky" },
+            { t: 9, l: "Là người đầu tiên chạm môi", s: "The first one to touch your lips" },
+            { t: 13, l: "Là người đầu tiên em trao cả cuộc đời", s: "The first one you gave your whole life to" },
+            { t: 17, l: "Chỉ có anh...", s: "Only me..." },
+            { t: 19, l: "Làm trái tim em biết đập nồng nàn", s: "Makes your heart beat passionately" },
+            { t: 23, l: "Nỗi đau hay tiếng cười rộn ràng", s: "Pain or vibrant laughter" },
+            { t: 27, l: "Người đầu tiên làm vì em tất cả", s: "The first one to do everything for you" },
+            { t: 31, l: "Thế là em đi theo anh đến nơi", s: "So you followed me to the place" },
+            { t: 35, l: "Nơi mà hạnh phúc chẳng hề có cuối đoạn", s: "Where happiness has no end" },
+            { t: 39, l: "Nơi mà có anh cười như nắng ấm", s: "Where I smile like warm sunshine" },
+            { t: 44, l: "Đời mới mơ, nơi mà bão giông chẳng thể có nhau rồi", s: "A new dream, where storms cannot find us" },
+            { t: 49, l: "Thế là em đi theo anh cho rồi", s: "So you just followed me" },
+            { t: 53, l: "Kỷ niệm thật lắm, nỗi đau hết rồi", s: "So many memories, the pain is gone" },
+            { t: 57, l: "Vắng người đời em chỉ còn bóng tối vây quanh", s: "Without you, my life is surrounded by darkness" },
+            { t: 62, l: "Làm ngơ, làm ngơ giữa cuộc đời yêu thương...", s: "Ignoring, ignoring in the midst of a loving life..." },
+            { t: 68, l: "Chẳng hề có em...", s: "Without you..." },
+            { t: 72, l: "--- ♪ ---", s: "" }
+        ]
     },
     {
         title: "one of the girls",
-        artist: "Hưng Madding Edition",
+        artist: "Đéo nhớ",
         src: "music.mp3",
-        lyrics: []
+        lyrics: [
+            { t: 0,  l: "--- ♪ ---", s: "" },
+            { t: 5.5, l: "Lock me up and throw away the key", s: "Nhốt em lại và vứt chìa khóa đi" },
+            { t: 9.2, l: "He knows how to get the best out of me", s: "Anh ấy biết cách khiến em trở nên tuyệt vời nhất" },
+            { t: 13.5, l: "I'm just a girl, in a dangerous world", s: "Em chỉ là một cô gái trong thế giới đầy hiểm nguy" },
+            { t: 17.8, l: "Give me the light, I'm ready to shine", s: "Cho em ánh sáng, em đã sẵn sàng tỏa sáng" },
+            { t: 22.0, l: "Tell me you love me, even if it's a lie", s: "Hãy nói yêu em, dẫu đó là lời dối trá" },
+            { t: 26.5, l: "I just wanna be one of your girls tonight", s: "Em chỉ muốn là một trong những cô gái của anh đêm nay" },
+            { t: 31.0, l: "--- ♪ ---", s: "" }
+        ]
     },
     {
         title: "ex 'hate me",
         artist: "Hà Anh Tuấn",
         src: "track3.mp3",
-        lyrics: []
+        lyrics: [
+            { t: 0,  l: "--- ♪ ---", s: "" },
+            { t: 9.5, l: "Anh xin mượn bài nhạc này gửi những người yêu cũ", s: "I borrow this song to send to my exes" },
+            { t: 12.5, l: "Rằng nếu bây giờ em đang yên vui cùng người yêu mới", s: "That if you're happy with your new lover" },
+            { t: 15.5, l: "Anh cầu chúc em có những thứ không thể tìm thấy được từ nơi anh", s: "I wish you things you couldn't find in me" },
+            { t: 19.5, l: "Và ngày em nhận được thiệp đám cưới từ anh nó sẽ tới nhanh", s: "And the day you receive my wedding card will come soon" },
+            { t: 23, l: "Chúc em có thật nhiều bữa sáng trên giường ngủ", s: "Wish you many breakfasts in bed" },
+            { t: 26, l: "Chúc em luôn chọn được cho mình một lối đi khác trên đường cũ", s: "Wish you always find a different path on the old road" },
+            { t: 30, l: "Chúc em một gia đình nhỏ mang lại niềm vui cho em", s: "Wish you a small family that brings you joy" },
+            { t: 33.5, l: "Và những đứa con có đôi mắt biết cười tươi như em", s: "And children with eyes that smile brightly like you" },
+            { t: 37, l: "Thật lòng đó anh cảm thấy tự hào về em", s: "Sincerely, I feel proud of you" },
+            { t: 40.5, l: "Nhìn em xem sự thành công biết bao người thèm", s: "Look at you, so successful that many crave it" },
+            { t: 44.5, l: "Em đã thoát khỏi những con quỷ anh vô tình san sớt", s: "You escaped the demons I accidentally shared" },
+            { t: 47.5, l: "Dù anh biết em không hề trách và em đã nói là tình nguyện mang bớt", s: "Though I know you don't blame me and offered to carry them" },
+            { t: 51, l: "Chúc em vui chúc em có thật nhiều may mắn", s: "Wish you joy and lots of luck" },
+            { t: 54, l: "Chúc cho tất cả những ván bài khi đến tay em đều là cây thắng", s: "Wish that every hand you're dealt is a winning one" },
+            { t: 58, l: "Và anh biết những lời này đến từ anh là sự ngạc nhiên", s: "And I know these words from me are a surprise" },
+            { t: 61, l: "Nhưng có người nói hạnh phúc là khi ta đổi hận thù để nhận bình yên", s: "But someone said happiness is trading hate for peace" },
+            { t: 65, l: "--- ♪ ---", s: "" }
+        ]
     },
     {
         title: "Đâu Đâu Cũng Là Em x Tháp Rơi Tự Do",
@@ -35,16 +83,25 @@ const playlist = [
         src: "matemroi.mp3",
         lyrics: [
             { t: 0,  l: "--- ♪ ---", s: "" },
-            { t: 5,  l: "起风了 吹落了 那些承载回忆的叶子", s: "Gió nổi rồi, thổi rơi những cánh lá kỷ niệm" },
-            { t: 10, l: "你走了 却留下了 我那红了의 眼眶", s: "Em đi rồi, nhưng để lại đôi mắt anh đỏ hoe" },
-            { t: 15, l: "深夜里 总是会 翻开 those old photos", s: "Trong đêm muộn, anh vẫn thường lật xem ảnh cũ" },
-            { t: 20, l: "明知道 会很难 却还是 无法忘记你", s: "Biết sẽ rất khó khăn, nhưng vẫn chẳng thể quên em" },
-            { t: 26, l: "因为我 哪里都是你 哪里都是你", s: "Bởi vì trong anh, đâu đâu cũng là em..." },
-            { t: 32, l: "We're like a free fall tower, falling to the deep", s: "Chúng ta như tháp rơi tự do, chìm vào vực thẳm" },
-            { t: 38, l: "You lift me up so high then let me down so low", s: "Em đưa anh lên thật cao rồi lại bỏ rơi anh" },
-            { t: 45, l: "Can you just hold me close, like we used to do?", s: "Có thể ôm anh thật chặt như ta đã từng?" },
-            { t: 52, l: "Admit it, I'm still in love, even it's a lie", s: "Thừa nhận đi, anh vẫn còn yêu, dù đó là dối lừa" },
-            { t: 60, l: "--- ♪ ---", s: "" }
+            { t: 1, l: "起风了 吹落了 那些承载回忆的叶子", s: "Gió nổi rồi, thổi rơi những cánh lá mang theo ký ức" },
+            { t: 4.5, l: "你走了 却留下了 我那红了的眼眶", s: "Em đi rồi, nhưng lại để lại đôi mắt đỏ hoe này của anh" },
+            { t: 8.5, l: "深夜里 总是会 翻开那些旧照片", s: "Trong đêm muộn, anh vẫn luôn lật xem những bức ảnh cũ" },
+            { t: 12.5, l: "明知道 会很难 却还是 无法忘记你", s: "Dẫu biết là khó khăn, nhưng anh vẫn chẳng thể quên được em" },
+            { t: 17, l: "因为我 哪里都是你 哪里 đều là em...", s: "Bởi vì trong anh, đâu đâu cũng là hình bóng của em..." },
+            { t: 21, l: "我们就 像是一座 跳楼机 坠入深渊", s: "Chúng ta như một chiếc tháp rơi tự do, chìm sâu vào vực thẳm" },
+            { t: 25, l: "你把我 举得那么高 又让我 跌得那么深", s: "Em đưa anh lên thật cao, rồi lại để anh rơi xuống thật sâu" },
+            { t: 29.5, l: "能不能 就这样 抱紧我 像从前一样", s: "Liệu có thể cứ như thế này, ôm chặt lấy anh như xưa không?" },
+            { t: 34, l: "承认吧 我还爱着你 就算这是个谎言", s: "Thừa nhận đi, anh vẫn còn yêu em, dẫu cho đó là lời nói dối" },
+            { t: 38.5, l: "起风了 吹落了 那些承载回忆的叶子", s: "Gió lại nổi rồi, thổi bay những kỷ niệm đã hóa thành lá rơi" },
+            { t: 42.5, l: "你走了 却留下了 我那红了的眼眶", s: "Em xa rồi, chỉ còn lại mình anh với hàng lệ tuôn rơi" },
+            { t: 46.5, l: "深夜里 总是会 翻开那些旧照片", s: "Đêm khuya thanh vắng, anh lại tìm về những ký ức qua ảnh cũ" },
+            { t: 50, l: "明知道 会很难 却还是 无法忘记你", s: "Biết rõ lòng đau đớn, nhưng sao chẳng thể xóa nhòa bóng hình em" },
+            { t: 54.5, l: "因为我 哪里都是你 哪里 đều là em...", s: "Vì giờ đây, bất cứ nơi nào anh tới cũng thấy bóng dáng em" },
+            { t: 58.5, l: "我们就 像是一座 跳楼机 坠入深渊", s: "Ta cứ như trò chơi tháp rơi, rơi mãi vào khoảng không vô định" },
+            { t: 62.5, l: "你把我 举得那么高 又让我 跌得那么深", s: "Em cho anh hy vọng thật nhiều, rồi lại dập tắt nó thật tàn nhẫn" },
+            { t: 66.8, l: "能不能 就这样 抱紧我 像从前一样", s: "Có thể nào ôm anh lần nữa, như cái cách ta từng thuộc về nhau?" },
+            { t: 71, l: "承认吧 我还爱着你 就算这是个谎言", s: "Hãy cứ để anh tin rằng anh còn yêu em, dù chỉ là ảo mộng" },
+            { t: 76, l: "--- ♪ ---", s: "" }
         ]
     }
 ];
