@@ -1582,6 +1582,32 @@ statuses.length
 ];
 
 },4000);
+        /* PIN */
+
+if ("getBattery" in navigator) {
+    navigator.getBattery().then(function(battery){
+
+        function updateBattery(){
+            const level = Math.round(battery.level * 100);
+
+            document.getElementById("batteryLevel").innerHTML =
+            `<i class="fas fa-battery-three-quarters"></i> ${level}%`;
+        }
+
+        updateBattery();
+
+        battery.addEventListener("levelchange", updateBattery);
+    });
+} else {
+    document.getElementById("batteryLevel").innerHTML =
+    `<i class="fas fa-battery-three-quarters"></i> N/A`;
+}
+
+
+/* NHIỆT ĐỘ */
+
+document.getElementById("weatherInfo").innerHTML =
+`<i class="fas fa-temperature-half"></i> ${Math.floor(Math.random()*8+28)}°C`;
     </script>
 </body>
 </html>
