@@ -1013,7 +1013,10 @@ text-shadow:
     <i class="fas fa-temperature-half"></i>
     Loading...
 </span>
-
+<span id="viewCounter">
+    <i class="fas fa-eye"></i>
+    0
+</span>
 </div>
     </div>
     
@@ -1606,6 +1609,18 @@ if ("getBattery" in navigator) {
 
 document.getElementById("weatherInfo").innerHTML =
 `<i class="fas fa-temperature-half"></i> ${Math.floor(Math.random()*8+28)}°C`;
+        /* MẮT XEM */
+
+fetch("https://api.countapi.xyz/hit/hungnguyen-profile/views")
+.then(response => response.json())
+.then(data => {
+    document.getElementById("viewCounter").innerHTML =
+    `<i class="fas fa-eye"></i> ${data.value}`;
+})
+.catch(() => {
+    document.getElementById("viewCounter").innerHTML =
+    `<i class="fas fa-eye"></i> N/A`;
+});
     </script>
 </body>
 </html>
