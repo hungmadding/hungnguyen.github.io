@@ -1042,6 +1042,56 @@ text-shadow:
 #4dcfff;
 
 }
+        .card{
+
+position:relative;
+
+}
+
+.view-widget{
+
+position:absolute;
+
+bottom:25px;
+
+right:25px;
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+padding:8px 14px;
+
+border-radius:12px;
+
+background:
+rgba(255,77,148,.08);
+
+border:
+1px solid
+rgba(255,77,148,.3);
+
+backdrop-filter:
+blur(10px);
+
+font-size:18px;
+
+font-family:
+'Fira Code';
+
+color:var(--pink);
+
+z-index:999;
+
+}
+
+.view-widget i{
+
+font-size:18px;
+
+}
     </style>
 </head>
 <body>
@@ -1163,6 +1213,17 @@ Loading...
 
     <main id="mainUI" class="main-wrapper">
         <div id="tiltCard" class="card">
+            <div class="view-widget">
+
+<i class="fas fa-eye"></i>
+
+<span id="viewCounter">
+
+0
+
+</span>
+
+</div>
             <div class="avatar-box"><span>H</span></div>
             <h1 class="waviy">
                 <span style="--i:1">N</span><span style="--i:2">g</span><span style="--i:3">u</span><span style="--i:4">y</span><span style="--i:5">ễ</span><span style="--i:6">n</span><span>&nbsp;</span><span style="--i:7">M</span><span style="--i:8">ạ</span><span style="--i:9">n</span><span style="--i:10">h</span><span>&nbsp;</span><span style="--i:11">H</span><span style="--i:12">ù</span><span style="--i:13">n</span><span style="--i:14">g</span>
