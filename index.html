@@ -917,6 +917,69 @@ right:2.5vw!important;
 }
 
 }
+        .system-stats{
+
+margin-top:14px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+font-size:14px;
+
+font-family:'Fira Code';
+
+color:var(--pink);
+
+}
+
+.system-stats span{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+/* PIN */
+
+#batteryLevel i{
+
+color:#4dff88;
+
+text-shadow:
+0 0 10px
+#4dff88;
+
+}
+
+/* FPS */
+
+#fpsCounter i{
+
+color:#ffd93d;
+
+text-shadow:
+0 0 10px
+#ffd93d;
+
+}
+
+/* WEATHER */
+
+#weatherInfo i{
+
+color:#4dcfff;
+
+text-shadow:
+0 0 10px
+#4dcfff;
+
+}
     </style>
 </head>
 <body>
@@ -925,6 +988,35 @@ right:2.5vw!important;
     <div class="system-time" id="sysTime">
         <div id="real-clock">00:00:00</div>
         <div id="real-date">...</div>
+        <div class="system-stats">
+
+<span id="batteryLevel">
+
+<i class="fas fa-battery-three-quarters"></i>
+
+...
+
+</span>
+
+
+<span id="fpsCounter">
+
+<i class="fas fa-bolt"></i>
+
+60 FPS
+
+</span>
+
+
+<span id="weatherInfo">
+
+<i class="fas fa-temperature-half"></i>
+
+Loading...
+
+</span>
+
+</div>
     </div>
     
     <div id="greeting-toast">Chào mừng bạn!</div>
