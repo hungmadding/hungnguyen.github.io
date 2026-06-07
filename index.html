@@ -1017,7 +1017,7 @@ right:2.5vw!important;
             <div class="info-status">
                 <span><i class="fas fa-location-dot"></i> <b>TAM DƯƠNG</b></span> 
                 <span><i class="fas fa-bolt"></i> <b>Lvl:siêu tuất</b></span> 
-                <span><i class="fas fa-circle online-dot" style="color:#0f0;font-size:8px"></i> <b>Online</b></span>
+                <span><i class="fas fa-circle online-dot" style="color:#0f0;font-size:8px"></i> <b id="dynamicStatus">Online</b></span>
             </div>
             <div id="typewriter" class="typewriter"></div>
             <div class="links-container">
@@ -1457,6 +1457,39 @@ right:2.5vw!important;
                 setTimeout(() => r.remove(), 600);
             });
         });
+        const statuses=[
+
+"Online",
+
+"Listening Music",
+
+"nhớ em",
+
+"Coding",
+
+"lọ",
+
+"Sleeping"
+
+];
+
+setInterval(()=>{
+
+document
+.getElementById(
+"dynamicStatus"
+)
+.innerText=
+
+statuses[
+Math.floor(
+Math.random()
+*
+statuses.length
+)
+];
+
+},4000);
     </script>
 </body>
 </html>
