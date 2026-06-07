@@ -1787,27 +1787,15 @@ function measureFPS(){
 
 fps++;
 
-const now=
-performance.now();
+const now=performance.now();
 
-if(
-now-last>=1000
-){
+if(now-last>=1000){
 
-document
-.getElementById(
+document.getElementById(
 "fpsCounter"
-)
-.innerHTML=
-
+).innerHTML=
 '<i class="fas fa-bolt"></i> '
-
-+
-
-fps
-
-+
-
++ fps +
 ' FPS';
 
 fps=0;
@@ -1816,9 +1804,9 @@ last=now;
 
 }
 
-requestAnimationFrame(
-measureFPS
-);
+requestAnimationFrame(measureFPS);
+
+}   // THÊM DÒNG NÀY
 
 measureFPS();
 
