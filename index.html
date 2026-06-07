@@ -1826,44 +1826,40 @@ measureFPS();
 
 
 /* WEATHER */
+        navigator.geolocation.getCurrentPosition(
 
-navigator
-.geolocation
-.getCurrentPosition(
+(pos)=>{
 
-pos=>{
-
-const lat=
-pos.coords.latitude;
-
-const lon=
-pos.coords.longitude;
+const lat = pos.coords.latitude;
+const lon = pos.coords.longitude;
 
 fetch(
-
 `https://wttr.in/${lat},${lon}?format=%t`
-
 )
 
-.then(
-r=>r.text()
-)
+.then(r=>r.text())
 
 .then(temp=>{
 
-document
-.getElementById(
+document.getElementById(
 "weatherInfo"
-)
-.innerHTML=
+).innerHTML =
 
 '<i class="fas fa-temperature-half"></i> '
 
 +
 
-temp
-.replace("+","")
-.trim();
+temp.replace("+","").trim();
+
+})
+
+.catch(()=>{
+
+document.getElementById(
+"weatherInfo"
+).innerHTML=
+
+'<i class="fas fa-temperature-half"></i> N/A';
 
 });
 
@@ -1871,23 +1867,13 @@ temp
 
 ()=>{
 
-document
-.getElementById(
+document.getElementById(
 "weatherInfo"
-)
-.innerHTML=
+).innerHTML=
 
 '<i class="fas fa-temperature-half"></i> N/A';
 
 }
-
-);
-+
-
-temp
-.replace("+","")
-.trim();
-
 
 }
 
