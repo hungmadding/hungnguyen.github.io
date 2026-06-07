@@ -1820,53 +1820,10 @@ requestAnimationFrame(
 measureFPS
 );
 
-}
-
 measureFPS();
-
 
 /* WEATHER */
 
-navigator.geolocation.getCurrentPosition(
-
-(pos)=>{
-
-const lat = pos.coords.latitude;
-const lon = pos.coords.longitude;
-
-fetch(`https://wttr.in/${lat},${lon}?format=%t`)
-
-.then(r => r.text())
-
-.then(temp => {
-
-document.getElementById("weatherInfo").innerHTML =
-
-'<i class="fas fa-temperature-half"></i> ' +
-
-temp.replace("+","").trim();
-
-})
-
-.catch(() => {
-
-document.getElementById("weatherInfo").innerHTML =
-
-'<i class="fas fa-temperature-half"></i> N/A';
-
-});
-
-},
-
-() => {
-
-document.getElementById("weatherInfo").innerHTML =
-
-'<i class="fas fa-temperature-half"></i> N/A';
-
-}
-
-);
-    </script>
+</script>
 </body>
 </html>
