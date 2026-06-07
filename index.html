@@ -1607,7 +1607,7 @@ document.getElementById("weatherInfo").innerHTML =
 `<i class="fas fa-temperature-half"></i> ${Math.floor(Math.random()*8+28)}°C`;
         /* MẮT XEM */
 
-fetch(("https://counterapi.dev/api/hungmadding/profile/up")
+fetch(("https://counterapi.dev/api/hungmadding/profile/up"))
 .then(res => res.json())
 .then(data => {
     document.getElementById("viewCounter").innerHTML =
