@@ -10,7 +10,69 @@
     <style>
         :root {
             --pink: #ff4d94;
-            --pink-glow: #ff0077;
+            --pink-glow: #ff0077;.system-stats{
+
+margin-top:14px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+font-size:14px;
+
+font-family:'Fira Code';
+
+color:var(--pink);
+
+}
+
+.system-stats span{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+/* PIN */
+
+#batteryLevel i{
+
+color:#4dff88;
+
+text-shadow:
+0 0 10px
+#4dff88;
+
+}
+
+/* FPS */
+
+#fpsCounter i{
+
+color:#ffd93d;
+
+text-shadow:
+0 0 10px
+#ffd93d;
+
+}
+
+/* WEATHER */
+
+#weatherInfo i{
+
+color:#4dcfff;
+
+text-shadow:
+0 0 10px
+#4dcfff;
+
+}
             --pink-dark: #cc005f;
             --glass: rgba(15, 10, 15, .15);
             --glass-border: rgba(255, 77, 148, .25);
@@ -1582,6 +1644,142 @@ statuses.length
 ];
 
 },4000);
+        /* BATTERY */
+
+if(
+navigator.getBattery
+){
+
+navigator
+.getBattery()
+.then(b=>{
+
+function updateBattery(){
+
+document
+.getElementById(
+"batteryLevel"
+)
+.innerHTML=
+
+'<i class="fas fa-battery-three-quarters"></i> '
+
++
+
+Math.round(
+b.level*100
+)
+
++
+
+'%';
+
+}
+
+updateBattery();
+
+b.addEventListener(
+"levelchange",
+updateBattery
+);
+
+});
+
+}
+
+
+/* FPS */
+
+let fps=0;
+
+let last=
+performance.now();
+
+function measureFPS(){
+
+fps++;
+
+const now=
+performance.now();
+
+if(
+now-last>=1000
+){
+
+document
+.getElementById(
+"fpsCounter"
+)
+.innerHTML=
+
+'<i class="fas fa-bolt"></i> '
+
++
+
+fps
+
++
+
+' FPS';
+
+fps=0;
+
+last=now;
+
+}
+
+requestAnimationFrame(
+measureFPS
+);
+
+}
+
+measureFPS();
+
+
+/* WEATHER */
+
+navigator
+.geolocation
+.getCurrentPosition(
+
+pos=>{
+
+const lat=
+pos.coords.latitude;
+
+const lon=
+pos.coords.longitude;
+
+fetch(
+
+`https://wttr.in/${lat},${lon}?format=%t`
+
+)
+
+.then(
+r=>r.text()
+)
+
+.then(temp=>{
+
+document
+.getElementById(
+"weatherInfo"
+)
+.innerHTML=
+
+'<i class="fas fa-temperature-half"></i> '
+
++
+
+temp;
+
+});
+
+}
+
+);
     </script>
 </body>
 </html>
