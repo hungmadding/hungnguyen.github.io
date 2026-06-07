@@ -80,6 +80,30 @@ text-shadow:
 #4dcfff;
 
 }
+            /* VIEW */
+
+#viewCounter{
+
+color:#ff4d94;
+
+text-shadow:
+
+0 0 12px
+#ff4d94;
+
+font-size:16px;
+
+font-weight:700;
+
+}
+
+#viewCounter i{
+
+font-size:15px;
+
+margin-right:6px;
+
+}
             --pink-dark: #cc005f;
             --glass: rgba(15, 10, 15, .15);
             --glass-border: rgba(255, 77, 148, .25);
@@ -1134,9 +1158,16 @@ font-size:18px;
 Loading...
 
 </span>
+            <span id="viewCounter">
+
+<i class="fas fa-eye"></i>
+
+0
+
+</span>
 
 </div>
-    </div>
+
     
     <div id="greeting-toast">Chào mừng bạn!</div>
     <div id="instruction-toast">
@@ -1830,7 +1861,9 @@ document
 
 +
 
-temp;
+temp
+.replace("+","")
+.trim();
 
 });
 
