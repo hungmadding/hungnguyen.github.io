@@ -1800,7 +1800,7 @@ requestAnimationFrame(realFPS);
 }
 
 realFPS();
-        function startProfile(){
+function startProfile(){
 
 const name=document.getElementById("userName").value.trim();
 
@@ -1812,14 +1812,38 @@ return;
 
 }
 
-document.getElementById("welcomeStatus").innerHTML=
-`Xin chào ${name} chúc bạn có một ngày vui vẻ 💖`;
+fetch("https://ipapi.co/json/")
+.then(r=>r.json())
+.then(data=>{
+
+document.getElementById("welcomeStatus").innerHTML=`
+
+<h3>Xin chào ${name} chúc bạn có một ngày vui vẻ 💖</h3>
+
+<p>🌍 IP: ${data.ip}</p>
+
+<p>📍 ${data.city}</p>
+
+`;
 
 setTimeout(()=>{
 
 document.getElementById("welcomeScreen").style.display="none";
 
-},2000);
+},3500);
+
+})
+
+.catch(()=>{
+
+document.getElementById("welcomeStatus").innerHTML=
+
+`Xin chào ${name} chúc bạn có một ngày vui vẻ 💖`;
+
+});
+       
+
+
 
 }
 </script>
