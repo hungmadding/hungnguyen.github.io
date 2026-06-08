@@ -1615,10 +1615,63 @@ if ("getBattery" in navigator) {
 }
 
 
-/* NHIỆT ĐỘ */
+/* THỜI TIẾT THẬT */
 
-document.getElementById("weatherInfo").innerHTML =
-`<i class="fas fa-temperature-half"></i> ${Math.floor(Math.random()*8+28)}°C`;
+fetch("https://ipapi.co/json/")
+.then(r=>r.json())
+.then(loc=>{
+
+fetch(`https://wttr.in/${loc.city}?format=j1`)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+const temp=data.current_condition[0].temp_C;
+
+const weather=data.current_condition[0]
+.weatherDesc[0].value;
+
+let message="";
+
+if(weather.includes("Sunny") || weather.includes("Clear")){
+
+message="☀️ Trời nắng, nhớ uống đủ nước nha";
+
+}
+
+else if(weather.includes("Rain")){
+
+message="🌧 Có thể có mưa, nhớ mang áo mưa";
+
+}
+
+else{
+
+message="🌤 Chúc cậu có một ngày tốt lành";
+
+}
+
+document.getElementById("weatherInfo").innerHTML=
+
+`<i class="fas fa-temperature-half"></i>
+
+${temp}°C | ${weather}
+
+<br>
+
+<small>${message}</small>`;
+
+})
+
+})
+.catch(()=>{
+
+document.getElementById("weatherInfo").innerHTML=
+
+`<i class="fas fa-temperature-half"></i> Weather Error`;
+
+});
         /* MẮT XEM */
 
 fetch(("https://counterapi.dev/api/hungmadding/profile/up"))
