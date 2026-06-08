@@ -1061,7 +1061,7 @@ text-align:center;
     </style>
 </head>
 <body>
-    <div id="welcomeScreen">
+    <div id="welcomeScreen" style="display:none">
 
 <h2>Bạn tên là gì?</h2>
 
@@ -1800,6 +1800,7 @@ requestAnimationFrame(realFPS);
 }
 
 realFPS();
+}
         function startProfile(){
 
 const name=document.getElementById("userName").value.trim();
@@ -1812,8 +1813,6 @@ return;
 
 }
 
-localStorage.setItem("visitorName",name);
-
 document.getElementById("welcomeStatus").innerHTML=
 `Xin chào ${name} chúc bạn có một ngày vui vẻ 💖`;
 
@@ -1821,28 +1820,9 @@ setTimeout(()=>{
 
 document.getElementById("welcomeScreen").style.display="none";
 
-},2200);
+},2000);
 
 }
-
-window.addEventListener("load",()=>{
-
-const savedName=localStorage.getItem("visitorName");
-
-if(savedName){
-
-document.getElementById("welcomeStatus").innerHTML=
-`Xin chào ${savedName} chúc bạn có một ngày vui vẻ 💖`;
-
-setTimeout(()=>{
-
-document.getElementById("welcomeScreen").style.display="none";
-
-},1800);
-
-}
-
-});
 </script>
 </body>
 </html>
