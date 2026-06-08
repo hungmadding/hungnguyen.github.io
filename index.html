@@ -1298,7 +1298,7 @@ text-shadow:
 
         function showGreeting() {
             const e = (new Date).getHours(), t = document.getElementById("greeting-toast");
-            let n = e >= 5 && e < 11 ? "Chào buổi sáng!☀️" : e >= 11 && e < 14 ? "Chào buổi trưa!🍱" : e >= 14 && e < 18 ? "Chào buổi chiều!☕" : e >= 18 && e < 22 ? "Chào buổi tối!✨" : "Chúc ngủ ngon!🌙";
+            let n = e >= 5 && e < 11 ? "Chào buổi sáng!chúc cậu có một ngày mới thật vui vẻ và tràn đầy năng lượng ạ☀️" : e >= 11 && e < 14 ? "Chào buổi trưa!🍱" : e >= 14 && e < 18 ? "Chào buổi chiều!☕" : e >= 18 && e < 22 ? "Chào buổi tối!✨" : "Chúc ngủ ngon!🌙";
             t.innerText = n;
             t.classList.add("show");
             setTimeout(() => {
@@ -1621,6 +1621,37 @@ fetch(("https://counterapi.dev/api/hungmadding/profile/up"))
      document.getElementById("viewCounter").innerHTML =
     `<i class="fas fa-eye"></i> 178`;
 });
+        /* FPS REAL */
+
+let fpsFrames = 0;
+
+let fpsLastTime = performance.now();
+
+function realFPS(){
+
+fpsFrames++;
+
+const now = performance.now();
+
+if(now-fpsLastTime>=1000){
+
+document.getElementById(
+"fpsCounter"
+).innerHTML=
+
+`<i class="fas fa-bolt"></i> ${fpsFrames} FPS`;
+
+fpsFrames=0;
+
+fpsLastTime=now;
+
+}
+
+requestAnimationFrame(realFPS);
+
+}
+
+realFPS();
     </script>
 </body>
 </html>
