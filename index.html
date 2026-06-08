@@ -994,9 +994,93 @@ text-shadow:
 #4dcfff;
 
 }
+        #welcomeScreen{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+gap:15px;
+
+background:#0b0b0b;
+
+z-index:999999;
+
+}
+
+#welcomeScreen input{
+
+padding:12px;
+
+border:none;
+
+border-radius:12px;
+
+outline:none;
+
+width:220px;
+
+text-align:center;
+
+}
+
+#welcomeScreen button{
+
+padding:10px 25px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+}
+
+#welcomeStatus{
+
+margin-top:10px;
+
+color:white;
+
+text-align:center;
+
+}
+
     </style>
 </head>
 <body>
+    <div id="welcomeScreen">
+
+<h2>Bạn tên là gì?</h2>
+
+<input
+id="userName"
+placeholder="Nhập tên..."
+>
+
+<button onclick="startProfile()">
+
+Tiếp tục
+
+</button>
+
+<div id="welcomeStatus">
+
+</div>
+
+</div>
     <div id="bg-image"></div>
     
     <div class="system-time" id="sysTime">
