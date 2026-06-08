@@ -1800,6 +1800,49 @@ requestAnimationFrame(realFPS);
 }
 
 realFPS();
-    </script>
+        function startProfile(){
+
+const name=document.getElementById("userName").value.trim();
+
+if(name===""){
+
+alert("Nhập tên đi :3");
+
+return;
+
+}
+
+localStorage.setItem("visitorName",name);
+
+document.getElementById("welcomeStatus").innerHTML=
+`Xin chào ${name} chúc bạn có một ngày vui vẻ 💖`;
+
+setTimeout(()=>{
+
+document.getElementById("welcomeScreen").style.display="none";
+
+},2200);
+
+}
+
+window.addEventListener("load",()=>{
+
+const savedName=localStorage.getItem("visitorName");
+
+if(savedName){
+
+document.getElementById("welcomeStatus").innerHTML=
+`Xin chào ${savedName} chúc bạn có một ngày vui vẻ 💖`;
+
+setTimeout(()=>{
+
+document.getElementById("welcomeScreen").style.display="none";
+
+},1800);
+
+}
+
+});
+</script>
 </body>
 </html>
